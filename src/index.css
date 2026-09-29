@@ -121,20 +121,101 @@ body {
   box-shadow: 0 8px 24px -4px rgba(5, 150, 105, 0.08);
 }
 
-/* Clean Mushaf Frame */
+/* Authentic King Fahd Mushaf Page Frame (طبعة مجمع الملك فهد لطباعة المصحف الشريف) */
+.mushaf-page-frame {
+  background-color: var(--bg-surface);
+  border: 3px double var(--gold-primary);
+  outline: 1px solid var(--gold-border);
+  outline-offset: 4px;
+  border-radius: 1rem;
+  box-shadow: 
+    0 10px 30px -5px rgba(6, 78, 59, 0.08),
+    inset 0 0 40px rgba(217, 119, 6, 0.03);
+  position: relative;
+}
+
+/* Corner Fleurons for Authentic Quran Page */
+.mushaf-page-frame::before {
+  content: "۞";
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  color: var(--gold-primary);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.mushaf-page-frame::after {
+  content: "۞";
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  color: var(--gold-primary);
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Classical Surah Gilded Header */
+.surah-header-box {
+  background: linear-gradient(135deg, var(--emerald-deep) 0%, #06261E 50%, var(--emerald-deep) 100%);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 1rem;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(6, 78, 59, 0.15);
+}
+
+.surah-header-box::before {
+  content: "۞";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  color: var(--gold-light);
+  font-size: 20px;
+}
+
+.surah-header-box::after {
+  content: "۞";
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: var(--gold-light);
+  font-size: 20px;
+}
+
+/* Authentic Gilded Ayah End Rosette (فاصلة الآيات القرآنية المذهبة) */
+.ayah-rosette {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: 0 4px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, var(--gold-soft) 30%, transparent 70%);
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-dark);
+  font-family: var(--font-cairo);
+  font-weight: 800;
+  font-size: 11px;
+  vertical-align: middle;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15);
+  user-select: none;
+}
+
+.dark .ayah-rosette {
+  color: var(--gold-light);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 30%, transparent 70%);
+}
+
+/* Clean Mushaf Frame fallback */
 .mushaf-frame {
   background-color: var(--bg-surface);
   border: 1.5px solid var(--gold-border);
   box-shadow: 0 4px 20px -4px rgba(6, 78, 59, 0.06);
   border-radius: 1.25rem;
-}
-
-/* Elegant Surah Header */
-.surah-header-box {
-  background: linear-gradient(135deg, var(--emerald-deep) 0%, #06261E 100%);
-  border: 1px solid var(--gold-primary);
-  border-radius: 1.25rem;
-  box-shadow: 0 6px 20px -3px rgba(6, 78, 59, 0.2);
 }
 
 /* Modern Frosted Glass */

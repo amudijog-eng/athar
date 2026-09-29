@@ -105,9 +105,9 @@ export const FloatingAudioPlayer = () => {
                     </button>
 
                     {showRecitersList && (
-                      <div className="absolute bottom-8 right-0 w-56 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95">
+                      <div className="absolute bottom-8 right-0 w-64 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 max-h-64 overflow-y-auto">
                         <span className="text-[11px] font-bold text-[var(--text-muted)] block px-2 pb-1.5 border-b border-[var(--border-subtle)]">
-                          اختر القارئ:
+                          اختر القارئ (أولهم ياسر الدوسري):
                         </span>
                         {RECITERS.map(rec => (
                           <button
@@ -116,9 +116,9 @@ export const FloatingAudioPlayer = () => {
                               changeReciter(rec);
                               setShowRecitersList(false);
                             }}
-                            className={`w-full text-right px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between ${
+                            className={`w-full text-right px-2.5 py-2 rounded-xl text-xs flex items-center justify-between cursor-pointer ${
                               activeReciter.id === rec.id
-                                ? 'bg-[var(--emerald-deep)] text-[var(--gold-primary)] font-bold'
+                                ? 'bg-[var(--emerald-deep)] text-white font-bold'
                                 : 'text-[var(--text-primary)] hover:bg-[var(--emerald-soft)]'
                             }`}
                           >

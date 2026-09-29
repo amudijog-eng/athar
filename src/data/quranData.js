@@ -118,12 +118,20 @@ export const SURAHS_LIST = [
 
 // World-renowned authentic reciters with high-speed CDN audio servers
 export const RECITERS = [
-  { id: 'ar.alafasy', name: 'مشاري راشد العفاسي', englishName: 'Mishary Rashid Alafasy', server: 'https://server8.mp3quran.net/afs/' },
-  { id: 'ar.abdulbasitmurattal', name: 'عبد الباسط عبد الصمد (مرتل)', englishName: 'Abdulbasit Abdussamad', server: 'https://server7.mp3quran.net/basit/' },
-  { id: 'ar.mahermuaiqly', name: 'ماهر المعيقلي', englishName: 'Maher Al-Muaiqly', server: 'https://server12.mp3quran.net/maher/' },
-  { id: 'ar.husary', name: 'محمود خليل الحصري', englishName: 'Mahmoud Khalil Al-Husary', server: 'https://server13.mp3quran.net/husr/' },
-  { id: 'ar.minshawi', name: 'محمد صديق المنشاوي (مرتل)', englishName: 'Mohamed Siddiq El-Minshawi', server: 'https://server10.mp3quran.net/minsh/' },
-  { id: 'ar.saadalghamdi', name: 'سعد الغامدي', englishName: 'Saad Al-Ghamdi', server: 'https://server7.mp3quran.net/s_gmd/' }
+  { id: 'ar.dossari', name: 'الشيخ ياسر الدوسري', englishName: 'Yasser Al-Dossari', server: 'https://server11.mp3quran.net/yasser/' },
+  { id: 'ar.alafasy', name: 'الشيخ مشاري راشد العفاسي', englishName: 'Mishary Rashid Alafasy', server: 'https://server8.mp3quran.net/afs/' },
+  { id: 'ar.abdulbasitmurattal', name: 'الشيخ عبد الباسط عبد الصمد (مرتل)', englishName: 'Abdulbasit Abdussamad (Murattal)', server: 'https://server7.mp3quran.net/basit/' },
+  { id: 'ar.abdulbasitmujawwad', name: 'الشيخ عبد الباسط عبد الصمد (مجود)', englishName: 'Abdulbasit Abdussamad (Mujawwad)', server: 'https://server7.mp3quran.net/basit_mjwd/' },
+  { id: 'ar.mahermuaiqly', name: 'الشيخ ماهر المعيقلي', englishName: 'Maher Al-Muaiqly', server: 'https://server12.mp3quran.net/maher/' },
+  { id: 'ar.saadalghamdi', name: 'الشيخ سعد الغامدي', englishName: 'Saad Al-Ghamdi', server: 'https://server7.mp3quran.net/s_gmd/' },
+  { id: 'ar.ajmi', name: 'الشيخ أحمد بن علي العجمي', englishName: 'Ahmed Al-Ajmi', server: 'https://server10.mp3quran.net/ajm/' },
+  { id: 'ar.minshawi', name: 'الشيخ محمد صديق المنشاوي (مرتل)', englishName: 'Mohamed Siddiq El-Minshawi (Murattal)', server: 'https://server10.mp3quran.net/minsh/' },
+  { id: 'ar.minshawimujawwad', name: 'الشيخ محمد صديق المنشاوي (مجود)', englishName: 'Mohamed Siddiq El-Minshawi (Mujawwad)', server: 'https://server10.mp3quran.net/minsh_mjwd/' },
+  { id: 'ar.husary', name: 'الشيخ محمود خليل الحصري', englishName: 'Mahmoud Khalil Al-Husary', server: 'https://server13.mp3quran.net/husr/' },
+  { id: 'ar.sudais', name: 'الشيخ عبد الرحمن السديس', englishName: 'Abdul Rahman Al-Sudais', server: 'https://server11.mp3quran.net/sds/' },
+  { id: 'ar.shuraim', name: 'الشيخ سعود الشريم', englishName: 'Saud Al-Shuraim', server: 'https://server7.mp3quran.net/shur/' },
+  { id: 'ar.qatami', name: 'الشيخ ناصر القطامي', englishName: 'Nasser Al-Qatami', server: 'https://server6.mp3quran.net/qtm/' },
+  { id: 'ar.faresabbad', name: 'الشيخ فارس عباد', englishName: 'Fares Abbad', server: 'https://server8.mp3quran.net/frs_a/' }
 ];
 
 // Offline fallback & instant bundled high-demand Surahs (Al-Fatihah, Ayat Al-Kursi, Al-Mulk, Al-Ikhlas, Al-Falaq, An-Nas)

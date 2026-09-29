@@ -15,7 +15,10 @@ import {
   Heart,
   Info,
   X,
-  List
+  List,
+  Sparkles,
+  Headphones,
+  UserCheck
 } from 'lucide-react';
 
 export const QuranSection = () => {
@@ -37,10 +40,11 @@ export const QuranSection = () => {
   const [activeSurah, setActiveSurah] = useState(null);
   const [surahAyahs, setSurahAyahs] = useState([]);
   const [loadingAyahs, setLoadingAyahs] = useState(false);
-  const [fontSize, setFontSize] = useState(25);
-  const [readingMode, setReadingMode] = useState('continuous');
+  const [fontSize, setFontSize] = useState(26);
+  const [readingMode, setReadingMode] = useState('continuous'); // 'continuous' (Mushaf Page) | 'cards' (Tafsir View)
   const [copiedAyahId, setCopiedAyahId] = useState(null);
   const [activeTafsirAyah, setActiveTafsirAyah] = useState(null);
+  const [showReciterPicker, setShowReciterPicker] = useState(false);
 
   const normalizeArabic = (text) => {
     return text
@@ -72,7 +76,7 @@ export const QuranSection = () => {
       return;
     }
 
-    const cacheKey = `surah_data_v3_${surah.id}`;
+    const cacheKey = `surah_data_v4_${surah.id}`;
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
       try {
@@ -135,21 +139,22 @@ export const QuranSection = () => {
   };
 
   return (
-    <section id="quran" className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="quran" className="py-6 sm:py-10 max-w-5xl mx-auto px-4 sm:px-6">
       
       {activeSurah ? (
         <div className="space-y-6 animate-in fade-in duration-300">
           
-          {/* Reader Control Header */}
-          <div className="p-4 sm:p-6 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Reader Top Action Bar */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
             
+            {/* Back Button & Title */}
             <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
               <button
                 onClick={() => {
                   triggerHaptic(15);
                   setActiveSurah(null);
                 }}
-                className="px-3.5 py-2 rounded-2xl bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-bold flex items-center gap-1.5 transition-colors border border-[var(--border-subtle)]"
+                className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-bold flex items-center gap-1.5 transition-colors border border-[var(--border-subtle)] cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
                 <span>فهرس السور</span>
@@ -157,7 +162,7 @@ export const QuranSection = () => {
 
               <div className="text-center md:text-right">
                 <h2 className="text-xl sm:text-2xl font-bold font-quran text-[var(--emerald-deep)] dark:text-[var(--gold-primary)]">
-                  سورة {activeSurah.name}
+                  سُورَةُ {activeSurah.name}
                 </h2>
                 <span className="text-[11px] text-[var(--text-muted)]">
                   {activeSurah.type} • {activeSurah.versesCount} آية • الجزء {activeSurah.juz} • ص {activeSurah.startPage}
@@ -165,62 +170,102 @@ export const QuranSection = () => {
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto justify-center md:justify-end text-xs">
+            {/* Controls Toolbar */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full md:w-auto justify-center md:justify-end text-xs">
               
+              {/* Reciter Selector Pill */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowReciterPicker(!showReciterPicker)}
+                  className="px-3 py-2 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-semibold flex items-center gap-1.5 hover:border-[var(--emerald-medium)] transition-colors cursor-pointer"
+                  title="تغيير القارئ"
+                >
+                  <Headphones className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
+                  <span className="max-w-[130px] truncate">{activeReciter.name}</span>
+                </button>
+
+                {showReciterPicker && (
+                  <div className="absolute left-0 sm:right-0 mt-2 w-64 rounded-2xl bg-[var(--bg-surface)] shadow-2xl border border-[var(--border-subtle)] py-2 z-50 max-h-72 overflow-y-auto">
+                    <div className="px-3 py-1.5 text-[11px] font-bold text-[var(--text-muted)] border-b border-[var(--border-subtle)]">
+                      اختر قارئ التلاوة (أولهم ياسر الدوسري):
+                    </div>
+                    {RECITERS.map(rec => (
+                      <button
+                        key={rec.id}
+                        onClick={() => {
+                          changeReciter(rec);
+                          setShowReciterPicker(false);
+                        }}
+                        className={`w-full px-3 py-2 text-xs text-right flex items-center justify-between hover:bg-[var(--emerald-soft)] cursor-pointer ${
+                          activeReciter.id === rec.id
+                            ? 'bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] font-bold'
+                            : 'text-[var(--text-primary)]'
+                        }`}
+                      >
+                        <span>{rec.name}</span>
+                        {activeReciter.id === rec.id && <UserCheck className="w-3.5 h-3.5 text-[var(--emerald-medium)]" />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Play Audio Button */}
               <button
                 onClick={() => {
                   triggerHaptic(20);
                   playSurah(activeSurah, activeReciter);
                 }}
-                className="px-4 py-2 rounded-2xl bg-[var(--emerald-deep)] hover:bg-[var(--emerald-medium)] text-[var(--gold-primary)] font-bold flex items-center gap-2 shadow-xs transition-colors border border-[var(--gold-border)]"
+                className="px-3.5 py-2 rounded-xl bg-[var(--emerald-deep)] hover:bg-[var(--emerald-medium)] text-white font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
               >
-                <Volume2 className="w-4 h-4" />
-                <span>استماع للسورة</span>
+                <Volume2 className="w-4 h-4 text-[var(--gold-primary)]" />
+                <span>استماع</span>
               </button>
 
-              {/* View Switcher */}
-              <div className="flex items-center p-1 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)]">
+              {/* View Mode Toggle (Mushaf Page vs Cards) */}
+              <div className="flex items-center p-1 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)]">
                 <button
                   onClick={() => setReadingMode('continuous')}
-                  className={`px-3 py-1 rounded-xl font-bold transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                     readingMode === 'continuous'
                       ? 'bg-[var(--bg-surface)] text-[var(--emerald-medium)] dark:text-[var(--gold-primary)] shadow-xs'
                       : 'text-[var(--text-muted)]'
                   }`}
-                  title="قراءة المصحف المتصلة"
+                  title="عرض صفحات المصحف الشريف"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">المصحف</span>
                 </button>
                 <button
                   onClick={() => setReadingMode('cards')}
-                  className={`px-3 py-1 rounded-xl font-bold transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                     readingMode === 'cards'
                       ? 'bg-[var(--bg-surface)] text-[var(--emerald-medium)] dark:text-[var(--gold-primary)] shadow-xs'
                       : 'text-[var(--text-muted)]'
                   }`}
-                  title="عرض الآيات مع التفسير"
+                  title="عرض الآيات مع التفسير الميسر"
                 >
                   <List className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">التفسير</span>
                 </button>
               </div>
 
               {/* Font Size Adjuster */}
-              <div className="flex items-center gap-1 bg-[var(--bg-surface-elevated)] p-1 rounded-2xl border border-[var(--border-subtle)]">
+              <div className="flex items-center gap-1 bg-[var(--bg-surface-elevated)] p-1 rounded-xl border border-[var(--border-subtle)]">
                 <button
-                  onClick={() => setFontSize(Math.max(18, fontSize - 2))}
-                  className="px-2 py-1 rounded-lg hover:bg-[var(--bg-surface)] font-bold"
+                  onClick={() => setFontSize(Math.max(20, fontSize - 2))}
+                  className="px-2 py-0.5 rounded hover:bg-[var(--bg-surface)] font-bold cursor-pointer text-xs"
                   title="تصغير الخط"
                 >
-                  A-
+                  -A
                 </button>
                 <span className="text-[11px] px-1 font-mono text-[var(--text-muted)]">{fontSize}</span>
                 <button
-                  onClick={() => setFontSize(Math.min(44, fontSize + 2))}
-                  className="px-2 py-1 rounded-lg hover:bg-[var(--bg-surface)] font-bold"
+                  onClick={() => setFontSize(Math.min(46, fontSize + 2))}
+                  className="px-2 py-0.5 rounded hover:bg-[var(--bg-surface)] font-bold cursor-pointer text-xs"
                   title="تكبير الخط"
                 >
-                  A+
+                  +A
                 </button>
               </div>
 
@@ -228,30 +273,41 @@ export const QuranSection = () => {
 
           </div>
 
-          {/* Surah Illuminated Ornate Header Frame */}
-          <div className="surah-header-box p-6 sm:p-8 text-center text-white my-6">
-            <span className="text-xs text-[var(--gold-light)] font-bold block mb-1">
-              {activeSurah.type === 'مكية' ? '🕋 مكية نزلت بمكة المكرمة' : '🕌 مدنية نزلت بالمدينة المنورة'}
-            </span>
-            <h1 className="text-3xl sm:text-5xl font-extrabold font-quran text-[var(--gold-light)]">
-              سُورَةُ {activeSurah.name}
-            </h1>
-            <span className="text-xs text-emerald-200 mt-2 block font-amiri">
-              آيَاتُهَا {activeSurah.versesCount} • نُزُولُهَا قَبْلَ الْهِجْرَةِ أَوْ بَعْدَهَا
-            </span>
-          </div>
-
-          {/* Mushaf Page */}
-          <div className="mushaf-frame p-6 sm:p-14">
+          {/* Authentic King Fahd Mushaf Page Frame */}
+          <div className="mushaf-page-frame p-6 sm:p-12 space-y-6">
             
+            {/* Top Page Margin Ribbon */}
+            <div className="flex items-center justify-between border-b border-[var(--gold-border)] pb-3 text-xs text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold select-none">
+              <span>سُورَةُ {activeSurah.name}</span>
+              <span className="text-[11px] text-[var(--text-muted)] font-amiri">
+                الجُزْءُ {activeSurah.juz} • الحِزْبُ {Math.ceil(activeSurah.juz * 2)}
+              </span>
+              <span>{activeSurah.type} ({activeSurah.versesCount} آية)</span>
+            </div>
+
+            {/* Gilded Surah Title Box */}
+            <div className="surah-header-box p-5 sm:p-7 text-center text-white my-4 relative">
+              <span className="text-xs text-[var(--gold-light)] font-bold block mb-1">
+                {activeSurah.type === 'مكية' ? '🕋 مكية نزلت بمكة المكرمة' : '🕌 مدنية نزلت بالمدينة المنورة'}
+              </span>
+              <h1 className="text-3xl sm:text-5xl font-extrabold font-quran text-[var(--gold-light)]">
+                سُورَةُ {activeSurah.name}
+              </h1>
+              <span className="text-xs text-emerald-200 mt-2 block font-amiri">
+                آيَاتُهَا {activeSurah.versesCount} • صَفْحَةُ {activeSurah.startPage}
+              </span>
+            </div>
+
+            {/* Basmalah (except Surah At-Tawbah) */}
             {activeSurah.id !== 9 && (
-              <div className="text-center py-6 border-b border-[var(--border-subtle)] mb-8">
+              <div className="text-center py-4 border-b border-[var(--gold-border)]/60 my-6">
                 <span className="font-quran text-2xl sm:text-4xl text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] font-bold">
                   بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                 </span>
               </div>
             )}
 
+            {/* Loading Spinner */}
             {loadingAyahs ? (
               <div className="py-24 text-center space-y-3">
                 <div className="w-10 h-10 border-4 border-[var(--gold-primary)] border-t-transparent rounded-full animate-spin mx-auto" />
@@ -259,25 +315,26 @@ export const QuranSection = () => {
               </div>
             ) : readingMode === 'continuous' ? (
               
-              /* Continuous Mushaf Reading */
+              /* 1. Continuous Authentic Mushaf Flow */
               <div
-                className="leading-loose text-justify font-quran text-[var(--text-primary)] transition-all select-text"
-                style={{ fontSize: `${fontSize}px`, lineHeight: `${fontSize * 2.3}px` }}
+                className="leading-loose text-justify font-quran text-[var(--text-primary)] transition-all select-text px-2 sm:px-6"
+                style={{ fontSize: `${fontSize}px`, lineHeight: `${fontSize * 2.35}px` }}
               >
                 {surahAyahs.map((ayah) => {
                   const isBookmarked = lastRead?.surahId === activeSurah.id && lastRead?.ayahNumber === ayah.numberInSurah;
                   return (
                     <span
                       key={ayah.numberInSurah}
-                      className={`inline transition-colors hover:bg-[var(--gold-soft)] rounded-lg p-1 cursor-pointer ${
+                      className={`inline transition-colors hover:bg-[var(--gold-soft)] rounded-md px-1 py-0.5 cursor-pointer ${
                         isBookmarked ? 'bg-[var(--gold-soft)] border-b-2 border-[var(--gold-primary)]' : ''
                       }`}
                       onClick={() => setActiveTafsirAyah(ayah)}
-                      title="انقر لعرض التفسير، النسخ، والمشاركة"
+                      title="انقر لعرض التفسير والنسخ والمشاركة"
                     >
-                      {ayah.text}{' '}
-                      <span className="inline-flex items-center justify-center font-cairo text-xs sm:text-sm font-bold text-[var(--gold-dark)] dark:text-[var(--gold-light)] mx-1 px-1.5 py-0.5 rounded-full bg-[var(--gold-soft)] border border-[var(--gold-border)] select-none">
-                        ﴿{ayah.numberInSurah}﴾
+                      {ayah.text}
+                      {/* Authentic Gilded Ayah End Rosette */}
+                      <span className="ayah-rosette">
+                        {ayah.numberInSurah}
                       </span>{' '}
                     </span>
                   );
@@ -286,7 +343,7 @@ export const QuranSection = () => {
 
             ) : (
 
-              /* Cards View */
+              /* 2. Side-by-side Ayah Cards & Tafsir */
               <div className="space-y-4">
                 {surahAyahs.map(ayah => (
                   <div
@@ -333,11 +390,20 @@ export const QuranSection = () => {
 
             )}
 
-            {/* Bottom Surah Navigation */}
-            <div className="mt-12 pt-6 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-3">
+            {/* Bottom Page Ribbon (Page number in classical diamond) */}
+            <div className="pt-6 border-t border-[var(--gold-border)] flex items-center justify-between text-xs text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold select-none">
+              <span>الجُزْءُ {activeSurah.juz}</span>
+              <span className="px-3 py-1 rounded-full bg-[var(--gold-soft)] border border-[var(--gold-border)] text-xs font-cairo">
+                — صَفْحَةُ {activeSurah.startPage} —
+              </span>
+              <span>سُورَةُ {activeSurah.name}</span>
+            </div>
+
+            {/* Bottom Surah Navigation Controls */}
+            <div className="mt-8 pt-4 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-3">
               <button
                 onClick={handlePrevSurah}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-bold flex items-center justify-center gap-1.5 hover:border-[var(--gold-primary)] transition-colors"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-bold flex items-center justify-center gap-1.5 hover:border-[var(--emerald-medium)] transition-colors cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
                 <span>السورة السابقة</span>
@@ -348,7 +414,7 @@ export const QuranSection = () => {
                   saveLastRead(activeSurah.id, activeSurah.name, 1);
                   triggerHaptic(40);
                 }}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] border border-[var(--gold-border)] text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[var(--gold-border)] transition-colors"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] border border-[var(--gold-border)] text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[var(--gold-border)] transition-colors cursor-pointer"
               >
                 <Bookmark className="w-4 h-4" />
                 <span>حفظ الموضع كعلامة قراءة</span>
@@ -356,7 +422,7 @@ export const QuranSection = () => {
 
               <button
                 onClick={handleNextSurah}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-bold flex items-center justify-center gap-1.5 hover:border-[var(--gold-primary)] transition-colors"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-bold flex items-center justify-center gap-1.5 hover:border-[var(--emerald-medium)] transition-colors cursor-pointer"
               >
                 <span>السورة التالية</span>
                 <ChevronLeft className="w-4 h-4" />
@@ -365,7 +431,7 @@ export const QuranSection = () => {
 
           </div>
 
-          {/* Ayah Actions Modal */}
+          {/* Ayah Actions Modal (Tafsir & Share) */}
           {activeTafsirAyah && (
             <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
               <div className="w-full max-w-2xl bg-[var(--bg-surface)] rounded-3xl p-6 shadow-2xl border border-[var(--border-subtle)] space-y-4 animate-in zoom-in-95">
@@ -379,7 +445,7 @@ export const QuranSection = () => {
                   </div>
                   <button
                     onClick={() => setActiveTafsirAyah(null)}
-                    className="p-1 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                    className="p-1 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -404,7 +470,7 @@ export const QuranSection = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
                   <button
                     onClick={() => copyAyah(activeTafsirAyah)}
-                    className="p-2.5 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-subtle)] text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="p-2.5 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-subtle)] text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     {copiedAyahId === activeTafsirAyah.numberInSurah ? (
                       <Check className="w-4 h-4 text-emerald-600" />
@@ -423,7 +489,7 @@ export const QuranSection = () => {
                       });
                       setActiveTafsirAyah(null);
                     }}
-                    className="p-2.5 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] border border-[var(--gold-border)] text-xs font-bold flex items-center justify-center gap-1.5"
+                    className="p-2.5 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] border border-[var(--gold-border)] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Share2 className="w-4 h-4" />
                     <span>بطاقة مشاركة</span>
@@ -435,7 +501,7 @@ export const QuranSection = () => {
                       triggerHaptic(40);
                       setActiveTafsirAyah(null);
                     }}
-                    className="p-2.5 rounded-xl bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] border border-[var(--emerald-border)] text-xs font-bold flex items-center justify-center gap-1.5"
+                    className="p-2.5 rounded-xl bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] border border-[var(--emerald-border)] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Bookmark className="w-4 h-4" />
                     <span>علامة قراءة</span>
@@ -449,12 +515,12 @@ export const QuranSection = () => {
                         title: `سورة ${activeSurah.name} (آية ${activeTafsirAyah.numberInSurah})`,
                         text: activeTafsirAyah.text
                       });
-                      setActiveTafsirAyah(null);
+                      triggerHaptic(30);
                     }}
-                    className="p-2.5 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-rose-50 hover:text-rose-600 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="p-2.5 rounded-xl bg-[var(--bg-surface-elevated)] text-rose-500 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <Heart className="w-4 h-4 text-rose-500" />
-                    <span>المفضلة</span>
+                    <Heart className="w-4 h-4 fill-rose-500" />
+                    <span>مفضلة</span>
                   </button>
                 </div>
 
@@ -464,121 +530,118 @@ export const QuranSection = () => {
 
         </div>
       ) : (
-        /* Full 114 Surahs Directory */
+        /* Surahs Index (114 Surahs Directory) */
         <div className="space-y-6">
           
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] text-xs font-semibold mb-2 border border-[var(--emerald-border)]">
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>المصحف الشريف كاملاً</span>
-              </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-[var(--text-primary)] font-quran">
-                فهرس سور القرآن الكريم
-              </h2>
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
-                تصفح سور القرآن العظيم مع إمكانية البحث الفوري، الاستماع لكبار القرّاء، وقراءة التفسير الميسر.
-              </p>
+          {/* Header */}
+          <div className="text-center space-y-3 mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] text-xs font-semibold border border-[var(--emerald-border)]">
+              <BookOpen className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
+              <span>المصحف الشريف كاملاً (١١٤ سورة)</span>
             </div>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-[var(--text-primary)] font-quran">
+              فهرس القرآن الكريم
+            </h2>
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+              تصفح سور القرآن العظيم مع إمكانية البحث الفوري، الاستماع بصوت <strong>الشيخ ياسر الدوسري</strong> وكبار القرّاء، وقراءة صفحات المصحف المذهب.
+            </p>
+          </div>
 
-            {lastRead && (
+          {/* Quick Resume Strip */}
+          {lastRead && (
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-[var(--emerald-soft)] to-[var(--bg-surface)] border border-[var(--emerald-border)] flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[var(--emerald-medium)] text-white flex items-center justify-center shrink-0">
+                  <Bookmark className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[11px] text-[var(--text-muted)] block font-semibold">آخر موضع قراءة:</span>
+                  <span className="text-sm font-bold text-[var(--text-primary)] font-quran block">
+                    سورة {lastRead.surahName} (آية {lastRead.ayahNumber})
+                  </span>
+                </div>
+              </div>
+
               <button
                 onClick={() => {
                   const s = SURAHS_LIST.find(i => i.id === lastRead.surahId);
                   if (s) openSurah(s);
                 }}
-                className="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] text-xs sm:text-sm font-bold flex items-center gap-2 shadow-xs transition-all hover:scale-102 border border-[var(--gold-border)]"
+                className="px-4 py-2 rounded-xl bg-[var(--emerald-deep)] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs hover:bg-[var(--emerald-medium)] transition-colors cursor-pointer"
               >
-                <Bookmark className="w-4 h-4 text-[#0B3D2E]" />
-                <span>متابعة القراءة: سورة {lastRead.surahName} (آية {lastRead.ayahNumber})</span>
+                <span>متابعة القراءة</span>
+                <ChevronLeft className="w-4 h-4" />
               </button>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Quick Surahs Chips */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs">
-            <span className="text-[var(--text-muted)] shrink-0 font-medium">سور شائعة:</span>
-            {[1, 18, 36, 55, 56, 67, 112, 113, 114].map(id => {
-              const surah = SURAHS_LIST.find(s => s.id === id);
-              if (!surah) return null;
-              return (
-                <button
-                  key={id}
-                  onClick={() => openSurah(surah)}
-                  className="px-3.5 py-1.5 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--emerald-soft)] text-[var(--text-secondary)] hover:text-[var(--emerald-deep)] font-semibold shrink-0 transition-colors border border-[var(--border-subtle)]"
-                >
-                  سورة {surah.name}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Search & Filter Bar */}
-          <div className="p-4 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-xs flex flex-col sm:flex-row items-center gap-3">
+          {/* Search & Topic Filters */}
+          <div className="space-y-4">
             
-            <div className="relative flex-1 w-full">
-              <Search className="w-4 h-4 text-[var(--gold-primary)] absolute right-3.5 top-1/2 -translate-y-1/2" />
+            <div className="relative max-w-xl mx-auto">
+              <Search className="w-4 h-4 text-[var(--gold-primary)] absolute right-4 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="ابحث باسم السورة (مثال: الكهف، يس، البقرة)..."
+                placeholder="ابحث باسم السورة (مثال: الكهف، يس، الملك، البقرة)..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-4 pr-10 py-2.5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-hidden focus:border-[var(--gold-primary)]"
+                className="w-full pl-4 pr-11 py-3 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs sm:text-sm focus:outline-hidden focus:border-[var(--emerald-medium)] shadow-xs"
               />
             </div>
 
-            <div className="flex items-center gap-1.5 w-full sm:w-auto">
-              {[
-                { id: 'all', label: 'الكل' },
-                { id: 'مكية', label: 'مكية 🕋' },
-                { id: 'مدنية', label: 'مدنية 🕌' }
-              ].map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setSelectedType(t.id)}
-                  className={`px-3 py-2 rounded-xl text-xs font-semibold transition-colors flex-1 sm:flex-initial ${
-                    selectedType === t.id
-                      ? 'bg-[var(--emerald-deep)] text-[var(--gold-primary)] border border-[var(--gold-border)]'
-                      : 'bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] hover:bg-[var(--border-subtle)]'
-                  }`}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
+            {/* Filter Pills */}
+            <div className="flex items-center justify-between gap-2 flex-wrap text-xs">
+              <div className="flex items-center gap-1.5">
+                {[
+                  { id: 'all', label: 'الكل' },
+                  { id: 'مكية', label: 'مكية 🕋' },
+                  { id: 'مدنية', label: 'مدنية 🕌' }
+                ].map(t => (
+                  <button
+                    key={t.id}
+                    onClick={() => setSelectedType(t.id)}
+                    className={`px-3 py-1.5 rounded-xl font-semibold transition-colors cursor-pointer ${
+                      selectedType === t.id
+                        ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
+                        : 'bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] hover:bg-[var(--emerald-soft)]'
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
 
-            <select
-              value={selectedJuz}
-              onChange={(e) => setSelectedJuz(e.target.value)}
-              className="px-3 py-2 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] font-semibold focus:outline-hidden w-full sm:w-auto cursor-pointer"
-            >
-              <option value="all">كافة الأجزاء (٣٠ جزء)</option>
-              {Array.from({ length: 30 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>الجزء {i + 1}</option>
-              ))}
-            </select>
+              <select
+                value={selectedJuz}
+                onChange={(e) => setSelectedJuz(e.target.value)}
+                className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] font-semibold focus:outline-hidden cursor-pointer"
+              >
+                <option value="all">كافة الأجزاء (٣٠ جزء)</option>
+                {Array.from({ length: 30 }, (_, i) => (
+                  <option key={i + 1} value={i + 1}>الجزء {i + 1}</option>
+                ))}
+              </select>
+            </div>
 
           </div>
 
-          {/* Surahs Grid */}
+          {/* 114 Surahs Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {filteredSurahs.map(surah => {
               const isLastRead = lastRead?.surahId === surah.id;
               return (
                 <div
                   key={surah.id}
-                  onClick={() => openSurah(surah)}
-                  className={`group cursor-pointer p-4 rounded-3xl bg-[var(--bg-surface)] border transition-all duration-200 hover:shadow-lg hover:border-[var(--gold-primary)] hover:-translate-y-1 relative overflow-hidden ${
-                    isLastRead
-                      ? 'border-[var(--gold-primary)] bg-[var(--gold-soft)]'
-                      : 'border-[var(--border-subtle)]'
+                  className={`group p-4 rounded-2xl bg-[var(--bg-surface)] border transition-all duration-200 hover:shadow-md hover:border-[var(--emerald-medium)] flex flex-col justify-between space-y-3 cursor-pointer ${
+                    isLastRead ? 'border-[var(--gold-primary)] bg-[var(--gold-soft)]/50' : 'border-[var(--border-subtle)]'
                   }`}
+                  onClick={() => openSurah(surah)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       
-                      {/* Badge */}
-                      <div className="w-11 h-11 rounded-2xl bg-[var(--bg-surface-elevated)] group-hover:bg-[var(--emerald-soft)] flex items-center justify-center font-bold text-xs text-[var(--text-secondary)] group-hover:text-[var(--emerald-deep)] transition-colors border border-[var(--border-subtle)]">
+                      {/* Rosette Number Badge */}
+                      <div className="w-10 h-10 rounded-xl bg-[var(--bg-surface-elevated)] group-hover:bg-[var(--emerald-soft)] flex items-center justify-center font-bold text-xs text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] transition-colors border border-[var(--border-subtle)]">
                         {surah.id}
                       </div>
 
@@ -586,9 +649,9 @@ export const QuranSection = () => {
                         <h3 className="font-bold text-base text-[var(--text-primary)] font-quran group-hover:text-[var(--emerald-medium)] dark:group-hover:text-[var(--emerald-accent)] transition-colors">
                           سورة {surah.name}
                         </h3>
-                        <p className="text-[11px] text-[var(--text-muted)]">
+                        <span className="text-[11px] text-[var(--text-muted)] block">
                           {surah.englishName}
-                        </p>
+                        </span>
                       </div>
                     </div>
 
@@ -602,12 +665,25 @@ export const QuranSection = () => {
                     </div>
                   </div>
 
-                  {isLastRead && (
-                    <div className="mt-2 pt-2 border-t border-[var(--gold-border)] text-[10px] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold flex items-center gap-1">
-                      <Bookmark className="w-3 h-3" />
-                      <span>آخر موضع قرأته</span>
-                    </div>
-                  )}
+                  {/* Actions Strip */}
+                  <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        playSurah(surah, activeReciter);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] hover:bg-[var(--emerald-medium)] hover:text-white transition-colors flex items-center gap-1 font-bold text-[11px]"
+                      title={`استماع لسورة ${surah.name} بصوت ${activeReciter.name}`}
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                      <span>استماع</span>
+                    </button>
+
+                    <span className="text-[11px] text-[var(--emerald-medium)] font-bold group-hover:underline flex items-center gap-0.5">
+                      <span>قراءة المصحف</span>
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
                 </div>
               );
             })}
