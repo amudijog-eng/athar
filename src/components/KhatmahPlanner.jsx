@@ -53,11 +53,18 @@ export const KhatmahPlanner = () => {
   };
 
   // Memorization Helper State
-  const [hifzVerse, setHifzVerse] = useState({
-    surah: 'الملك',
-    ayah: 1,
-    text: 'تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ'
-  });
+  const HIFZ_PRESETS = [
+    { surah: 'الملك', ayah: 1, text: 'تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ' },
+    { surah: 'البقرة (آية الكرسي)', ayah: 255, text: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ' },
+    { surah: 'الإخلاص', ayah: 1, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+    { surah: 'الفلق', ayah: 1, text: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ' },
+    { surah: 'الناس', ayah: 1, text: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَٰهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ' },
+    { surah: 'العصر', ayah: 1, text: 'وَالْعَصْرِ ۞ إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ۞ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ' },
+    { surah: 'الكوثر', ayah: 1, text: 'إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ ۞ فَصَلِّ لِرَبِّكَ وَانْحَرْ ۞ إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ' },
+    { surah: 'الشرح', ayah: 1, text: 'أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ۞ وَوَضَعْنَا عَنكَ وِزْرَكَ ۞ الَّذِي أَنقَضَ ظَهْرَكَ ۞ وَرَفَعْنَا لَكَ ذِكْرَكَ ۞ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۞ إِنَّ مَعَ الْعُسْرِ يُسْرًا' }
+  ];
+
+  const [hifzVerse, setHifzVerse] = useState(() => HIFZ_PRESETS[0]);
   const [isVerseHidden, setIsVerseHidden] = useState(false);
   const [repeatCount, setRepeatCount] = useState(0);
 
@@ -230,9 +237,26 @@ export const KhatmahPlanner = () => {
                 كرر قراءة الآية ثم قم بإخفائها لاختبار قوة حفظك واسترجاعها من الذاكرة.
               </p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] font-bold border border-[var(--emerald-border)]">
-              سورة {hifzVerse.surah}
-            </span>
+            <div className="flex items-center gap-2">
+              <select
+                value={hifzVerse.surah}
+                onChange={(e) => {
+                  const found = HIFZ_PRESETS.find(p => p.surah === e.target.value);
+                  if (found) {
+                    setHifzVerse(found);
+                    setIsVerseHidden(false);
+                    setRepeatCount(0);
+                  }
+                }}
+                className="text-xs px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] font-bold border border-[var(--border-subtle)] focus:outline-hidden cursor-pointer"
+              >
+                {HIFZ_PRESETS.map(p => (
+                  <option key={p.surah} value={p.surah} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
+                    سورة {p.surah}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="mushaf-frame p-8 text-center min-h-[160px] flex items-center justify-center">

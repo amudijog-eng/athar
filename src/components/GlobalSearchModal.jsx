@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export const GlobalSearchModal = () => {
-  const { isSearchOpen, setIsSearchOpen, setActiveTab, setShareModalItem } = useApp();
+  const { isSearchOpen, setIsSearchOpen, setActiveTab, setShareModalItem, openSurahById } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all'); // 'all' | 'quran' | 'hadith' | 'adhkar' | 'dua'
 
@@ -53,7 +53,7 @@ export const GlobalSearchModal = () => {
             title: `سورة ${s.name} (${s.englishName})`,
             snippet: `${s.type} • ${s.versesCount} آية • الجزء ${s.juz}`,
             action: () => {
-              setActiveTab('quran');
+              openSurahById(s.id);
               setIsSearchOpen(false);
             }
           });

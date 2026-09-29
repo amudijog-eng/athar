@@ -203,6 +203,15 @@ export const AppProvider = ({ children }) => {
     document.documentElement.setAttribute('dir', dir);
   }, [language]);
 
+  // Target Surah to open in Quran Section
+  const [targetSurahId, setTargetSurahId] = useState(null);
+
+  const openSurahById = (surahId) => {
+    setTargetSurahId(surahId);
+    setActiveTab('quran');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const t = TRANSLATIONS[language] || TRANSLATIONS.ar;
 
   return (
@@ -219,6 +228,9 @@ export const AppProvider = ({ children }) => {
       setShareModalItem,
       lastRead,
       saveLastRead,
+      targetSurahId,
+      setTargetSurahId,
+      openSurahById,
       favorites,
       toggleFavorite,
       istighfarGoal,

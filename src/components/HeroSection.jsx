@@ -38,7 +38,8 @@ export const HeroSection = () => {
     dailyWird,
     toggleWirdItem,
     setShareModalItem,
-    triggerHaptic
+    triggerHaptic,
+    openSurahById
   } = useApp();
 
   const { playSurah } = useAudioPlayer();
@@ -290,7 +291,14 @@ export const HeroSection = () => {
           </div>
 
           <button
-            onClick={() => handleOpenModule('quran')}
+            onClick={() => {
+              triggerHaptic(20);
+              if (lastRead?.surahId) {
+                openSurahById(lastRead.surahId);
+              } else {
+                handleOpenModule('quran');
+              }
+            }}
             className="px-4 py-2 rounded-xl bg-[var(--emerald-deep)] hover:bg-[var(--emerald-medium)] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors shrink-0 cursor-pointer"
           >
             <span>استكمال القراءة</span>

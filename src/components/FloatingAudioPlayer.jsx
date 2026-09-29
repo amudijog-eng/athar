@@ -224,6 +224,15 @@ export const FloatingAudioPlayer = () => {
                   {playbackSpeed}x
                 </button>
 
+                {/* Minimize Toggle */}
+                <button
+                  onClick={() => setIsMinimized(true)}
+                  className="p-1.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer"
+                  title="تصغير المشغل"
+                >
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+
               </div>
 
               {/* Progress Slider Bar */}

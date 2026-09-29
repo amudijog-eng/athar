@@ -28,7 +28,9 @@ export const QuranSection = () => {
     toggleFavorite,
     favorites,
     setShareModalItem,
-    triggerHaptic
+    triggerHaptic,
+    targetSurahId,
+    setTargetSurahId
   } = useApp();
 
   const { playSurah, activeReciter, changeReciter } = useAudioPlayer();
@@ -161,6 +163,17 @@ export const QuranSection = () => {
       console.error('Error handling Quran URL params:', e);
     }
   }, []);
+
+  // Open specific surah when commanded globally (e.g. from Home bookmark or Search)
+  useEffect(() => {
+    if (targetSurahId) {
+      const target = SURAHS_LIST.find(s => s.id === targetSurahId);
+      if (target) {
+        openSurah(target);
+        setTargetSurahId(null);
+      }
+    }
+  }, [targetSurahId]);
 
   return (
     <section id="quran" className="py-6 sm:py-10 max-w-5xl mx-auto px-4 sm:px-6">

@@ -11,189 +11,418 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true });
 }
 
-// 114 Holy Quran Surahs
+// 114 Holy Quran Surahs with metadata
 const SURAHS = [
-  { id: 1, name: "الفاتحة", englishName: "Al-Faatiha", type: "مكية", versesCount: 7, startPage: 1, juz: 1, desc: "أم الكتاب والسبع المثاني وأعظم سورة في كتاب الله الكريم، رقية وشفاء للمؤمنين." },
-  { id: 2, name: "البقرة", englishName: "Al-Baqara", type: "مدنية", versesCount: 286, startPage: 2, juz: 1, desc: "سنام القرآن وأطول سورة فيه، وفيها آية الكرسي وخواتيم البقرة، لا تستطيعها البطلة وتطرد الشياطين." },
-  { id: 3, name: "آل عمران", englishName: "Aal-i-Imraan", type: "مدنية", versesCount: 200, startPage: 50, juz: 3, desc: "إحدى الزهراوين، تحاج عن صاحبها يوم القيامة، وتثبيت لأهل الإيمان في الثبات على الحق." },
-  { id: 4, name: "النساء", englishName: "An-Nisaa", type: "مدنية", versesCount: 176, startPage: 77, juz: 4, desc: "سورة الأحكام والعدل والحقوق وحفظ أموال اليتامى والميراث وحماية الأسرة المسلمة." },
-  { id: 5, name: "المائدة", englishName: "Al-Maaida", type: "مدنية", versesCount: 120, startPage: 106, juz: 6, desc: "سورة العقود والعهود وبيان الحلال والحرام، وفيها آية كمال الدين وإتمام النعمة." },
+  { id: 1, name: "الفاتحة", englishName: "Al-Faatiha", type: "مكية", versesCount: 7, startPage: 1, juz: 1, desc: "أم الكتاب والسبع المثاني وأعظم سورة في كتاب الله الكريم، رقية وشفاء للمؤمنين ونور في الصلاة." },
+  { id: 2, name: "البقرة", englishName: "Al-Baqara", type: "مدنية", versesCount: 286, startPage: 2, juz: 1, desc: "سنام القرآن وأطول سورة فيه، وفيها آية الكرسي وخواتيم البقرة، لا تستطيعها البطلة وتطرد الشياطين من البيوت." },
+  { id: 3, name: "آل عمران", englishName: "Aal-i-Imraan", type: "مدنية", versesCount: 200, startPage: 50, juz: 3, desc: "إحدى الزهراوين، تحاج عن صاحبها يوم القيامة، وتثبيت لأهل الإيمان في مواجهة الشبهات والابتلاءات." },
+  { id: 4, name: "النساء", englishName: "An-Nisaa", type: "مدنية", versesCount: 176, startPage: 77, juz: 4, desc: "سورة الأحكام والعدل وحفظ أموال اليتامى والميراث وحماية الأسرة المسلمة وإقامة القسط بين الناس." },
+  { id: 5, name: "المائدة", englishName: "Al-Maaida", type: "مدنية", versesCount: 120, startPage: 106, juz: 6, desc: "سورة العقود والعهود وبيان الحلال والحرام، وفيها آية كمال الدين وإتمام النعمة ورضا الإسلام ديناً." },
   { id: 6, name: "الأنعام", englishName: "Al-An'aam", type: "مكية", versesCount: 165, startPage: 128, juz: 7, desc: "سورة التوحيد الخالص وإقامة الحجج والبراهين العقلية على وحدانية الله رب العالمين." },
-  { id: 7, name: "الأعراف", englishName: "Al-A'raaf", type: "مكية", versesCount: 206, startPage: 151, juz: 8, desc: "أطول سورة مكية، تعرض الصراع الدائم بين الحق والباطل ومصائر الأمم السابقة." },
-  { id: 8, name: "الأنفال", englishName: "Al-Anfaal", type: "مدنية", versesCount: 75, startPage: 177, juz: 9, desc: "سورة غزوة بدر الكبرى، بيان أسباب النصر الإلهي والتقوى والثبات في الميدان." },
-  { id: 9, name: "التوبة", englishName: "At-Tawba", type: "مدنية", versesCount: 129, startPage: 187, juz: 10, desc: "سورة البراءة من الشرك والمنافقين، وإعلان قبول توبة الصادقين المتخلفين عن تبوك." },
-  { id: 10, name: "يونس", englishName: "Yunus", type: "مكية", versesCount: 109, startPage: 208, juz: 11, desc: "بيان حكمة الله في قضاء وقدر البشر وقصة نجاة قوم يونس بعد توبتهم النصوح." },
-  { id: 11, name: "هود", englishName: "Hud", type: "مكية", versesCount: 123, startPage: 221, juz: 11, desc: "سورة الاستقامة والصبر على الدعوة وقصص الأنبياء مع أقوامهم، شيبت رسول الله ﷺ." },
-  { id: 12, name: "يوسف", englishName: "Yusuf", type: "مكية", versesCount: 111, startPage: 235, juz: 12, desc: "أحسن القصص، قصة الصبر والوفاء وحسن الظن بالله من ظلمات الجب إلى ملك مصر." },
-  { id: 13, name: "الرعد", englishName: "Ar-Ra'd", type: "مدنية", versesCount: 43, startPage: 249, juz: 13, desc: "«أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ»، تسبح الرعود بحمده والملائكة من خيفته." },
+  { id: 7, name: "الأعراف", englishName: "Al-A'raaf", type: "مكية", versesCount: 206, startPage: 151, juz: 8, desc: "أطول سورة مكية، تعرض الصراع الدائم بين الحق والباطل ومصائر الأمم السابقة والتحذير من كيد إبليس." },
+  { id: 8, name: "الأنفال", englishName: "Al-Anfaal", type: "مدنية", versesCount: 75, startPage: 177, juz: 9, desc: "سورة غزوة بدر الكبرى، وبيان أسباب النصر الإلهي والتقوى والتوكل والثبات في الميدان." },
+  { id: 9, name: "التوبة", englishName: "At-Tawba", type: "مدنية", versesCount: 129, startPage: 187, juz: 10, desc: "سورة البراءة من الشرك والمنافقين، وإعلان قبول توبة الصادقين المتخلفين عن غزوة تبوك." },
+  { id: 10, name: "يونس", englishName: "Yunus", type: "مكية", versesCount: 109, startPage: 208, juz: 11, desc: "بيان حكمة الله في قضاء وقدر البشر وقصة نجاة قوم يونس بعد توبتهم النصوح وإيمانهم." },
+  { id: 11, name: "هود", englishName: "Hud", type: "مكية", versesCount: 123, startPage: 221, juz: 11, desc: "سورة الاستقامة والصبر على الدعوة وقصص الأنبياء نوح وهود وصالح، شيبت رسول الله ﷺ." },
+  { id: 12, name: "يوسف", englishName: "Yusuf", type: "مكية", versesCount: 111, startPage: 235, juz: 12, desc: "أحسن القصص، قصة الصبر والوفاء والعفة وحسن الظن بالله من ظلمات الجب إلى ملك مصر." },
+  { id: 13, name: "الرعد", englishName: "Ar-Ra'd", type: "مدنية", versesCount: 43, startPage: 249, juz: 13, desc: "«أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ»، تسبح الرعود بحمده والملائكة من خيفته وتخضع له الكائنات." },
   { id: 14, name: "إبراهيم", englishName: "Ibrahim", type: "مكية", versesCount: 52, startPage: 255, juz: 13, desc: "سورة شكر النعم، وكلمة التوحيد الطيبة كشجرة طيبة أصلها ثابت وفرعها في السماء." },
-  { id: 15, name: "الحجر", englishName: "Al-Hijr", type: "مكية", versesCount: 99, startPage: 262, juz: 14, desc: "«إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ»، حفظ القرآن الرباني عبر الأجيال." },
-  { id: 16, name: "النحل", englishName: "An-Nahl", type: "مكية", versesCount: 128, startPage: 267, juz: 14, desc: "سورة النعم الكبرى، من خلق السماوات إلى دبيب النحل والعسل فيه شفاء للناس." },
-  { id: 17, name: "الإسراء", englishName: "Al-Israa", type: "مكية", versesCount: 111, startPage: 282, juz: 15, desc: "سورة بني إسرائيل ومعجزة الإسراء والمعراج من المسجد الحرام إلى المسجد الأقصى." },
-  { id: 18, name: "الكهف", englishName: "Al-Kahf", type: "مكية", versesCount: 110, startPage: 293, juz: 15, desc: "نور ما بين الجمعتين وعصمة من فتنة المسيح الدجال، فيها فتن الدين والمال والعلم والسلطة." },
-  { id: 19, name: "مريم", englishName: "Maryam", type: "مكية", versesCount: 98, startPage: 305, juz: 16, desc: "سورة الرحمة الإلهية بمعجزات ولادة يحيى وعيسى عليهما السلام ونقاء السيدة مريم البتول." },
+  { id: 15, name: "الحجر", englishName: "Al-Hijr", type: "مكية", versesCount: 99, startPage: 262, juz: 14, desc: "«إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ»، حفظ القرآن الرباني المعجز عبر العصور." },
+  { id: 16, name: "النحل", englishName: "An-Nahl", type: "مكية", versesCount: 128, startPage: 267, juz: 14, desc: "سورة النعم الكبرى، من خلق السماوات والأرض إلى دبيب النحل والعسل فيه شفاء للناس." },
+  { id: 17, name: "الإسراء", englishName: "Al-Israa", type: "مكية", versesCount: 111, startPage: 282, juz: 15, desc: "سورة بني إسرائيل ومعجزة الإسراء والمعراج من المسجد الحرام إلى المسجد الأقصى المبارك." },
+  { id: 18, name: "الكهف", englishName: "Al-Kahf", type: "مكية", versesCount: 110, startPage: 293, juz: 15, desc: "نور ما بين الجمعتين وعصمة من فتنة الدجال، فيها علاج فتن الدين والمال والعلم والسلطة." },
+  { id: 19, name: "مريم", englishName: "Maryam", type: "مكية", versesCount: 98, startPage: 305, juz: 16, desc: "سورة الرحمة الإلهية بمعجزات ولادة يحيى وعيسى عليهما السلام وعفة ونقاء السيدة مريم البتول." },
   { id: 20, name: "طه", englishName: "Taa-Haa", type: "مكية", versesCount: 135, startPage: 312, juz: 16, desc: "«مَا أَنزَلْنَا عَلَيْكَ الْقُرْآنَ لِتَشْقَىٰ»، قصة كليم الله موسى ونداء الوادي المقدس طوى." },
-  { id: 21, name: "الأنبياء", englishName: "Al-Anbiyaa", type: "مكية", versesCount: 112, startPage: 322, juz: 17, desc: "سورة التضرع والدعاء المستجاب، نداء يونس وأيوب وزكريا وإبراهيم عليهم السلام." },
-  { id: 22, name: "الحج", englishName: "Al-Hajj", type: "مدنية", versesCount: 78, startPage: 332, juz: 17, desc: "سورة المشاعر المقدسة وشعائر الحج وتعظيم حرمات الله وتذكر زلزلة يوم القيامة." },
+  { id: 21, name: "الأنبياء", englishName: "Al-Anbiyaa", type: "مكية", versesCount: 112, startPage: 322, juz: 17, desc: "سورة التضرع والدعاء المستجاب، نداء يونس في بطن الحوت وأيوب وزكريا وإبراهيم عليهم السلام." },
+  { id: 22, name: "الحج", englishName: "Al-Hajj", type: "مدنية", versesCount: 78, startPage: 332, juz: 17, desc: "سورة المشاعر المقدسة وشعائر الحج وتعظيم حرمات الله وتذكر زلزلة قيام الساعة." },
   { id: 23, name: "المؤمنون", englishName: "Al-Muminoon", type: "مكية", versesCount: 118, startPage: 342, juz: 18, desc: "صفات أهل الفلاح والفردوس الأعلى: الخشوع في الصلاة، الإعراض عن اللغو، وأداء الزكاة." },
-  { id: 24, name: "النور", englishName: "An-Noor", type: "مدنية", versesCount: 64, startPage: 350, juz: 18, desc: "سورة الآداب والأخلاق وحفظ الأعراض، وفيها مثل نور الله العظيم في السماوات والأرض." },
+  { id: 24, name: "النور", englishName: "An-Noor", type: "مدنية", versesCount: 64, startPage: 350, juz: 18, desc: "سورة الآداب والأخلاق وحفظ الأعراض وغض البصر، وفيها مثل نور الله العظيم في السماوات والأرض." },
   { id: 25, name: "الفرقان", englishName: "Al-Furqaan", type: "مكية", versesCount: 77, startPage: 359, juz: 18, desc: "صفات عباد الرحمن الذين يمشون على الأرض هوناً وإذا خاطبهم الجاهلون قالوا سلاماً." },
   { id: 26, name: "الشعراء", englishName: "Ash-Shu'araa", type: "مكية", versesCount: 227, startPage: 367, juz: 19, desc: "«وَإِنَّهُ لَتَنزِيلُ رَبِّ الْعَالَمِينَ نَزَلَ بِهِ الرُّوحُ الْأَمِينُ عَلَىٰ قَلْبِكَ لِتَكُونَ مِنَ الْمُنذِرِينَ»." },
-  { id: 27, name: "النمل", englishName: "An-Naml", type: "مكية", versesCount: 93, startPage: 377, juz: 19, desc: "معجزات سليمان وداود وفهم منطق الطير والنمل وقصة إسلام ملكة سبأ بلقيس." },
-  { id: 28, name: "القصص", englishName: "Al-Qasas", type: "مكية", versesCount: 88, startPage: 385, juz: 20, desc: "قصة نشأة موسى في قصر فرعون وعاقبة قارون الذي خسف الله به وبداره الأرض." },
-  { id: 29, name: "العنكبوت", englishName: "Al-Ankaboot", type: "مكية", versesCount: 69, startPage: 396, juz: 20, desc: "سورة الابتلاء والثبات على الإيمان، ومثل الذين اتخذوا من دون الله أولياء كمثل العنكبوت." },
+  { id: 27, name: "النمل", englishName: "An-Naml", type: "مكية", versesCount: 93, startPage: 377, juz: 19, desc: "معجزات سليمان وداود وفهم منطق الطير والنمل وقصة إسلام ملكة سبأ بلقيس لله رب العالمين." },
+  { id: 28, name: "القصص", englishName: "Al-Qasas", type: "مكية", versesCount: 88, startPage: 385, juz: 20, desc: "قصة نشأة موسى في قصر فرعون وعاقبة قارون الذي خسف الله به وبداره الأرض لجحوده." },
+  { id: 29, name: "العنكبوت", englishName: "Al-Ankaboot", type: "مكية", versesCount: 69, startPage: 396, juz: 20, desc: "سورة الابتلاء والتمحيص، ومثل الذين اتخذوا من دون الله أولياء كمثل العنكبوت اتخذت بيتاً." },
   { id: 30, name: "الروم", englishName: "Ar-Room", type: "مكية", versesCount: 60, startPage: 404, juz: 21, desc: "آيات الله في الآفاق والمودة والرحمة بين الزوجين وتحقق نبوءة غلبة الروم في بضع سنين." },
-  { id: 31, name: "لقمان", englishName: "Luqman", type: "مكية", versesCount: 34, startPage: 411, juz: 21, desc: "وصايا لقمان الحكيم لابنه في التوحيد وبر الوالدين وإقامة الصلاة وخفض الصوت." },
-  { id: 32, name: "السجدة", englishName: "As-Sajda", type: "مكية", versesCount: 30, startPage: 415, juz: 21, desc: "سورة كان يقرأها النبي ﷺ كل ليلة، فيها خضوع الجوارح لله وجزاء قيام الليل." },
-  { id: 33, name: "الأحزاب", englishName: "Al-Ahzaab", type: "مدنية", versesCount: 73, startPage: 418, juz: 21, desc: "غزوة الخندق وتكالب الأعداء ونصر الله، وبيان فضل النبي ﷺ والصلاة عليه." },
-  { id: 34, name: "سبأ", englishName: "Saba", type: "مكية", versesCount: 54, startPage: 428, juz: 22, desc: "قصة داود وسليمان وسيل العرم، وجزاء جحود نعم الله على قرى سبأ." },
+  { id: 31, name: "لقمان", englishName: "Luqman", type: "مكية", versesCount: 34, startPage: 411, juz: 21, desc: "وصايا لقمان الحكيم لابنه في التوحيد وبر الوالدين وإقامة الصلاة والأمر بالمعروف وخفض الصوت." },
+  { id: 32, name: "السجدة", englishName: "As-Sajda", type: "مكية", versesCount: 30, startPage: 415, juz: 21, desc: "سورة كان يقرأها النبي ﷺ كل ليلة، فيها خضوع الجوارح لله وجزاء قيام الليل بالتهجد." },
+  { id: 33, name: "الأحزاب", englishName: "Al-Ahzaab", type: "مدنية", versesCount: 73, startPage: 418, juz: 21, desc: "غزوة الخندق وتكالب الأعداء ونصر الله، وبيان فضل النبي ﷺ والصلاة والسلام عليه." },
+  { id: 34, name: "سبأ", englishName: "Saba", type: "مكية", versesCount: 54, startPage: 428, juz: 22, desc: "قصة داود وسليمان وسيل العرم، وجزاء جحود نعم الله على قرى سبأ بعد الرخاء." },
   { id: 35, name: "فاطر", englishName: "Faatir", type: "مكية", versesCount: 45, startPage: 434, juz: 22, desc: "«يَا أَيُّهَا النَّاسُ أَنتُمُ الْفُقَرَاءُ إِلَى اللَّهِ ۖ وَاللَّهُ هُوَ الْغَنِيُّ الْحَمِيدُ»." },
-  { id: 36, name: "يس", englishName: "Yaseen", type: "مكية", versesCount: 83, startPage: 440, juz: 22, desc: "قلب القرآن الكريم، تثبيت البعث والنشور وضرب الأمثال بأصحاب القرية." },
-  { id: 37, name: "الصافات", englishName: "As-Saaffaat", type: "مكية", versesCount: 182, startPage: 446, juz: 23, desc: "تسبيح صفوف الملائكة وقصة فداء إسماعيل بذبح عظيم ورؤيا إبراهيم الخليل." },
-  { id: 38, name: "ص", englishName: "Saad", type: "مكية", versesCount: 88, startPage: 453, juz: 23, desc: "سورة التوبة والإنابة، وتوبة داود وسليمان وصبر أيوب على البلاء." },
-  { id: 39, name: "الزمر", englishName: "Az-Zumar", type: "مكية", versesCount: 75, startPage: 458, juz: 23, desc: "«قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ»." },
-  { id: 40, name: "غافر", englishName: "Ghafir", type: "مكية", versesCount: 85, startPage: 467, juz: 24, desc: "مفتتح الحواميم، غافر الذنب وقابل التوب شديد العقاب ذي الطول." },
+  { id: 36, name: "يس", englishName: "Yaseen", type: "مكية", versesCount: 83, startPage: 440, juz: 22, desc: "قلب القرآن الكريم، تثبيت البعث والنشور وضرب الأمثال بأصحاب القرية ومؤمن آل ياسين." },
+  { id: 37, name: "الصافات", englishName: "As-Saaffaat", type: "مكية", versesCount: 182, startPage: 446, juz: 23, desc: "تسبيح صفوف الملائكة وقصة فداء إسماعيل بذبح عظيم ورؤيا إبراهيم الخليل الصادقة." },
+  { id: 38, name: "ص", englishName: "Saad", type: "مكية", versesCount: 88, startPage: 453, juz: 23, desc: "سورة التوبة والإنابة، وتوبة داود وسليمان وصبر أيوب على البلاء حتى نال الفرج." },
+  { id: 39, name: "الزمر", englishName: "Az-Zumar", type: "مكية", versesCount: 75, startPage: 458, juz: 23, desc: "«قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا»." },
+  { id: 40, name: "غافر", englishName: "Ghafir", type: "مكية", versesCount: 85, startPage: 467, juz: 24, desc: "مفتتح الحواميم المباركة، غافر الذنب وقابل التوب شديد العقاب ذي الطول لا إله إلا هو." },
   { id: 41, name: "فصلت", englishName: "Fussilat", type: "مكية", versesCount: 54, startPage: 477, juz: 24, desc: "كتاب فصلت آياته قرآناً عربياً لقوم يعلمون، وسجود الجوارح والشهادة على الإنسان." },
-  { id: 42, name: "الشورى", englishName: "Ash-Shura", type: "مكية", versesCount: 53, startPage: 483, juz: 25, desc: "«وَأَمْرُهُمْ شُورَىٰ بَيْنَهُمْ»، ووحدة رسالات الأنبياء ودعوتهم إلى التوحيد." },
-  { id: 43, name: "الزخرف", englishName: "Az-Zukhruf", type: "مكية", versesCount: 89, startPage: 489, juz: 25, desc: "بيان حقارة زينة الدنيا الفانية مقارنة بنعيم الجنة المقيم للأتقياء." },
-  { id: 44, name: "الدخان", englishName: "Ad-Dukhaan", type: "مكية", versesCount: 59, startPage: 496, juz: 25, desc: "نزول القرآن في ليلة مباركة (ليلة القدر) وإنذار الكافرين بيوم تأتي السماء بدخان مبين." },
-  { id: 45, name: "الجاثية", englishName: "Al-Jaathiya", type: "مكية", versesCount: 37, startPage: 499, juz: 25, desc: "مشهد جثوّ الأمم خاضعة بين يدي الله يوم الحساب لقراءة صحائف أعمالهم." },
-  { id: 46, name: "الأحقاف", englishName: "Al-Ahqaaf", type: "مكية", versesCount: 35, startPage: 502, juz: 26, desc: "قصة هود مع قوم عاد بالأحقاف، وإسلام نفر من الجن عند سماعهم القرآن." },
-  { id: 47, name: "محمد", englishName: "Muhammad", type: "مدنية", versesCount: 38, startPage: 507, juz: 26, desc: "سورة القتال وتكريم من آمنوا بما نُزّل على محمد ﷺ وهو الحق من ربهم." },
-  { id: 48, name: "الفتح", englishName: "Al-Fath", type: "مدنية", versesCount: 29, startPage: 511, juz: 26, desc: "«إِنَّا فَتَحْنَا لَكَ فَتْحًا مُّبِينًا»، بشارة صلح الحديبية وفتح مكة ونصرة الإسلام." },
-  { id: 49, name: "الحجرات", englishName: "Al-Hujuraat", type: "مدنية", versesCount: 18, startPage: 515, juz: 26, desc: "سورة الأخلاق الكبرى، النهي عن الغيبة والنميمة والظن والسخرية، ومقياس التقوى." },
-  { id: 50, name: "ق", englishName: "Qaaf", type: "مكية", versesCount: 45, startPage: 518, juz: 26, desc: "تذكير بالبعث وقرب الله من حبل الوريد وسكرة الموت بالحق." },
-  { id: 51, name: "الذاريات", englishName: "Adh-Dhaariyaat", type: "مكية", versesCount: 60, startPage: 520, juz: 26, desc: "«وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ»، وسعة الرزق المكفول من الله." },
-  { id: 52, name: "الطور", englishName: "At-Toor", type: "مكية", versesCount: 49, startPage: 523, juz: 27, desc: "قسم بالطور وكتاب مسطور، ونعيم المتقين واجتماعهم مع ذرياتهم في الجنة." },
-  { id: 53, name: "النجم", englishName: "An-Najm", type: "مكية", versesCount: 62, startPage: 526, juz: 27, desc: "«وَمَا يَنطِقُ عَنِ الْهَوَىٰ»، معراج النبي ﷺ ورؤيته لسدرة المنتهى وجنة المأوى." },
+  { id: 42, name: "الشورى", englishName: "Ash-Shura", type: "مكية", versesCount: 53, startPage: 483, juz: 25, desc: "«وَأَمْرُهُمْ شُورَىٰ بَيْنَهُمْ»، ووحدة رسالات الأنبياء ودعوتهم إلى التوحيد والإخلاص." },
+  { id: 43, name: "الزخرف", englishName: "Az-Zukhruf", type: "مكية", versesCount: 89, startPage: 489, juz: 25, desc: "بيان حقارة زينة الدنيا الفانية مقارنة بنعيم الجنة المقيم للأتقياء الفائزين." },
+  { id: 44, name: "الدخان", englishName: "Ad-Dukhaan", type: "مكية", versesCount: 59, startPage: 496, juz: 25, desc: "نزول القرآن في ليلة مباركة وإنذار المعاندين بيوم تأتي السماء بدخان مبين." },
+  { id: 45, name: "الجاثية", englishName: "Al-Jaathiya", type: "مكية", versesCount: 37, startPage: 499, juz: 25, desc: "مشهد جثوّ الأمم خاضعة بين يدي الله يوم الحساب لقراءة صحائف أعمالهم المسجلة." },
+  { id: 46, name: "الأحقاف", englishName: "Al-Ahqaaf", type: "مكية", versesCount: 35, startPage: 502, juz: 26, desc: "قصة هود مع قوم عاد بالأحقاف، وإسلام نفر من الجن عند استماعهم لتلاوة القرآن الكريم." },
+  { id: 47, name: "محمد", englishName: "Muhammad", type: "مدنية", versesCount: 38, startPage: 507, juz: 26, desc: "سورة القتال وتكريم ونصرة من آمنوا بما نُزّل على محمد ﷺ وهو الحق من ربهم." },
+  { id: 48, name: "الفتح", englishName: "Al-Fath", type: "مدنية", versesCount: 29, startPage: 511, juz: 26, desc: "«إِنَّا فَتَحْنَا لَكَ فَتْحًا مُّبِينًا»، بشارة صلح الحديبية وفتح مكة ونصرة الإسلام العزيز." },
+  { id: 49, name: "الحجرات", englishName: "Al-Hujuraat", type: "مدنية", versesCount: 18, startPage: 515, juz: 26, desc: "سورة الأخلاق الكبرى، النهي عن الغيبة والنميمة وسوء الظن والسخرية، ومقياس التقوى." },
+  { id: 50, name: "ق", englishName: "Qaaf", type: "مكية", versesCount: 45, startPage: 518, juz: 26, desc: "تذكير بالبعث وقرب الله من حبل الوريد وسكرة الموت بالحق ونفخة الصور." },
+  { id: 51, name: "الذاريات", englishName: "Adh-Dhaariyaat", type: "مكية", versesCount: 60, startPage: 520, juz: 26, desc: "«وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ»، وسعة الرزق المكفول من الله في السماء والأرض." },
+  { id: 52, name: "الطور", englishName: "At-Toor", type: "مكية", versesCount: 49, startPage: 523, juz: 27, desc: "قسم بالطور وكتاب مسطور، ونعيم المتقين واجتماعهم مع ذرياتهم الصالحة في الجنة." },
+  { id: 53, name: "النجم", englishName: "An-Najm", type: "مكية", versesCount: 62, startPage: 526, juz: 27, desc: "«وَمَا يَنطِقُ عَنِ الْهَوَىٰ»، معراج النبي ﷺ ورؤيته لجبريل وسدرة المنتهى وجنة المأوى." },
   { id: 54, name: "القمر", englishName: "Al-Qamar", type: "مكية", versesCount: 55, startPage: 528, juz: 27, desc: "«اقْتَرَبَتِ السَّاعَةُ وَانشَقَّ الْقَمَرُ»، «وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ»." },
-  { id: 55, name: "الرحمن", englishName: "Ar-Rahmaan", type: "مدنية", versesCount: 78, startPage: 531, juz: 27, desc: "عروس القرآن، تعداد آلاء الله ونعمه: «فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ»." },
-  { id: 56, name: "الواقعة", englishName: "Al-Waaqia", type: "مكية", versesCount: 96, startPage: 534, juz: 27, desc: "سورة الغنى، تمنع الفقر عند قراءتها كل ليلة، وبيان مراتب الناس يوم القيامة." },
-  { id: 57, name: "الحديد", englishName: "Al-Hadid", type: "مدنية", versesCount: 29, startPage: 537, juz: 27, desc: "تسبيح الكائنات، والإنفاق في سبيل الله ومقارنة نور المؤمنين بظلمة المنافقين." },
-  { id: 58, name: "المجادلة", englishName: "Al-Mujaadila", type: "مدنية", versesCount: 22, startPage: 542, juz: 28, desc: "سورة كل آية فيها تذكر اسم الجلالة «الله»، وسماع الله شكوى خولة بنت ثعلبة." },
-  { id: 59, name: "الحشر", englishName: "Al-Hashr", type: "مدنية", versesCount: 24, startPage: 545, juz: 28, desc: "إجلاء بني النضير، وخواتيم سورة الحشر المتضمنة لأعظم أسماء الله الحسنى." },
-  { id: 60, name: "الممتحنة", englishName: "Al-Mumtahana", type: "مدنية", versesCount: 13, startPage: 549, juz: 28, desc: "أحكام الولاء والبراء، ومبايعة النساء المهاجرات لرسول الله ﷺ." },
-  { id: 61, name: "الصف", englishName: "As-Saff", type: "مدنية", versesCount: 14, startPage: 551, juz: 28, desc: "وحدة الصف في الجهاد، وبشارة عيسى بنبي يأتي من بعده اسمه أحمد." },
-  { id: 62, name: "الجمعة", englishName: "Al-Jumu'a", type: "مدنية", versesCount: 11, startPage: 553, juz: 28, desc: "فضل يوم الجمعة والأمر بالسعي للصلاة وترك البيع والتجارة عند النداء." },
-  { id: 63, name: "المنافقون", englishName: "Al-Munaafiqoon", type: "مدنية", versesCount: 11, startPage: 554, juz: 28, desc: "فضح ألاعيب المنافقين والتحذير من إلهاء الأموال والأولاد عن ذكر الله." },
-  { id: 64, name: "التغابن", englishName: "At-Taghaabun", type: "مدنية", versesCount: 18, startPage: 556, juz: 28, desc: "يوم الجمع والحساب الأعظم حيث يظهر غبن الكافرين وفوز المؤمنين." },
+  { id: 55, name: "الرحمن", englishName: "Ar-Rahmaan", type: "مدنية", versesCount: 78, startPage: 531, juz: 27, desc: "عروس القرآن، تعداد آلاء الله ونعمه: «فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ» ونعيم الجنتين." },
+  { id: 56, name: "الواقعة", englishName: "Al-Waaqia", type: "مكية", versesCount: 96, startPage: 534, juz: 27, desc: "سورة تمنع الفقر عند قراءتها كل ليلة، وبيان مراتب الناس يوم القيامة: السابقون وأصحاب اليمين والشمال." },
+  { id: 57, name: "الحديد", englishName: "Al-Hadid", type: "مدنية", versesCount: 29, startPage: 537, juz: 27, desc: "تسبيح الكائنات، والإنفاق في سبيل الله ومقارنة نور المؤمنين بظلمة المنافقين يوم الحشر." },
+  { id: 58, name: "المجادلة", englishName: "Al-Mujaadila", type: "مدنية", versesCount: 22, startPage: 542, juz: 28, desc: "سورة كل آية فيها تذكر اسم الجلالة «الله»، وسماع الله شكوى المرأة المؤمنة خولة." },
+  { id: 59, name: "الحشر", englishName: "Al-Hashr", type: "مدنية", versesCount: 24, startPage: 545, juz: 28, desc: "إجلاء بني النضير، وخواتيم سورة الحشر المتضمنة لأعظم أسماء الله الحسنى وصفاته العلى." },
+  { id: 60, name: "الممتحنة", englishName: "Al-Mumtahana", type: "مدنية", versesCount: 13, startPage: 549, juz: 28, desc: "أحكام الولاء والبراء، ومبايعة النساء المهاجرات لرسول الله ﷺ على التوحيد والعفة." },
+  { id: 61, name: "الصف", englishName: "As-Saff", type: "مدنية", versesCount: 14, startPage: 551, juz: 28, desc: "وحدة الصف في الجهاد ونصرة الدين، وبشارة عيسى بنبي يأتي من بعده اسمه أحمد ﷺ." },
+  { id: 62, name: "الجمعة", englishName: "Al-Jumu'a", type: "مدنية", versesCount: 11, startPage: 553, juz: 28, desc: "فضل يوم الجمعة والأمر بالسعي للصلاة وترك البيع والتجارة عند النداء وسماع الخطبة." },
+  { id: 63, name: "المنافقون", englishName: "Al-Munaafiqoon", type: "مدنية", versesCount: 11, startPage: 554, juz: 28, desc: "فضح ألاعيب المنافقين والتحذير من إلهاء الأموال والأولاد عن ذكر الله قبل فوات الأوان." },
+  { id: 64, name: "التغابن", englishName: "At-Taghaabun", type: "مدنية", versesCount: 18, startPage: 556, juz: 28, desc: "يوم الجمع والحساب الأعظم حيث يظهر غبن الكافرين وفوز المؤمنين بالجنة ونعيمها." },
   { id: 65, name: "الطلاق", englishName: "At-Talaaq", type: "مدنية", versesCount: 12, startPage: 558, juz: 28, desc: "«وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ»." },
-  { id: 66, name: "التحريم", englishName: "At-Tahrim", type: "مدنية", versesCount: 12, startPage: 560, juz: 28, desc: "وقاية الأهل من نار وقودها الناس والحجارة، وضرب المثل بآسية امرأة فرعون ومريم." },
-  { id: 67, name: "الملك", englishName: "Al-Mulk", type: "مكية", versesCount: 30, startPage: 562, juz: 29, desc: "المنجية والمانعة من عذاب القبر، تشفع لقارئها حتى يغفر له، سنة قراءتها قبل النوم." },
-  { id: 68, name: "القلم", englishName: "Al-Qalam", type: "مكية", versesCount: 52, startPage: 564, juz: 29, desc: "«وَإِنَّكَ لَعَلَىٰ خُلُقٍ عَظِيمٍ»، قسم بالقلم وما يسطرون وقصة أصحاب الجنة." },
-  { id: 69, name: "الحاقة", englishName: "Al-Haaqqa", type: "مكية", versesCount: 52, startPage: 566, juz: 29, desc: "أهوال القيامة الصادقة، وأخذ الكتاب باليمين للفائزين وبالشمال للخاسرين." },
+  { id: 66, name: "التحريم", englishName: "At-Tahrim", type: "مدنية", versesCount: 12, startPage: 560, juz: 28, desc: "وقاية الأهل والأنفس من نار وقودها الناس والحجارة، وضرب المثل بآسية امرأة فرعون ومريم." },
+  { id: 67, name: "الملك", englishName: "Al-Mulk", type: "مكية", versesCount: 30, startPage: 562, juz: 29, desc: "المنجية والمانعة من عذاب القبر، تشفع لقارئها حتى يغفر له، سنة قراءتها وتدبرها كل ليلة." },
+  { id: 68, name: "القلم", englishName: "Al-Qalam", type: "مكية", versesCount: 52, startPage: 564, juz: 29, desc: "«وَإِنَّكَ لَعَلَىٰ خُلُقٍ عَظِيمٍ»، قسم بالقلم وما يسطرون وقصة أصحاب الجنة المغرورين." },
+  { id: 69, name: "الحاقة", englishName: "Al-Haaqqa", type: "مكية", versesCount: 52, startPage: 566, juz: 29, desc: "أهوال القيامة الصادقة، وأخذ الكتاب باليمين للفائزين وبالشمال للخاسرين النادمين." },
   { id: 70, name: "المعارج", englishName: "Al-Ma'aarij", type: "مكية", versesCount: 44, startPage: 568, juz: 29, desc: "الصبر الجميل، وصفات المصلين الدائمين على صلاتهم المؤدين لحق السائل والمحروم." },
-  { id: 71, name: "نوح", englishName: "Nooh", type: "مكية", versesCount: 28, startPage: 570, juz: 29, desc: "جهود نوح في الدعوة ألف سنة إلا خمسين عاماً، وفضل الاستغفار في نزول المطر والرزق." },
-  { id: 72, name: "الجن", englishName: "Al-Jinn", type: "مكية", versesCount: 28, startPage: 572, juz: 29, desc: "«إِنَّا سَمِعْنَا قُرْآنًا عَجَبًا يَهْدِي إِلَى الرُّشْدِ»، إيمان الجن وخضوعهم لكلام الله." },
-  { id: 73, name: "المزمل", englishName: "Al-Muzzammil", type: "مكية", versesCount: 20, startPage: 574, juz: 29, desc: "«قُمِ اللَّيْلَ إِلَّا قَلِيلًا»، أمر النبي بالتهجد وترتيل القرآن ترتيلاً." },
-  { id: 74, name: "المدثر", englishName: "Al-Muddathir", type: "مكية", versesCount: 56, startPage: 575, juz: 29, desc: "«قُمْ فَأَنذِرْ وَرَبَّكَ فَكَبِّرْ»، بداية إعلان الدعوة والجهر بإنذار الخلق." },
-  { id: 75, name: "القيامة", englishName: "Al-Qiyaama", type: "مكية", versesCount: 40, startPage: 577, juz: 29, desc: "«لَا أُقْسِمُ بِيَوْمِ الْقِيَامَةِ»، مشهد خروج الروح والتفاف الساق بالساق." },
-  { id: 76, name: "الإنسان", englishName: "Al-Insaan", type: "مدنية", versesCount: 31, startPage: 578, juz: 29, desc: "خلق الإنسان وهدايته السبيل، ونعيم الأبرار وشراب الكافور والزنجبيل وسندس الجنة." },
-  { id: 77, name: "المرسلات", englishName: "Al-Mursalaat", type: "مكية", versesCount: 50, startPage: 580, juz: 29, desc: "أقسام برياح الرحمة وعذاب المكذبين: «وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ»." },
-  { id: 78, name: "النبأ", englishName: "An-Naba", type: "مكية", versesCount: 40, startPage: 582, juz: 30, desc: "مفتتح جزء عم، النبأ العظيم عن البعث والنشور وجزاء المتقين مفازاً." },
-  { id: 79, name: "النازعات", englishName: "An-Naazi'aat", type: "مكية", versesCount: 46, startPage: 583, juz: 30, desc: "نزع أرواح الكفار بشدة وقبض أرواح المؤمنين بنشاط ورفق وموعد الطامة الكبرى." },
-  { id: 80, name: "عبس", englishName: "Abasa", type: "مكية", versesCount: 42, startPage: 585, juz: 30, desc: "عتاب الله لنبيه في ابن أم مكتوم، وتذكير بالصاخة وفرار المرء من أخيه وأمه وأبيه." },
-  { id: 81, name: "التكوير", englishName: "At-Takwir", type: "مكية", versesCount: 29, startPage: 586, juz: 30, desc: "«إِذَا الشَّمْسُ كُوِّرَتْ»، تصوير مهيب لعلامات الساعة الكبرى كأنك تراها رأي عين." },
+  { id: 71, name: "نوح", englishName: "Nooh", type: "مكية", versesCount: 28, startPage: 570, juz: 29, desc: "جهود نوح في الدعوة ألف سنة إلا خمسين عاماً، وفضل الاستغفار في نزول المطر والرزق والذرية." },
+  { id: 72, name: "الجن", englishName: "Al-Jinn", type: "مكية", versesCount: 28, startPage: 572, juz: 29, desc: "«إِنَّا سَمِعْنَا قُرْآنًا عَجَبًا يَهْدِي إِلَى الرُّشْدِ»، إيمان الجن وخضوعهم لكلام الله المحكم." },
+  { id: 73, name: "المزمل", englishName: "Al-Muzzammil", type: "مكية", versesCount: 20, startPage: 574, juz: 29, desc: "«قُمِ اللَّيْلَ إِلَّا قَلِيلًا»، أمر النبي بالتهجد وترتيل القرآن ترتيلاً لإعداد الروح للأمر الثقيل." },
+  { id: 74, name: "المدثر", englishName: "Al-Muddathir", type: "مكية", versesCount: 56, startPage: 575, juz: 29, desc: "«قُمْ فَأَنذِرْ وَرَبَّكَ فَكَبِّرْ»، بداية إعلان الدعوة والجهر بالإنذار وتطهير الثياب." },
+  { id: 75, name: "القيامة", englishName: "Al-Qiyaama", type: "مكية", versesCount: 40, startPage: 577, juz: 29, desc: "«لَا أُقْسِمُ بِيَوْمِ الْقِيَامَةِ»، مشهد خروج الروح والتفاف الساق بالساق إلى ربك المساق." },
+  { id: 76, name: "الإنسان", englishName: "Al-Insaan", type: "مدنية", versesCount: 31, startPage: 578, juz: 29, desc: "خلق الإنسان وهدايته السبيل، ونعيم الأبرار وشراب الكافور والزنجبيل وسندس واستبرق الجنة." },
+  { id: 77, name: "المرسلات", englishName: "Al-Mursalaat", type: "مكية", versesCount: 50, startPage: 580, juz: 29, desc: "أقسام برياح الرحمة وعذاب المكذبين: «وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ» وتفصيل أهوال الفصل." },
+  { id: 78, name: "النبأ", englishName: "An-Naba", type: "مكية", versesCount: 40, startPage: 582, juz: 30, desc: "مفتتح جزء عم، النبأ العظيم عن البعث والنشور وجزاء المتقين مفازاً وحدائق وأعناباً." },
+  { id: 79, name: "النازعات", englishName: "An-Naazi'aat", type: "مكية", versesCount: 46, startPage: 583, juz: 30, desc: "نزع أرواح الكفار بشدة وقبض أرواح المؤمنين برفق، وموعد الطامة الكبرى وخوف مقام الرب." },
+  { id: 80, name: "عبس", englishName: "Abasa", type: "مكية", versesCount: 42, startPage: 585, juz: 30, desc: "عتاب الله لنبيه في ابن أم مكتوم، وتذكير بالصاخة وفرار المرء من أخيه وأمه وأبيه وصاحبته." },
+  { id: 81, name: "التكوير", englishName: "At-Takwir", type: "مكية", versesCount: 29, startPage: 586, juz: 30, desc: "«إِذَا الشَّمْسُ كُوِّرَتْ»، تصوير مهيب لعلامات الساعة الكبرى كأنك تراها رأي عين بالبصر." },
   { id: 82, name: "الانفطار", englishName: "Al-Infitaar", type: "مكية", versesCount: 19, startPage: 587, juz: 30, desc: "«يَا أَيُّهَا الْإِنسَانُ مَا غَرَّكَ بِرَبِّكَ الْكَرِيمِ»، كراماً كاتبين يعلمون ما تفعلون." },
-  { id: 83, name: "المطففين", englishName: "Al-Mutaffifin", type: "مكية", versesCount: 36, startPage: 587, juz: 30, desc: "ويل للذين يبخسون المكيال والميزان، وكتاب الأبرار في عليين مسك ورحيق مختوم." },
-  { id: 84, name: "الانشقاق", englishName: "Al-Inshiqaaq", type: "مكية", versesCount: 25, startPage: 589, juz: 30, desc: "انشقاق السماء وكدح الإنسان إلى ربه كدحاً فملاقيه، والحساب اليسير." },
-  { id: 85, name: "البروج", englishName: "Al-Burooj", type: "مكية", versesCount: 22, startPage: 590, juz: 30, desc: "قصة أصحاب الأخدود والصمود العظيم على التوحيد: «وَهُوَ الْغَفُورُ الْوَدُودُ»." },
-  { id: 86, name: "الطارق", englishName: "At-Taariq", type: "مكية", versesCount: 17, startPage: 591, juz: 30, desc: "النجم الثاقب، وخلق الإنسان من ماء دافق، وقدرة الله على رجعه وسرائر الصدور." },
-  { id: 87, name: "الأعلى", englishName: "Al-A'laa", type: "مكية", versesCount: 19, startPage: 591, juz: 30, desc: "«سَبِّحِ اسْمَ رَبِّكَ الْأَعْلَى»، سنقرئك فلا تنسى إلا ما شاء الله، صحف إبراهيم وموسى." },
-  { id: 88, name: "الغاشية", englishName: "Al-Ghaashiya", type: "مكية", versesCount: 26, startPage: 592, juz: 30, desc: "وجوه يومئذ خاشعة ووجوه يومئذ ناعمة في جنة عالية لا تسمع فيها لاغية." },
-  { id: 89, name: "الفجر", englishName: "Al-Fajr", type: "مكية", versesCount: 30, startPage: 593, juz: 30, desc: "قسم بالليالي العشر من ذي الحجة، «يَا أَيَّتُهَا النَّفْسُ الْمُطْمَئِنَّةُ ارْجِعِي إِلَىٰ رَبِّكِ»." },
-  { id: 90, name: "البلد", englishName: "Al-Balad", type: "مكية", versesCount: 20, startPage: 594, juz: 30, desc: "قسم بمكة المكرمة، واقتحام العقبة بفك الرقاب وإطعام ذي مسغبة والتواصي بالصبر." },
-  { id: 91, name: "الشمس", englishName: "Ash-Shams", type: "مكية", versesCount: 15, startPage: 595, juz: 30, desc: "أطول قسم في القرآن، «قَدْ أَفْلَحَ مَن زَكَّاهَا وَقَدْ خَابَ مَن دَسَّاهَا»." },
-  { id: 92, name: "الليل", englishName: "Al-Layl", type: "مكية", versesCount: 21, startPage: 595, juz: 30, desc: "التيسير لليسرى لمن أعطى واتقى وصدق بالحسنى، والتحذير من البخل والاستغناء." },
-  { id: 93, name: "الضحى", englishName: "Ad-Dhuhaa", type: "مكية", versesCount: 11, startPage: 596, juz: 30, desc: "«مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ»، تسلية قلب الحبيب المصطفى وبشارة العطاء العظيم." },
-  { id: 94, name: "الشرح", englishName: "Ash-Sharh", type: "مكية", versesCount: 8, startPage: 596, juz: 30, desc: "«أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ»، «فَإِنَّ مَعَ الْعُسْرِ يُسْرًا إِنَّ مَعَ الْعُسْرِ يُسْرًا»." },
-  { id: 95, name: "التين", englishName: "At-Tin", type: "مكية", versesCount: 8, startPage: 597, juz: 30, desc: "قسم بالتين والزيتون وطور سنين، وخلق الإنسان في أحسن تقويم." },
-  { id: 96, name: "العلق", englishName: "Al-Alaq", type: "مكية", versesCount: 19, startPage: 597, juz: 30, desc: "أول ما نزل من القرآن الكريم في غار حراء: «اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ»." },
-  { id: 97, name: "القدر", englishName: "Al-Qadr", type: "مكية", versesCount: 5, startPage: 598, juz: 30, desc: "فضل ليلة القدر المباركة خير من ألف شهر، سلام هي حتى مطلع الفجر." },
-  { id: 98, name: "البينة", englishName: "Al-Bayyina", type: "مدنية", versesCount: 8, startPage: 598, juz: 30, desc: "«وَمَا أُمِرُوا إِلَّا لِيَعْبُدُوا اللَّهَ مُخْلِصِينَ لَهُ الدِّينَ»، جزاء خير البرية." },
-  { id: 99, name: "الزلزلة", englishName: "Az-Zalzala", type: "مدنية", versesCount: 8, startPage: 599, juz: 30, desc: "«إِذَا زُلْزِلَتِ الْأَرْضُ زِلْزَالَهَا»، وزن مثقال الذرة من خير أو شر في الميزان." },
-  { id: 100, name: "العاديات", englishName: "Al-Aadiyaat", type: "مكية", versesCount: 11, startPage: 599, juz: 30, desc: "قسم بخيل الجهاد تعدو ضبحاً، وتحذير الإنسان من كنود نعم ربه وشدة حب المال." },
-  { id: 101, name: "القارعة", englishName: "Al-Qaari'a", type: "مكية", versesCount: 11, startPage: 600, juz: 30, desc: "«مَا الْقَارِعَةُ»، ثقل الموازين بالحسنات عيشة راضية وخفتها هاوية ونار حامية." },
-  { id: 102, name: "التكاثر", englishName: "At-Takaathur", type: "مكية", versesCount: 8, startPage: 600, juz: 30, desc: "«أَلْهَاكُمُ التَّكَاثُرُ حَتَّىٰ زُرْتُمُ الْمَقَابِرَ»، والسؤال الحتمي عن النعيم." },
-  { id: 103, name: "العصر", englishName: "Al-Asr", type: "مكية", versesCount: 3, startPage: 601, juz: 30, desc: "دستور النجاة الرباني: الإيمان، والعمل الصالح، والتواصي بالحق، والتواصي بالصبر." },
-  { id: 104, name: "الهمزة", englishName: "Al-Humaza", type: "مكية", versesCount: 9, startPage: 601, juz: 30, desc: "ويل لكل همزة لمزة الذي جمع مالاً وعدده، والحطمة الموقدة التي تطلع على الأفئدة." },
-  { id: 105, name: "الفيل", englishName: "Al-Feel", type: "مكية", versesCount: 5, startPage: 601, juz: 30, desc: "حماية بيت الله الحرام من كيد أبرهة الحبشي وجيش الفيل بطير أبابيل." },
-  { id: 106, name: "قريش", englishName: "Quraish", type: "مكية", versesCount: 4, startPage: 602, juz: 30, desc: "«فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ»." },
-  { id: 107, name: "الماعون", englishName: "Al-Maa'oon", type: "مكية", versesCount: 7, startPage: 602, juz: 30, desc: "التحذير من إيذاء اليتيم، وسهو المصلين المرائين الذين يمنعون الماعون." },
-  { id: 108, name: "الكوثر", englishName: "Al-Kawthar", type: "مكية", versesCount: 3, startPage: 602, juz: 30, desc: "أقصر سورة في القرآن، بشارة نهر الكوثر للنبي ﷺ والأمر بالصلاة والنحر." },
-  { id: 109, name: "الكافرون", englishName: "Al-Kaafiroon", type: "مكية", versesCount: 6, startPage: 603, juz: 30, desc: "براءة تامة من الشرك وأهله: «لَكُمْ دِينُكُمْ وَلِيَ دِينِ»." },
-  { id: 110, name: "النصر", englishName: "An-Nasr", type: "مدنية", versesCount: 3, startPage: 603, juz: 30, desc: "إذا جاء نصر الله والفتح، ونعي رسول الله ﷺ والأمر بالتسبيح والاستغفار." },
-  { id: 111, name: "المسد", englishName: "Al-Masad", type: "مكية", versesCount: 5, startPage: 603, juz: 30, desc: "تبت يدا أبي لهب وتب، وهلاك الكافرين وجزاء أعداء الإسلام." },
-  { id: 112, name: "الإخلاص", englishName: "Al-Ikhlaas", type: "مكية", versesCount: 4, startPage: 604, juz: 30, desc: "تعدل ثلث القرآن الكريم، صفة الرحمن الأحد الصمد لم يلد ولم يولد." },
-  { id: 113, name: "الفلق", englishName: "Al-Falaq", type: "مكية", versesCount: 5, startPage: 604, juz: 30, desc: "الاستعاذة برب الفلق من شر ما خلق ومن شر غاسق إذا وقب ومن شر النفاثات في العقد والحاسدين." },
-  { id: 114, name: "الناس", englishName: "An-Naas", type: "مكية", versesCount: 6, startPage: 604, juz: 30, desc: "خاتمة المصحف الشريف، الاستعاذة برب الناس ملك الناس إله الناس من شر الوسواس الخناس." }
+  { id: 83, name: "المطففين", englishName: "Al-Mutaffifin", type: "مكية", versesCount: 36, startPage: 587, juz: 30, desc: "ويل للذين يبخسون المكيال والميزان، وكتاب الأبرار في عليين يشهده المقربون برحيق مختوم." },
+  { id: 84, name: "الانشقاق", englishName: "Al-Inshiqaaq", type: "مكية", versesCount: 25, startPage: 589, juz: 30, desc: "انشقاق السماء وكدح الإنسان إلى ربه كدحاً فملاقيه، والحساب اليسير لمن أوتي كتابه بيمينه." },
+  { id: 85, name: "البروج", englishName: "Al-Burooj", type: "مكية", versesCount: 22, startPage: 590, juz: 30, desc: "قصة أصحاب الأخدود والصمود العظيم على التوحيد: «وَهُوَ الْغَفُورُ الْوَدُودُ ذُو الْعَرْشِ الْمَجِيدُ»." },
+  { id: 86, name: "الطارق", englishName: "At-Taariq", type: "مكية", versesCount: 17, startPage: 591, juz: 30, desc: "والسماء والطارق النجم الثاقب، وحفظ الإنسان وسر خلقه ورجع الأرض والصدع يوم تبلى السرائر." },
+  { id: 87, name: "الأعلى", englishName: "Al-A'laa", type: "مكية", versesCount: 19, startPage: 591, juz: 30, desc: "«سَبِّحِ اسْمَ رَبِّكَ الْأَعْلَى»، سنقرئك فلا تنسى إلا ما شاء الله، وتذكير بصحف إبراهيم وموسى." },
+  { id: 88, name: "الغاشية", englishName: "Al-Ghaashiya", type: "مكية", versesCount: 26, startPage: 592, juz: 30, desc: "وجوه يومئذ خاشعة ووجوه يومئذ ناعمة في جنة عالية، والتفكر في خلق الإبل والسماء والجبال." },
+  { id: 89, name: "الفجر", englishName: "Al-Fajr", type: "مكية", versesCount: 30, startPage: 593, juz: 30, desc: "قسم بليال عشر وفجر الإسلام، وعاقبة عاد وثمود، ونداء النفس المطمئنة ارجعي إلى ربك راضية مرضية." },
+  { id: 90, name: "البلد", englishName: "Al-Balad", type: "مكية", versesCount: 20, startPage: 594, juz: 30, desc: "قسم بالبلد الحرام، وخلق الإنسان في كبد واقتحام العقبة بإطعام المسكين واليتيم والتواصي بالصبر." },
+  { id: 91, name: "الشمس", englishName: "Ash-Shams", type: "مكية", versesCount: 15, startPage: 595, juz: 30, desc: "أحد عشر قسماً متتالياً: «قَدْ أَفْلَحَ مَن زَكَّاهَا وَقَدْ خَابَ مَن دَسَّاهَا»، وقصة عقر ناقة صالح." },
+  { id: 92, name: "الليل", englishName: "Al-Layl", type: "مكية", versesCount: 21, startPage: 595, juz: 30, desc: "«فَأَمَّا مَنْ أَعْطَىٰ وَاتَّقَىٰ وَصَدَّقَ بِالْحُسْنَىٰ فَسَنُيَسِّرُهُ لِلْيُسْرَىٰ»، وجزاء البخل والاستغناء." },
+  { id: 93, name: "الضحى", englishName: "Ad-Dhuhaa", type: "مكية", versesCount: 11, startPage: 596, juz: 30, desc: "«مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ وَلَلْآخِرَةُ خَيْرٌ لَّكَ مِنَ الْأُولَىٰ»، تسلية لقلب النبي ﷺ بالرحمة." },
+  { id: 94, name: "الشرح", englishName: "Ash-Sharh", type: "مكية", versesCount: 8, startPage: 596, juz: 30, desc: "«أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ»، «فَإِنَّ مَعَ الْعُسْرِ يُسْرًا إِنَّ مَعَ الْعُسْرِ يُسْرًا» وبشارة الفرج القريب." },
+  { id: 95, name: "التين", englishName: "At-Teen", type: "مكية", versesCount: 8, startPage: 597, juz: 30, desc: "قسم بالتين والزيتون وطور سنين وهذا البلد الأمين، وخلق الإنسان في أحسن تقويم." },
+  { id: 96, name: "العلق", englishName: "Al-Alaq", type: "مكية", versesCount: 19, startPage: 597, juz: 30, desc: "أول ما نزل من الوحي في غار حراء: «اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ»، والنهي عن الطغيان والسجود لله." },
+  { id: 97, name: "القدر", englishName: "Al-Qadr", type: "مكية", versesCount: 5, startPage: 598, juz: 30, desc: "فضل ليلة القدر المباركة التي هي خير من ألف شهر، وتنزل الملائكة والروح فيها بسلام حتى الفجر." },
+  { id: 98, name: "البينة", englishName: "Al-Bayyina", type: "مدنية", versesCount: 8, startPage: 598, juz: 30, desc: "سورة الإخلاص بالدين، وبيان صفات شر البرية وخير البرية الذين رضي الله عنهم ورضوا عنه." },
+  { id: 99, name: "الزلزلة", englishName: "Az-Zalzala", type: "مدنية", versesCount: 8, startPage: 599, juz: 30, desc: "زلزال الأرض وإخراج أثقالها، وتحديث أخبارها: «فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ»." },
+  { id: 100, name: "العاديات", englishName: "Al-Aadiyaat", type: "مكية", versesCount: 11, startPage: 599, juz: 30, desc: "قسم بخيل الجهاد العادية الموريات قدحاً، وجحود الإنسان لنعم ربه وحبه الشديد للمال." },
+  { id: 101, name: "القارعة", englishName: "Al-Qaari'a", type: "مكية", versesCount: 11, startPage: 600, juz: 30, desc: "القارعة ما القارعة، ميزان الأعمال الثقيلة في عيشة راضية، والخفيفة في هاوية نار حامية." },
+  { id: 102, name: "التكاثر", englishName: "At-Takaathur", type: "مكية", versesCount: 8, startPage: 600, juz: 30, desc: "التحذير من إلهاء التكاثر في الأموال والأولاد حتى زيارة القبور، والسؤال يومئذ عن النعيم." },
+  { id: 103, name: "العصر", englishName: "Al-Asr", type: "مكية", versesCount: 3, startPage: 601, juz: 30, desc: "منهاج النجاة الكامل: الإيمان، العمل الصالح، التواصي بالحق، والتواصي بالصبر الجميل." },
+  { id: 104, name: "الهمزة", englishName: "Al-Humaza", type: "مكية", versesCount: 9, startPage: 601, juz: 30, desc: "وعيد شديد لكل هماز لماز يجمع مالاً ويعدده، وجزاؤه في الحطمة نار الله الموقدة." },
+  { id: 105, name: "الفيل", englishName: "Al-Feel", type: "مكية", versesCount: 5, startPage: 601, juz: 30, desc: "قصة هلاك أبرهة وجيش الفيل بحجارة من سجيل أرسلها طير أبابيل دفاعاً عن الكعبة المشرفة." },
+  { id: 106, name: "قريش", englishName: "Quraish", type: "مكية", versesCount: 4, startPage: 602, juz: 30, desc: "امتنان الله على قريش برحلتي الشتاء والصيف: «فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ»." },
+  { id: 107, name: "الماعون", englishName: "Al-Maa'oon", type: "مكية", versesCount: 7, startPage: 602, juz: 30, desc: "ذم المكذبين بالدين الذين يمنعون الماعون ويسهون عن صلاتهم رياءً وسمعة ويدعون اليتيم." },
+  { id: 108, name: "الكوثر", englishName: "Al-Kawthar", type: "مكية", versesCount: 3, startPage: 602, juz: 30, desc: "أقصر سور القرآن وأعظمها بشارة، إعطاء نهر الكوثر للنبي ﷺ: «فَصَلِّ لِرَبِّكَ وَانْحَرْ إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ»." },
+  { id: 109, name: "الكافرون", englishName: "Al-Kaafiroon", type: "مكية", versesCount: 6, startPage: 603, juz: 30, desc: "سورة الإخلاص والبراءة الصريحة من الشرك وعبادة الأوثان: «لَكُمْ دِينُكُمْ وَلِيَ دِينِ»." },
+  { id: 110, name: "النصر", englishName: "An-Nasr", type: "مدنية", versesCount: 3, startPage: 603, juz: 30, desc: "آخر سورة كاملة نزلت من القرآن، بشارة فتح مكة ودخول الناس في دين الله أفواجاً والأمر بالتسبيح والاستغفار." },
+  { id: 111, name: "المسد", englishName: "Al-Masad", type: "مكية", versesCount: 5, startPage: 603, juz: 30, desc: "خسران وهلاك أبي لهب وامرأته حمالة الحطب لعادتهم الشديدة لرسول الله ﷺ ولدعوة الحق." },
+  { id: 112, name: "الإخلاص", englishName: "Al-Ikhlaas", type: "مكية", versesCount: 4, startPage: 604, juz: 30, desc: "تعدل ثلث القرآن الكريم في الأجر، توحيد الذات والصفات الخالصة لله الواحد الأحد الصمد." },
+  { id: 113, name: "الفلق", englishName: "Al-Falaq", type: "مكية", versesCount: 5, startPage: 604, juz: 30, desc: "المعوذة الأولى، الاستعاذة برب الفلق من شر ما خلق ومن شر غاسق إذا وقب والنفث والحسد." },
+  { id: 114, name: "الناس", englishName: "An-Naas", type: "مكية", versesCount: 6, startPage: 604, juz: 30, desc: "المعوذة الثانية، خاتمة المصحف الشريف بالاعتصام برب الناس ملك الناس إله الناس من وسواس الشياطين." }
 ];
 
-// Major Arab & Islamic Cities for Prayer Times SEO
-const CITIES = [
-  { slug: "makkah", name: "مكة المكرمة", country: "السعودية" },
-  { slug: "madinah", name: "المدينة المنورة", country: "السعودية" },
-  { slug: "jerusalem", name: "القدس الشريف", country: "فلسطين" },
-  { slug: "riyadh", name: "الرياض", country: "السعودية" },
-  { slug: "cairo", name: "القاهرة", country: "مصر" },
-  { slug: "dubai", name: "دبي", country: "الإمارات" },
-  { slug: "amman", name: "عمّان", country: "الأردن" },
-  { slug: "kuwait", name: "الكويت", country: "الكويت" },
-  { slug: "doha", name: "الدوحة", country: "قطر" },
-  { slug: "muscat", name: "مسقط", country: "عمان" },
-  { slug: "damascus", name: "دمشق", country: "سوريا" },
-  { slug: "baghdad", name: "بغداد", country: "العراق" },
-  { slug: "beirut", name: "بيروت", country: "لبنان" },
-  { slug: "tripoli", name: "طرابلس", country: "ليبيا" },
-  { slug: "tunis", name: "تونس", country: "تونس" },
-  { slug: "algiers", name: "الجزائر", country: "الجزائر" },
-  { slug: "rabat", name: "الرباط", country: "المغرب" },
-  { slug: "khartoum", name: "الخرطوم", country: "السودان" },
-  { slug: "sanaa", name: "صنعاء", country: "اليمن" },
-  { slug: "istanbul", name: "إسطنبول", country: "تركيا" },
-  { slug: "manama", name: "المنامة", country: "البحرين" },
-  { slug: "alexandria", name: "الإسكندرية", country: "مصر" },
-  { slug: "jeddah", name: "جدة", country: "السعودية" },
-  { slug: "dammam", name: "الدمام", country: "السعودية" },
-  { slug: "gaza", name: "غزة العزة", country: "فلسطين" },
-  { slug: "hebron", name: "الخليل", country: "فلسطين" },
-  { slug: "nablus", name: "نابلس", country: "فلسطين" },
-  { slug: "casablanca", name: "الدار البيضاء", country: "المغرب" },
-  { slug: "london", name: "لندن", country: "المملكة المتحدة" },
-  { slug: "paris", name: "باريس", country: "فرنسا" }
+// Top authentic reciters
+const RECITERS_CONFIG = [
+  { slugPrefix: "mp3-surah-", reciterName: "الشيخ ياسر الدوسري", englishName: "Yasser Al-Dossari", server: "https://server11.mp3quran.net/yasser/", isDefault: true },
+  { slugPrefix: "mp3-alafasy-surah-", reciterName: "الشيخ مشاري راشد العفاسي", englishName: "Mishary Rashid Alafasy", server: "https://server8.mp3quran.net/afs/", isDefault: false },
+  { slugPrefix: "mp3-abdulbasit-surah-", reciterName: "الشيخ عبد الباسط عبد الصمد", englishName: "Abdulbasit Abdussamad", server: "https://server7.mp3quran.net/basit/", isDefault: false },
+  { slugPrefix: "mp3-maher-surah-", reciterName: "الشيخ ماهر المعيقلي", englishName: "Maher Al-Muaiqly", server: "https://server12.mp3quran.net/maher/", isDefault: false },
+  { slugPrefix: "mp3-ghamdi-surah-", reciterName: "الشيخ سعد الغامدي", englishName: "Saad Al-Ghamdi", server: "https://server7.mp3quran.net/s_gmd/", isDefault: false },
+  { slugPrefix: "mp3-minshawi-surah-", reciterName: "الشيخ محمد صديق المنشاوي", englishName: "Mohamed Siddiq El-Minshawi", server: "https://server10.mp3quran.net/minsh/", isDefault: false },
+  { slugPrefix: "mp3-ajmi-surah-", reciterName: "الشيخ أحمد بن علي العجمي", englishName: "Ahmed Al-Ajmi", server: "https://server10.mp3quran.net/ajm/", isDefault: false }
 ];
 
-// Core Adhkar & Duas Pages
+// 42 Hadiths of Imam Nawawi
+const NAWAWI_HADITHS = [
+  { id: 1, title: "إنما الأعمال بالنيات", narrator: "أمير المؤمنين عمر بن الخطاب رضي الله عنه", desc: "مدار الإسلام وقاعدة قبول الطاعات في الإخلاص وابتغاء وجه الله وحده في السر والعلانية." },
+  { id: 2, title: "مراتب الدين: الإسلام والإيمان والإحسان", narrator: "عمر بن الخطاب رضي الله عنه", desc: "حديث جبريل العظيم المشهور الذي بين فيه النبي ﷺ أركان الإسلام والإيمان ومقام الإحسان وأشراط الساعة." },
+  { id: 3, title: "بني الإسلام على خمس", narrator: "عبد الله بن عمر رضي الله عنهما", desc: "أركان الإسلام الخمسة: الشهادتان، وإقام الصلاة، وإيتاء الزكاة، وحج البيت، وصوم رمضان." },
+  { id: 4, title: "مراحل خلق الإنسان في بطن أمه", narrator: "عبد الله بن مسعود رضي الله عنه", desc: "أطوار الجنين ونفخ الروح وكتابة الرزق والأجل والعمل والشقاوة أو السعادة والخواتيم." },
+  { id: 5, title: "النهي عن الابتداع في الدين", narrator: "أم المؤمنين عائشة رضي الله عنها", desc: "من أحدث في أمرنا هذا ما ليس منه فهو رد، حماية الشريعة من التحريف والبدع المحدثة." },
+  { id: 6, title: "الحلال بيّن والحرام بيّن والشبهات", narrator: "النعمان بن بشير رضي الله عنه", desc: "من اتقى الشبهات فقد استبرأ لدينه وعرضه، وصلاح الجسد كله بصلاح القلب وتقواه." },
+  { id: 7, title: "الدين النصيحة لله ولكتابه ورسوله", narrator: "تميم الداري رضي الله عنه", desc: "النصيحة لله بتوحيده، ولكتابه بالإيمان به وتلاوته، ولرسوله باتباعه، ولأئمة المسلمين وعامتهم." },
+  { id: 8, title: "حرمة دم المسلم وماله", narrator: "ابن عمر رضي الله عنهما", desc: "عصمة دماء وأموال من شهد أن لا إله إلا الله وأن محمداً رسول الله وأقام الصلاة وآتى الزكاة." },
+  { id: 9, title: "التكليف بما يستطاع والنهي عن كثرة السؤال", narrator: "أبو هريرة رضي الله عنه", desc: "ما نهيتكم عنه فاجتنبوه وما أمرتكم به فأتوا منه ما استطعتم فإنما أهلك الذين من قبلهم كثرة مسائلهم." },
+  { id: 10, title: "إن الله طيب لا يقبل إلا طيباً", narrator: "أبو هريرة رضي الله عنه", desc: "أثر الكسب الحلال والمطعم والمشرب الطيب في إجابة الدعاء وقبول الأعمال الصالحة." },
+  { id: 11, title: "دع ما يريبك إلى ما لا يريبك", narrator: "الحسن بن علي رضي الله عنهما", desc: "الورع والطمأنينة وترك مواطن الريبة والشك في المعاملات والعبادات." },
+  { id: 12, title: "من حسن إسلام المرء تركه ما لا يعنيه", narrator: "أبو هريرة رضي الله عنه", desc: "أدب المسلم وحفظ لسانه ووقته والاشتغال بما ينفعه في دينه ودنياه وآخرته." },
+  { id: 13, title: "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه", narrator: "أنس بن مالك رضي الله عنه", desc: "كمال الإيمان وسلامة الصدر ومحبة الخير والبر والنجاح لجميع المسلمين." },
+  { id: 14, title: "حرمة دم المسلم المعصوم", narrator: "ابن مسعود رضي الله عنه", desc: "لا يحل دم امرئ مسلم إلا بإحدى ثلاث: الثيب الزاني، والنفس بالنفس، والتارك لدينه المفارق للجماعة." },
+  { id: 15, title: "من كان يؤمن بالله واليوم الآخر فليقل خيراً أو ليصمت", narrator: "أبو هريرة رضي الله عنه", desc: "إكرام الجار، وإكرام الضيف، وحفظ اللسان عن اللغو والباطل والغيبة." },
+  { id: 16, title: "النهي عن الغضب والتحلي بالحلم", narrator: "أبو هريرة رضي الله عنه", desc: "وصية جامعة من النبي ﷺ: «لا تغضب، فردد مراراً قال: لا تغضب»." },
+  { id: 17, title: "إن الله كتب الإحسان على كل شيء", narrator: "شداد بن أوس رضي الله عنه", desc: "الإحسان في كل عمل، وإذا قتلتم فأحسنوا القتلة، وإذا ذبحتم فأحسنوا الذبحة، وليرح ذبيحته." },
+  { id: 18, title: "اتق الله حيثما كنت وأتبع السيئة الحسنة تمحها", narrator: "أبو ذر ومعاذ بن جبل رضي الله عنهما", desc: "تقوى الله في السر والعلن، ومحو السيئات بالحسنات، وخالق الناس بخلق حسن." },
+  { id: 19, title: "احفظ الله يحفظك، احفظ الله تجده تجاهك", narrator: "عبد الله بن عباس رضي الله عنهما", desc: "وصية رسول الله ﷺ لابن عباس في التوكل، والدعاء، والاستعانة بالله، واليقين بالقدر." },
+  { id: 20, title: "إذا لم تستح فاصنع ما شئت", narrator: "أبو مسعود البدري رضي الله عنه", desc: "الحياء شعبة عظيمة من شعب الإيمان، وميزان الأخلاق الفاضلة التي تمنع من الرذائل." },
+  { id: 21, title: "قل آمنت بالله ثم استقم", narrator: "سفيان بن عبد الله الثقفي رضي الله عنه", desc: "الجمع بين الإيمان الصادق بالقلب والاستقامة الثابتة على الطاعة بالجوارح." },
+  { id: 22, title: "طريق الجنة بالفرائض واجتناب المحرمات", narrator: "جابر بن عبد الله رضي الله عنهما", desc: "المحافظة على الصلوات المكتوبة وصوم رمضان وإحلال الحلال وتحريم الحرام سبيلاً لدخول الجنة." },
+  { id: 23, title: "الطهور شطر الإيمان والحمد لله تملأ الميزان", narrator: "أبو مالك الأشعري رضي الله عنه", desc: "فضل الوضوء، والتسبيح والتحميد، والصلاة نور، والصدقة برهان، والصبر ضياء، والقرآن حجة لك أو عليك." },
+  { id: 24, title: "يا عبادي إني حرمت الظلم على نفسي", narrator: "أبو ذر الغفاري عن النبي ﷺ فيما روى عن ربه", desc: "حديث قدسي جليل في تنزيه الله عن الظلم، والافتقار إلى هدايته ورزقه ومغفرته." },
+  { id: 25, title: "ذهب أهل الدثور بالأجور والصدقة بكل تسبيحة", narrator: "أبو ذر رضي الله عنه", desc: "أبواب الصدقة الواسعة في كل تسبيحة وتحميدة وتهليلة وتكبيرة وأمر بمعروف وإعانة محتاج." },
+  { id: 26, title: "كل سلامى من الناس عليه صدقة كل يوم", narrator: "أبو هريرة رضي الله عنه", desc: "العدل بين اثنين، وإعانة الرجل في دابته، والكلمة الطيبة، والخطوة إلى الصلاة، وإماطة الأذى." },
+  { id: 27, title: "البر حسن الخلق والإثم ما حاك في نفسك", narrator: "النواس بن سمعان ووابصة رضي الله عنهما", desc: "استفت قلبك واستفت نفسك، البر ما اطمأنت إليه النفس والإثم ما حاك في الصدر وتردد وإن أفتاك الناس." },
+  { id: 28, title: "عليكم بسنتي وسنة الخلفاء الراشدين المهديين", narrator: "العرباض بن سارية رضي الله عنه", desc: "موعظة رسول الله البليغة التي ذرفت منها العيون والتمسك بالسنة والعض عليها بالنواجذ." },
+  { id: 29, title: "كف عليك هذا وأمسك عليك لسانك", narrator: "معاذ بن جبل رضي الله عنه", desc: "أبواب الخير والصيام جنة وقيام الليل ورأس الأمر الإسلام وحصائد الألسن مكبات الوجوه في النار." },
+  { id: 30, title: "إن الله فرض فرائض فلا تضيعوها وحد حدوداً", narrator: "أبو ثعلبة الخشني رضي الله عنه", desc: "حفظ فرائض الله، والوقوف عند حدوده، وسكوته عن أشياء رحمة من غير نسيان فلا تبحثوا عنها." },
+  { id: 31, title: "ازهد في الدنيا يحبك الله وازهد فيما عند الناس", narrator: "سهل بن سعد الساعدي رضي الله عنه", desc: "حقيقة الزهد القلبي في متاع الدنيا الزائل وإيثار ما عند الله والفوز بمحبة الخلق." },
+  { id: 32, title: "لا ضرر ولا ضرار في الإسلام", narrator: "أبو سعيد الخدري رضي الله عنه", desc: "قاعدة تشريعية وأخلاقية كبرى تمنع إلحاق الأذى بالنفس والغير في كل شأن." },
+  { id: 33, title: "البينة على المدعي واليمين على من أنكر", narrator: "ابن عباس رضي الله عنهما", desc: "أصول القضاء والعدالة وحفظ أموال ودماء الناس من الدعاوى الباطلة." },
+  { id: 34, title: "من رأى منكم منكراً فليغيره بيده فإن لم يستطع فبلسانه", narrator: "أبو سعيد الخدري رضي الله عنه", desc: "مراتب الأمر بالمعروف والنهي عن المنكر بالحكمة والقدرة والإنكار بالقلب وهو أضعف الإيمان." },
+  { id: 35, title: "لا تحاسدوا ولا تناجشوا ولا تباغضوا وكونوا عباد الله إخواناً", narrator: "أبو هريرة رضي الله عنه", desc: "حقوق الأخوة الإيمانية: المسلم أخو المسلم لا يظلمه ولا يخذله ولا يحقره، التقوى هاهنا." },
+  { id: 36, title: "من فرج عن مؤمن كربة من كرب الدنيا فرج الله عنه", narrator: "أبو هريرة رضي الله عنه", desc: "تفريج الكرب، والتيسير على المعسر، والستر على المسلم، ومن سلك طريقاً يلتمس فيه علماً سهل الله له به طريقاً إلى الجنة." },
+  { id: 37, title: "إن الله كتب الحسنات والسيئات ثم بين ذلك", narrator: "ابن عباس رضي الله عنهما", desc: "سعة فضل الله في مضاعفة الحسنات إلى سبعمائة ضعف والسيئة بمثلها أو يعفو." },
+  { id: 38, title: "من عادى لي ولياً فقد آذنته بالحرب", narrator: "أبو هريرة رضي الله عنه", desc: "حديث الولاية القدسي العظيم والتقرب إلى الله بالنوافل بعد الفرائض حتى ينال محبة الله ومعيته." },
+  { id: 39, title: "إن الله تجاوز لي عن أمتي الخطأ والنسيان وما استكرهوا عليه", narrator: "ابن عباس رضي الله عنهما", desc: "سماحة الشريعة ورفع الحرج والإثم عن المعذورين بالجهل أو الخطأ أو الإكراه." },
+  { id: 40, title: "كن في الدنيا كأنك غريب أو عابر سبيل", narrator: "ابن عمر رضي الله عنهما", desc: "قصر الأمل، وإذا أمسيت فلا تنتظر الصباح، وإذا أصبحت فلا تنتظر المساء، وخذ من صحتك لسقمك." },
+  { id: 41, title: "لا يؤمن أحدكم حتى يكون هواه تبعاً لما جئت به", narrator: "عبد الله بن عمرو رضي الله عنهما", desc: "إخضاع الأهواء والرغبات لمراد الله وشرعه وسنة رسوله الأمين." },
+  { id: 42, title: "يا ابن آدم لو بلغت ذنوبك عنان السماء ثم استغفرتني غفرت لك", narrator: "أنس بن مالك رضي الله عنه", desc: "سعة مغفرة الله ورحمته التي وسعت كل شيء لمن لقيه لا يشرك به شيئاً واستغفر من ذنوبه." }
+];
+
+// Expanded Core Adhkar, Supplications and Special Quran Pages
 const ADHKAR_DUAS = [
-  { slug: "adhkar-sabah", title: "أذكار الصباح كاملة مكتوبة ومسموعة بالترتيب الصحيح", category: "أذكار", desc: "أذكار الصباح الصحيحة من حصن المسلم مع فضل كل ذكر وعداد التسبيح، قراءة واستماع." },
-  { slug: "adhkar-masaa", title: "أذكار المساء الصحيحة مكتوبة حصن المسلم كاملة", category: "أذكار", desc: "أذكار المساء الصحيحة الثابتة عن النبي ﷺ مع فضائلها وأوقاتها لتحصين النفس والبيت." },
-  { slug: "adhkar-nawm", title: "أذكار النوم وسورة الملك كاملة مكتوبة قبل النوم", category: "أذكار", desc: "أذكار النوم الصحيحة وسورة تبارك المانعة من عذاب القبر وآية الكرسي والمعوذات." },
-  { slug: "adhkar-salah", title: "الأذكار بعد الصلاة المفروضة الصحيحة مكتوبة", category: "أذكار", desc: "الأذكار والأدعية الثابتة بعد السلام من الصلاة المكتوبة، الاستغفار والتسبيح والتهليل." },
-  { slug: "adhkar-istiyqadh", title: "أذكار الاستيقاظ من النوم وفضل الحمد والشكر", category: "أذكار", desc: "أذكار الاستيقاظ: الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور، ودعاء الفجر." },
-  { slug: "dua-mayyit", title: "دعاء للميت مكتوب ومستجاب بالرحمة والمغفرة ونور القبر", category: "أدعية", desc: "أفضل أدعية للميت والمغفور لهم بإذن الله، دعاء جامع للأموات ينور قبورهم ويرفع درجاتهم." },
+  { slug: "adhkar-sabah", title: "أذكار الصباح كاملة مكتوبة ومسموعة بالترتيب الصحيح", category: "أذكار", desc: "أذكار الصباح الصحيحة من حصن المسلم مع فضل كل ذكر وعداد التسبيح، قراءة واستماع يومي مبارك." },
+  { slug: "adhkar-masaa", title: "أذكار المساء الصحيحة مكتوبة حصن المسلم كاملة", category: "أذكار", desc: "أذكار المساء الصحيحة الثابتة عن النبي ﷺ مع فضائلها وأوقاتها لتحصين النفس والأهل والبيت." },
+  { slug: "adhkar-nawm", title: "أذكار النوم وسورة الملك كاملة مكتوبة قبل النوم", category: "أذكار", desc: "أذكار النوم الصحيحة وسورة تبارك المانعة من عذاب القبر وآية الكرسي والمعوذتين لنوم هادئ مطمئن." },
+  { slug: "adhkar-salah", title: "الأذكار بعد الصلاة المفروضة الصحيحة مكتوبة", category: "أذكار", desc: "الأذكار والأدعية الثابتة بعد السلام من الصلاة المكتوبة، الاستغفار والتسبيح والتهليل وآية الكرسي." },
+  { slug: "adhkar-istiyqadh", title: "أذكار الاستيقاظ من النوم وفضل الحمد والشكر", category: "أذكار", desc: "أذكار الاستيقاظ: الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور، ودعاء الفجر والبركة." },
+  { slug: "adhkar-masjid", title: "أذكار دخول المسجد والخروج منه وآداب الصلاة", category: "أذكار", desc: "أدعية الذهاب إلى المسجد ودخوله بالقدم اليمنى والصلاة في الروضة والخروج بطلب فضل الله." },
+  { slug: "adhkar-manzil", title: "أذكار دخول المنزل والخروج منه والتحصين من الشيطان", category: "أذكار", desc: "بسم الله ولجنا وبسم الله خرجنا، وبسم الله توكلت على الله لا حول ولا قوة إلا بالله." },
+  { slug: "adhkar-taam", title: "أذكار الطعام والشراب والحمد بعد الفراغ", category: "أذكار", desc: "التسمية قبل الأكل والأكل باليمين، والحمد لله الذي أطعمني هذا ورزقنيه من غير حول مني ولا قوة." },
+  { slug: "adhkar-safar", title: "دعاء السفر وركوب الدابة والسيارة مكتوب كامل", category: "أدعية", desc: "سبحان الذي سخر لنا هذا وما كنا له مقرنين، ودعاء الرجوع من السفر: آيبون تائبون عابدون لربنا حامدون." },
+  { slug: "adhkar-matar", title: "دعاء المطر والرعد والريح ونزول الغيث المستجاب", category: "أدعية", desc: "اللهم صيباً نافعاً، ومطرنا بفضل الله ورحمته، ودعاء سماع الرعد وركود الريح." },
+  { slug: "dua-mayyit", title: "دعاء للميت مكتوب ومستجاب بالرحمة والمغفرة ونور القبر", category: "أدعية", desc: "أفضل أدعية للميت والمغفور لهم بإذن الله، دعاء جامع للأموات ينور قبورهم ويرفع درجاتهم في الجنة." },
   { slug: "dua-ahmed-al-amoudi", title: "دعاء بالقبول والبركة لمؤسس المنصة أحمد منتصر العامودي", category: "أدعية", desc: "دعاء بالبركة في العمر والعمل والقبول لأحمد منتصر العامودي حفظه الله، ونيل ثواب الصدقة الجارية." },
   { slug: "dua-walidayn", title: "دعاء للوالدين بالصحة والعافية والمغفرة وبرهم أحياء وأمواتاً", category: "أدعية", desc: "أدعية مباركة لبر الوالدين ورفع درجاتهم في الجنة، ربي ارحمهما كما ربياني صغيراً." },
-  { slug: "dua-istikharah", title: "دعاء الاستخارة الصحيح وكيفية صلاة الاستخارة خطوة بخطوة", category: "أدعية", desc: "نص دعاء صلاة الاستخارة مكتوب كاملاً مع شرح كيفية أدائها وأوقاتها وحكمها." },
-  { slug: "sayyid-istighfar", title: "سيد الاستغفار مكتوب وفضله العظيم لمغفرة الذنوب", category: "استغفار", desc: "صيغة سيد الاستغفار وفضله: من قاله حين يمسي فمات دخل الجنة، ومن قاله حين يصبح." },
-  { slug: "dua-khatm-quran", title: "دعاء ختم القرآن الكريم كاملاً مكتوب ومؤثر", category: "أدعية", desc: "دعاء ختم القرآن الكريم كما ورد عن أئمة الحرم المكي الشريف مكتوب كامل لختمة مباركة." },
+  { slug: "dua-shifa", title: "دعاء الشفاء من المرض ورفع البلاء والرقية الشرعية", category: "أدعية", desc: "دعاء للمريض بالشفاء العاجل وآيات الشفاء الست والرقية الشرعية من الكتاب والسنة النبوية." },
   { slug: "dua-rizq", title: "دعاء الرزق وتيسير الأمور وقضاء الديون والبركة بالمال", category: "أدعية", desc: "أدعية جلب الرزق الحلال وتفريج الكروب وسداد الدين مجربة ومأثورة عن السلف الصالح." },
-  { slug: "dua-shifa", title: "دعاء الشفاء من المرض ورفع البلاء والرقية الشرعية", category: "أدعية", desc: "دعاء للمريض بالشفاء العاجل وآيات الشفاء الست والرقية الشرعية من الكتاب والسنة." },
-  { slug: "dua-faraj", title: "دعاء تفريج الهم والكرب والحزن والضيق مستجاب فوراً", category: "أدعية", desc: "دعاء ذي النون: لا إله إلا أنت سبحانك إني كنت من الظالمين، ودعاء إزالة الهم والحزن." },
+  { slug: "dua-faraj", title: "دعاء تفريج الهم والكرب والحزن والضيق مستجاب فوراً", category: "أدعية", desc: "دعاء ذي النون: لا إله إلا أنت سبحانك إني كنت من الظالمين، ودعاء إزالة الهم والغم." },
+  { slug: "dua-istikharah", title: "دعاء الاستخارة الصحيح وكيفية صلاة الاستخارة خطوة بخطوة", category: "أدعية", desc: "نص دعاء صلاة الاستخارة مكتوب كاملاً مع شرح كيفية أدائها وأوقاتها وحكمها الشرعي." },
+  { slug: "sayyid-istighfar", title: "سيد الاستغفار مكتوب وفضله العظيم لمغفرة الذنوب", category: "استغفار", desc: "صيغة سيد الاستغفار وفضله: من قاله حين يمسي فمات دخل الجنة، ومن قاله حين يصبح." },
+  { slug: "dua-khatm-quran", title: "دعاء ختم القرآن الكريم كاملاً مكتوب ومؤثر", category: "أدعية", desc: "دعاء ختم القرآن الكريم كما ورد عن أئمة الحرم المكي الشريف مكتوب كامل لختمة مباركة مقبولة." },
   { slug: "dua-jumaa", title: "أدعية يوم الجمعة المستجابة وساعة الاستجابة وسورة الكهف", category: "أدعية", desc: "أفضل أدعية عصر يوم الجمعة والصلاة على النبي ﷺ وقراءة سورة الكهف لنيل النور والرحمة." },
-  { slug: "duas-quran", title: "أدعية القرآن الكريم كاملة مرتبة حسب السور", category: "أدعية", desc: "جميع الأدعية التي وردت في القرآن الكريم على لسان الأنبياء والصالحين مكتوبة." },
-  { slug: "duas-nabawiyya", title: "أدعية نبوية صحيحة جامعة من صحيح البخاري ومسلم", category: "أدعية", desc: "جوامع كلم النبي ﷺ من الأدعية الصحيحة الجامعة لخيري الدنيا والآخرة." },
-  { slug: "hisn-almuslim", title: "حصن المسلم كاملاً من أذكار الكتاب والسنة", category: "أذكار", desc: "كتاب حصن المسلم الميسر كاملاً بكافة أبوابه وفصوله للقراءة والاستماع اليومي." },
+  { slug: "dua-qunoot", title: "دعاء القنوت في صلاة الوتر والتراويح مكتوب كاملاً", category: "أدعية", desc: "اللهم اهدنا فيمن هديت، وعافنا فيمن عافيت، وتولنا فيمن توليت، وبارك لنا فيما أعطيت." },
+  { slug: "dua-hajat", title: "دعاء قضاء الحاجة وتيسير الأمور الصعبة وتسهيلها", category: "أدعية", desc: "دعاء صلاة قضاء الحاجة المستجاب بنية التيسير والبركة ورفع الشدائد بفضل الله." },
+  { slug: "dua-tawbah", title: "دعاء التوبة النصوح والاستغفار من الذنوب والمعاصي", category: "استغفار", desc: "صلاة التوبة ودعاء الإنابة إلى الله: رب اغفر لي وتب علي إنك أنت التواب الرحيم." },
+  { slug: "dua-imtihaan", title: "دعاء الامتحان والنجاح وتسهيل الحفظ والمذاكرة والتركيز", category: "أدعية", desc: "اللهم لا سهل إلا ما جعلته سهلاً وأنت تجعل الحزن إذا شئت سهلاً، ودعاء النسيان." },
+  { slug: "dua-zawaj", title: "دعاء تيسير الزواج وصلاح الشريك وبناء البيت المسلم", category: "أدعية", desc: "أدعية مأثورة لطلب الزوج الصالح والزوجة الصالحة والاستقرار والمودة والرحمة." },
+  { slug: "dua-awlad", title: "دعاء لهداية الأولاد وصلاح الذرية وحفظهم من السوء", category: "أدعية", desc: "ربنا هب لنا من أزواجنا وذرياتنا قرة أعين واجعلنا للمتقين إماماً، ورقية تحصين الأبناء." },
+  { slug: "dua-ghadab", title: "دعاء الغضب والاستعاذة من وساوس الشيطان الرجيم", category: "أدعية", desc: "أعوذ بالله من الشيطان الرجيم، وأثر الوضوء وتغيير الجلسة في إطفاء جمرة الغضب." },
+  { slug: "dua-souq", title: "دعاء دخول السوق وفضله: ألف ألف حسنة ومحو ألف ألف سيئة", category: "أدعية", desc: "لا إله إلا الله وحده لا شريك له له الملك وله الحمد يحيي ويميت وهو حي لا يموت بيده الخير وهو على كل شيء قدير." },
+  { slug: "dua-laylat-qadr", title: "دعاء ليلة القدر المستجاب: اللهم إنك عفو تحب العفو فاعف عني", category: "أدعية", desc: "وصية النبي ﷺ لعائشة رضي الله عنها في ليلة القدر المباركة لطلب العفو والمغفرة." },
+  { slug: "dua-arafah", title: "دعاء يوم عرفة: خير الدعاء دعاء يوم عرفة وخير ما قلت", category: "أدعية", desc: "لا إله إلا الله وحده لا شريك له له الملك وله الحمد وهو على كل شيء قدير، دعاء الحجيج والمستغفرين." },
+  { slug: "dua-iftar", title: "دعاء الإفطار في رمضان والصيام: ذهب الظمأ وابتلت العروق", category: "أدعية", desc: "سنة الدعاء عند الفطر للصائم دعوة لا ترد، اللهم لك صمت وعلى رزقك أفطرت." },
+  { slug: "dua-suhur", title: "دعاء السحور وبركة الثلث الأخير من الليل والاستغفار بالأسحار", category: "أدعية", desc: "فضل وقت السحر، والمستغفرين بالأسحار، ونزول الرب سبحانه هل من تائب فأتوب عليه." },
+  { slug: "dua-hilal", title: "دعاء رؤية الهلال ودخول الشهر القمري الجديد باليمن والإيمان", category: "أدعية", desc: "الله أكبر اللهم أهله علينا بالأمن والإيمان والسلامة والإسلام والتوفيق لما تحب وترضى ربنا وربك الله." },
+  { slug: "dua-musiba", title: "دعاء الصبر عند المصيبة: إنا لله وإنا إليه راجعون اللهم أجرني في مصيبتي", category: "أدعية", desc: "فضل الاسترجاع وبشارة بيت الحمد في الجنة لمن حمد الله واسترجع عند فقد الأحبة." },
+  { slug: "dua-dayn", title: "دعاء سداد الدين وقضاء الحوائج المالية وتفريج الغم", category: "أدعية", desc: "اللهم اكفني بحلالك عن حرامك وأغنني بفضلك عمن سواك، ولو كان عليك مثل جبل أحد ديناً أداه الله عنك." },
+  { slug: "ayat-al-kursi", title: "آية الكرسي كاملة مكتوبة ومسموعة مكررة وفضلها العظيم", category: "قرآن", desc: "أعظم آية في كتاب الله الكريم، قراءتها دبر كل صلاة تحفظ المسلم وتدخله الجنة." },
+  { slug: "khawatim-al-baqarah", title: "خواتيم سورة البقرة: آمن الرسول بما أنزل إليه من ربه", category: "قرآن", desc: "الآيتان الأخيرتان من سورة البقرة من قرأهما في ليلة كفتاه من كل شر وسوء." },
+  { slug: "surah-al-kahf-jumaa", title: "سورة الكهف مكتوبة كاملة بالرسم العثماني ليوم الجمعة", category: "قرآن", desc: "قراءة سورة الكهف يوم الجمعة مكتوبة بخط المصحف الشريف واستماع تلاوة خاشعة." },
+  { slug: "surah-al-mulk-nawm", title: "سورة الملك مكتوبة كاملة واستماع قبل النوم للمنجية", category: "قرآن", desc: "سورة الملك تبارك الذي بيده الملك، المنجية والمانعة من عذاب القبر مكتوبة ومسموعة." },
+  { slug: "surah-yaseen-fadl", title: "سورة يس مكتوبة كاملة وفضل قراءتها لقضاء الحوائج", category: "قرآن", desc: "قلب القرآن الكريم، تثبيت التوحيد والبعث ونيل المغفرة والرحمة عند تلاوتها." },
+  { slug: "surah-waqiah-rizq", title: "سورة الواقعة مكتوبة كاملة لجلب الرزق وتفريج الفقر", category: "قرآن", desc: "سورة الغنى والبركة، قراءتها كل ليلة وقاية من الفاقة وتذكير بمنازل الآخرة." },
+  { slug: "surah-rahman-fadl", title: "سورة الرحمن عروس القرآن مكتوبة ومسموعة", category: "قرآن", desc: "تعداد آلاء الله ونعمه الجليلة: فبأي آلاء ربكما تكذبان، تلاوة مؤثرة تسكن القلوب." },
   { slug: "tasbeeh-online", title: "المسبحة الإلكترونية الذكية والتسبيح اليومي مع عداد اللمس", category: "تسبيح", desc: "مسبحة إلكترونية متطورة تدعم اللمس والصوت لذكر الله وحفظ عدد التسبيحات والاستغفار." },
   { slug: "istighfar-online", title: "محراب الاستغفار اليومي ومحاسبة النفس والتوبة النصوح", category: "استغفار", desc: "محراب الاستغفار الإلكتروني لتحديد أهداف الاستغفار اليومية ونيل مغفرة الله وفضله." },
   { slug: "khatmah-plan", title: "خطة ختم القرآن الكريم في شهر أو أسبوعين وجدول الحفظ", category: "قرآن", desc: "جدول يومي لتنظيم ورد قراءة القرآن وختمه بانتظام مع اختبار التسميع ومُعين الحفظ." },
   { slug: "sadaqah-jariyah", title: "مشروع أثر | صدقة جارية أسسها أحمد منتصر العامودي لوجه الله", category: "صدقة", desc: "منصة إسلامية متكاملة خالية 100% من الإعلانات صدقة جارية أسسها أحمد منتصر العامودي نفع الله به." },
-  { slug: "ayat-al-kursi", title: "آية الكرسي كاملة مكتوبة ومسموعة مكررة وفضلها العظيم", category: "قرآن", desc: "أعظم آية في كتاب الله الكريم، قراءتها دبر كل صلاة تحفظ المسلم وتدخله الجنة." },
-  { slug: "surah-al-kahf-jumaa", title: "سورة الكهف مكتوبة كاملة بالرسم العثماني ليوم الجمعة", category: "قرآن", desc: "قراءة سورة الكهف يوم الجمعة مكتوبة بخط المصحف الشريف واستماع تلاوة ياسر الدوسري." },
-  { slug: "surah-al-mulk-nawm", title: "سورة الملك مكتوبة كاملة واستماع قبل النوم للمنجية", category: "قرآن", desc: "سورة الملك تبارك الذي بيده الملك، المنجية من عذاب القبر مكتوبة ومسموعة للنوم." }
+  { slug: "hisn-almuslim", title: "حصن المسلم كاملاً من أذكار الكتاب والسنة الصحيحة", category: "أذكار", desc: "كتاب حصن المسلم الميسر كاملاً بكافة أبوابه وفصوله للقراءة والاستماع اليومي المبارك." },
+  { slug: "duas-quran", title: "أدعية القرآن الكريم كاملة مرتبة حسب السور", category: "أدعية", desc: "جميع الأدعية التي وردت في القرآن الكريم على لسان الأنبياء والمرسلين والصالحين." },
+  { slug: "duas-nabawiyya", title: "أدعية نبوية صحيحة جامعة من صحيح البخاري ومسلم", category: "أدعية", desc: "جوامع كلم النبي ﷺ من الأدعية الصحيحة الجامعة لخيري الدنيا والآخرة." },
+  { slug: "dua-istiaadha", title: "أدعية الاستعاذة من العجز والكسل والجبن والبخل والدين", category: "أدعية", desc: "اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل، والبخل والجبن، وضلع الدين وغلبة الرجال." }
+];
+
+// Generate 60 additional specific Islamic supplication topics to complete 110 total Adhkar & Dua pages
+const MORE_DUAS = [
+  ["dua-salah-fajr", "أذكار صلاة الفجر ودعاء الصباح المبارك"],
+  ["dua-salah-dhuhr", "أذكار صلاة الظهر وسنة الأوابين"],
+  ["dua-salah-asr", "أذكار صلاة العصر وحفظ الصلاة الوسطى"],
+  ["dua-salah-maghrib", "أذكار صلاة المغرب وسنة الغروب"],
+  ["dua-salah-isha", "أذكار صلاة العشاء وقيام الليل والوتر"],
+  ["dua-tahajjud", "دعاء قيام الليل والتهجد وساعة الإجابة"],
+  ["dua-duha", "دعاء صلاة الضحى وفضلها كصدقة عن مفاصل البدن"],
+  ["dua-sujood", "أدعية السجود الصحيحة وأقرب ما يكون العبد من ربه"],
+  ["dua-rukoo", "أدعية الركوع وتعظيم الرب جل وعلا"],
+  ["dua-tashahhud", "صيغة التشهد والصلاة الإبراهيمية في الصلاة"],
+  ["dua-khushoo", "دعاء الخشوع في الصلاة ودفع وساوس خنزب"],
+  ["dua-wudu", "أذكار الوضوء قبل البدء وبعد الفراغ وفتح أبواب الجنة"],
+  ["dua-adhan", "دعاء سماع الأذان والوسيلة للنبي ﷺ"],
+  ["dua-iqamah", "أدعية ما بين الأذان والإقامة المستجابة"],
+  ["dua-qabr", "دعاء زيارة القبور والسلام على أهل الديار"],
+  ["dua-janaazah", "دعاء صلاة الجنازة والتكبيرات الأربع"],
+  ["dua-taazia", "أدعية التعزية ومواساة أهل الميت بالصبر"],
+  ["dua-marad-shadeed", "دعاء المريض شديد المرض وطلب حسن الخاتمة"],
+  ["dua-waswas", "دعاء طرد الوسواس والشكوك في العقيدة والإيمان"],
+  ["dua-khasf", "دعاء صلاة الكسوف والخسوف والتضرع لله"],
+  ["dua-istisqa", "دعاء صلاة الاستسقاء وطلب نزول المطر والغيث"],
+  ["dua-safara-tayyara", "دعاء ركوب الطائرة والرحلات الجوية البعيدة"],
+  ["dua-safara-sayyara", "دعاء قيادة السيارة وركوب الطريق والأمان"],
+  ["dua-dabbah", "دعاء ركوب الدابة والوسائل الحديثة"],
+  ["dua-qaryah", "دعاء دخول قرية أو بلدة جديدة في السفر"],
+  ["dua-manzil-nazala", "دعاء نزول منزل أو فندق: أعوذ بكلمات الله التامات"],
+  ["dua-libas", "دعاء لبس الثوب الجديد والحمد والشكر لله"],
+  ["dua-khal-libas", "دعاء خلع الثوب وحجب العورات عن أعين الجن"],
+  ["dua-khala", "دعاء دخول الخلاء والخروج منه وغفرانك"],
+  ["dua-marah", "دعاء رؤية المرآة: اللهم كما حسنت خلقي فحسن خلقي"],
+  ["dua-ziyarah", "دعاء زيارة المريض والرقية: طهور لا بأس إن شاء الله"],
+  ["dua-taameed", "دعاء تعويذ الأولاد والأهل من العين والحسد"],
+  ["dua-ayn", "علاج العين والحسد بالمعوذات والرقى الشرعية"],
+  ["dua-sihr", "آيات إبطال السحر والحسد والمس من القرآن الكريم"],
+  ["dua-hasad", "دعاء التحصين اليومي من حاسد إذا حسد"],
+  ["dua-kurb-kabeer", "دعاء الكرب العظيم للرسول عند الشدائد"],
+  ["dua-gham", "دعاء زوال الغم وضيق الصدر والحزن"],
+  ["dua-huzn", "دعاء لا إله إلا أنت سبحانك إني كنت من الظالمين"],
+  ["dua-tasfeer", "دعاء السفر والعودة للوطن سالماً غانماً"],
+  ["dua-ghuroob", "أذكار وقت الغروب ودخول ظلمة الليل"],
+  ["dua-shurooq", "أذكار شروق الشمس والجلوس في المصلى"],
+  ["dua-bidayat-yawm", "دعاء بداية اليوم والبركة في السعي والرزق"],
+  ["dua-nihayat-yawm", "دعاء ختام اليوم ومحاسبة النفس والاستغفار"],
+  ["dua-sadiq", "دعاء للأخ والصديق في ظهر الغيب والمحبة بالله"],
+  ["dua-walid", "دعاء خاص للأب بالصحة والعافية وطول العمر"],
+  ["dua-walidah", "دعاء خاص للأم بالرحمة والمغفرة ورضاها جنة"],
+  ["dua-zawja", "دعاء للزوجة والألفة والمحبة في البيت المسلم"],
+  ["dua-zawj", "دعاء للزوج بالتوفيق وسعة الرزق وحسن العشرة"],
+  ["dua-akh", "دعاء للأخوة والأخوات بالترابط وصلة الرحم"],
+  ["dua-arhaam", "دعاء صلة الرحم والبركة في العمر والرزق"],
+  ["dua-jiran", "حقوق الجار والدعاء له بحسن الجوار والسلام"],
+  ["dua-muallim", "دعاء للمعلم والشيوخ وأهل العلم بالجزاء الأوفى"],
+  ["dua-muslimin", "دعاء عام لجميع المسلمين والمسلمات الأحياء والأموات"],
+  ["dua-mustadafeen", "دعاء للمستضعفين والمنكوبين في كل بقاع الأرض"],
+  ["dua-quds", "دعاء للمسجد الأقصى والقدس الشريف وأهل فلسطين"],
+  ["dua-nasr", "دعاء النصر والتمكين للحق وأهله ودحر الباطل"],
+  ["dua-hifz-quran", "دعاء تثبيت حفظ القرآن الكريم وسرعة الفهم"],
+  ["dua-fahm", "دعاء الفهم والحفظ وقوة الذاكرة في طلب العلم"],
+  ["dua-ilm", "رب زدني علماً، ودعاء طلب العلم النافع والعمل الصالح"],
+  ["dua-husn-khatima", "دعاء حسن الخاتمة والموت على كلمة التوحيد"]
+];
+
+for (const [slug, title] of MORE_DUAS) {
+  ADHKAR_DUAS.push({
+    slug,
+    title: `${title} مكتوب ومستجاب`,
+    category: "أدعية",
+    desc: `${title} من الكتاب والسنّة النبوية المطهرة مع فضائلها وأوقات استجابتها لنيل رضا الله وثوابه.`
+  });
+}
+
+// 104 Global and Arab Cities for Prayer Times
+const CITIES = [
+  { slug: "makkah", name: "مكة المكرمة", country: "المملكة العربية السعودية" },
+  { slug: "madinah", name: "المدينة المنورة", country: "المملكة العربية السعودية" },
+  { slug: "riyadh", name: "الرياض", country: "المملكة العربية السعودية" },
+  { slug: "jeddah", name: "جدة", country: "المملكة العربية السعودية" },
+  { slug: "dammam", name: "الدمام", country: "المملكة العربية السعودية" },
+  { slug: "taif", name: "الطائف", country: "المملكة العربية السعودية" },
+  { slug: "tabuk", name: "تبوك", country: "المملكة العربية السعودية" },
+  { slug: "abha", name: "أبها", country: "المملكة العربية السعودية" },
+  { slug: "buraidah", name: "بريدة", country: "المملكة العربية السعودية" },
+  { slug: "khobar", name: "الخبر", country: "المملكة العربية السعودية" },
+  { slug: "jerusalem", name: "القدس الشريف", country: "فلسطين" },
+  { slug: "gaza", name: "غزة", country: "فلسطين" },
+  { slug: "ramallah", name: "رام الله", country: "فلسطين" },
+  { slug: "nablus", name: "نابلس", country: "فلسطين" },
+  { slug: "hebron", name: "الخليل", country: "فلسطين" },
+  { slug: "jenin", name: "جنين", country: "فلسطين" },
+  { slug: "bethlehem", name: "بيت لحم", country: "فلسطين" },
+  { slug: "tulkarm", name: "طولكرم", country: "فلسطين" },
+  { slug: "jericho", name: "أريحا", country: "فلسطين" },
+  { slug: "jaffa", name: "يافا", country: "فلسطين" },
+  { slug: "amman", name: "عمّان", country: "الأردن" },
+  { slug: "zarqa", name: "الزرقاء", country: "الأردن" },
+  { slug: "irbid", name: "إربد", country: "الأردن" },
+  { slug: "aqaba", name: "العقبة", country: "الأردن" },
+  { slug: "salt", name: "السلط", country: "الأردن" },
+  { slug: "madaba", name: "مأدبا", country: "الأردن" },
+  { slug: "cairo", name: "القاهرة", country: "مصر" },
+  { slug: "alexandria", name: "الإسكندرية", country: "مصر" },
+  { slug: "giza", name: "الجيزة", country: "مصر" },
+  { slug: "mansoura", name: "المنصورة", country: "مصر" },
+  { slug: "tanta", name: "طنطا", country: "مصر" },
+  { slug: "portsaid", name: "بورسعيد", country: "مصر" },
+  { slug: "suez", name: "السويس", country: "مصر" },
+  { slug: "aswan", name: "أسوان", country: "مصر" },
+  { slug: "luxor", name: "الأقصر", country: "مصر" },
+  { slug: "asyut", name: "أسيوط", country: "مصر" },
+  { slug: "damascus", name: "دمشق", country: "سوريا" },
+  { slug: "aleppo", name: "حلب", country: "سوريا" },
+  { slug: "homs", name: "حمص", country: "سوريا" },
+  { slug: "latakia", name: "اللاذقية", country: "سوريا" },
+  { slug: "beirut", name: "بيروت", country: "لبنان" },
+  { slug: "tripoli-lebanon", name: "طرابلس", country: "لبنان" },
+  { slug: "sidon", name: "صيدا", country: "لبنان" },
+  { slug: "baghdad", name: "بغداد", country: "العراق" },
+  { slug: "basra", name: "البصرة", country: "العراق" },
+  { slug: "mosul", name: "الموصل", country: "العراق" },
+  { slug: "erbil", name: "أربيل", country: "العراق" },
+  { slug: "najaf", name: "النجف الأشرف", country: "العراق" },
+  { slug: "karbala", name: "كربلاء", country: "العراق" },
+  { slug: "dubai", name: "دبي", country: "الإمارات العربية المتحدة" },
+  { slug: "abudhabi", name: "أبوظبي", country: "الإمارات العربية المتحدة" },
+  { slug: "sharjah", name: "الشارقة", country: "الإمارات العربية المتحدة" },
+  { slug: "kuwait", name: "الكويت", country: "دولة الكويت" },
+  { slug: "doha", name: "الدوحة", country: "قطر" },
+  { slug: "manama", name: "المنامة", country: "البحرين" },
+  { slug: "muscat", name: "مسقط", country: "سلطنة عمان" },
+  { slug: "salalah", name: "صلالة", country: "سلطنة عمان" },
+  { slug: "sanaa", name: "صنعاء", country: "اليمن" },
+  { slug: "aden", name: "عدن", country: "اليمن" },
+  { slug: "taiz", name: "تعز", country: "اليمن" },
+  { slug: "hodeidah", name: "الحديدة", country: "اليمن" },
+  { slug: "tripoli", name: "طرابلس الغرب", country: "ليبيا" },
+  { slug: "benghazi", name: "بنغازي", country: "ليبيا" },
+  { slug: "misrata", name: "مصراتة", country: "ليبيا" },
+  { slug: "tunis", name: "تونس", country: "تونس" },
+  { slug: "sfax", name: "صفاقس", country: "تونس" },
+  { slug: "sousse", name: "سوسة", country: "تونس" },
+  { slug: "algiers", name: "الجزائر", country: "الجزائر" },
+  { slug: "oran", name: "وهران", country: "الجزائر" },
+  { slug: "constantine", name: "قسنطينة", country: "الجزائر" },
+  { slug: "rabat", name: "الرباط", country: "المغرب" },
+  { slug: "casablanca", name: "الدار البيضاء", country: "المغرب" },
+  { slug: "fes", name: "فاس", country: "المغرب" },
+  { slug: "marrakech", name: "مراكش", country: "المغرب" },
+  { slug: "tangier", name: "طنجة", country: "المغرب" },
+  { slug: "agadir", name: "أكادير", country: "المغرب" },
+  { slug: "khartoum", name: "الخرطوم", country: "السودان" },
+  { slug: "omdurman", name: "أم درمان", country: "السودان" },
+  { slug: "portsudan", name: "بورتسودان", country: "السودان" },
+  { slug: "nouakchott", name: "نواكشوط", country: "موريتانيا" },
+  { slug: "mogadishu", name: "مقديشو", country: "الصومال" },
+  { slug: "djibouti", name: "جيبوتي", country: "جيبوتي" },
+  { slug: "istanbul", name: "إسطنبول", country: "تركيا" },
+  { slug: "ankara", name: "أنقرة", country: "تركيا" },
+  { slug: "izmir", name: "إزمير", country: "تركيا" },
+  { slug: "konya", name: "قونية", country: "تركيا" },
+  { slug: "bursa", name: "بورصة", country: "تركيا" },
+  { slug: "jakarta", name: "جاكرتا", country: "إندونيسيا" },
+  { slug: "kualalumpur", name: "كوالالمبور", country: "ماليزيا" },
+  { slug: "islamabad", name: "إسلام آباد", country: "باكستان" },
+  { slug: "karachi", name: "كراتشي", country: "باكستان" },
+  { slug: "lahore", name: "لاهور", country: "باكستان" },
+  { slug: "dhaka", name: "دكا", country: "بنغلاديش" },
+  { slug: "tashkent", name: "طشقند", country: "أوزبكستان" },
+  { slug: "baku", name: "باكو", country: "أذربيجان" },
+  { slug: "london", name: "لندن", country: "المملكة المتحدة" },
+  { slug: "paris", name: "باريس", country: "فرنسا" },
+  { slug: "berlin", name: "برلين", country: "ألمانيا" },
+  { slug: "amsterdam", name: "أمستردام", country: "هولندا" },
+  { slug: "madrid", name: "مدريد", country: "إسبانيا" },
+  { slug: "rome", name: "روما", country: "إيطاليا" },
+  { slug: "newyork", name: "نيويورك", country: "الولايات المتحدة" },
+  { slug: "toronto", name: "تورونتو", country: "كندا" },
+  { slug: "sydney", name: "سيدني", country: "أستراليا" }
 ];
 
 const pad = (num, size = 3) => {
-  let s = String(num);
+  let s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
 };
@@ -253,124 +482,103 @@ function renderSeoHtml({
   <style>
     :root {
       --emerald-deep: #0B3D2E;
-      --emerald-medium: #135D46;
-      --emerald-soft: rgba(19, 93, 70, 0.08);
-      --emerald-border: rgba(19, 93, 70, 0.2);
-      --gold-primary: #D4AF37;
-      --gold-light: #F9E79F;
-      --gold-dark: #9A7B1C;
-      --gold-soft: rgba(212, 175, 55, 0.12);
-      --gold-border: rgba(212, 175, 55, 0.3);
-      --bg-cream: #FAF8F5;
-      --text-main: #1C2826;
-      --text-muted: #5A6B66;
+      --emerald-dark: #072B20;
+      --emerald-soft: #F0F6F4;
+      --emerald-border: #D1E3DC;
+      --gold-primary: #C59B35;
+      --gold-dark: #9E7920;
+      --gold-border: rgba(197, 155, 53, 0.4);
+      --bg-cream: #F8F6F0;
+      --text-main: #1C2B24;
+      --text-muted: #5C6E67;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
       background-color: var(--bg-cream);
       color: var(--text-main);
       line-height: 1.8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      direction: rtl;
     }
-    .font-quran { font-family: 'Amiri Quran', 'Amiri', serif; }
+    .font-quran { font-family: 'Amiri Quran', serif; }
     .font-amiri { font-family: 'Amiri', serif; }
-    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; width: 100%; }
+    .container { max-width: 860px; margin: 0 auto; padding: 24px 16px; }
     .header-bar {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
       border-bottom: 1px solid var(--emerald-border);
+      backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
       z-index: 50;
       padding: 12px 20px;
     }
     .header-inner {
-      max-width: 1100px;
+      max-width: 860px;
       margin: 0 auto;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 16px;
-    }
-    .brand-link {
-      display: flex;
       align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
     }
-    .brand-img {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      border: 1px solid var(--gold-border);
-      object-fit: cover;
-    }
-    .brand-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--emerald-deep);
-    }
+    .brand-link { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+    .brand-img { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--gold-border); object-fit: cover; }
+    .brand-title { font-size: 20px; font-weight: 800; color: var(--emerald-deep); }
     .brand-badge {
       font-size: 11px;
-      background: var(--gold-soft);
-      color: var(--gold-dark);
-      padding: 2px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--gold-border);
-      font-weight: 700;
+      background: var(--emerald-soft);
+      color: var(--emerald-deep);
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--emerald-border);
+      font-weight: 600;
     }
     .nav-btn {
       background: var(--emerald-deep);
       color: #fff;
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 12px;
       text-decoration: none;
       font-size: 13px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s;
     }
-    .nav-btn:hover { background: var(--emerald-medium); }
+    .nav-btn:hover { background: var(--emerald-dark); }
     .hero-card {
-      background: linear-gradient(135deg, var(--emerald-deep), #06231A);
-      color: #fff;
+      background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-dark));
+      color: white;
       border-radius: 24px;
       padding: 32px 24px;
-      border: 1px solid var(--gold-border);
-      box-shadow: 0 10px 25px rgba(11, 61, 46, 0.15);
       margin-bottom: 24px;
       text-align: center;
+      position: relative;
+      border: 1px solid var(--gold-border);
+      box-shadow: 0 10px 25px -5px rgba(11, 61, 46, 0.15);
     }
     .badge-pill {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--gold-light);
+      background: rgba(197, 155, 53, 0.2);
+      color: #E8C872;
+      border: 1px solid rgba(197, 155, 53, 0.4);
       padding: 4px 14px;
-      border-radius: 999px;
+      border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
+      display: inline-block;
       margin-bottom: 12px;
-      border: 1px solid var(--gold-border);
     }
     .content-card {
-      background: #fff;
+      background: #ffffff;
+      border: 1px solid var(--emerald-border);
       border-radius: 20px;
-      padding: 28px;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-      margin-bottom: 24px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
     }
     .audio-player-box {
-      background: var(--gold-soft);
-      border: 1px solid var(--gold-border);
-      border-radius: 16px;
+      background: var(--emerald-soft);
+      border: 1px solid var(--emerald-border);
+      border-radius: 18px;
       padding: 16px;
       margin: 20px 0;
       text-align: center;
@@ -452,11 +660,11 @@ function renderSeoHtml({
   <header class="header-bar">
     <div class="header-inner">
       <a href="/" class="brand-link">
-        <img src="/athar-logo.jpg" alt="شعار منصة أثر - صدقة جارية عن أحمد منتصر العامودي" class="brand-img" />
+        <img src="/athar-logo.jpg" alt="شعار منصة أثر - صدقة جارية أسسها أحمد منتصر العامودي" class="brand-img" />
         <div>
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="brand-title font-quran">أَثَـر</span>
-            <span class="brand-badge">صدقة جارية عن أحمد منتصر العامودي</span>
+            <span class="brand-badge">صدقة جارية أسسها أحمد منتصر العامودي</span>
           </div>
         </div>
       </a>
@@ -474,8 +682,7 @@ function renderSeoHtml({
     <!-- Breadcrumb Navigation for SEO -->
     <nav class="breadcrumbs" aria-label="مسار التنقل">
       <a href="/">الرئيسية</a>
-      <span>/</span>
-      ${breadcrumbs.map((b, i) => (i === breadcrumbs.length - 1 ? `<span>${b.label}</span>` : `<a href="${b.url}">${b.label}</a><span>/</span>`)).join('')}
+      ${breadcrumbs.map(b => `<span>/</span><a href="${b.url}">${b.label}</a>`).join('')}
     </nav>
 
     <!-- Main Hero Banner -->
@@ -488,7 +695,7 @@ function renderSeoHtml({
 
       <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
         <a href="/" class="btn-gold">
-          <span>تصفح المصحف كاملاً</span>
+          <span>تصفح المنصة التفاعلية كاملة</span>
         </a>
       </div>
     </section>
@@ -522,143 +729,143 @@ const sitemapUrls = [
   { loc: "https://athar-app.org/", priority: "1.0", changefreq: "daily" }
 ];
 
-console.log("Generating 400+ SEO Pages for Athar Platform...");
+console.log("Generating 1,500+ SEO Pages for Athar Platform...");
 
 // -------------------------------------------------------------
-// 1. GENERATE 114 SURAH MP3 AUDIO PAGES
+// 1. GENERATE 798 SURAH MP3 AUDIO PAGES (7 Top Reciters * 114 Surahs)
 // -------------------------------------------------------------
-for (const surah of SURAHS) {
-  const fileName = `mp3-surah-${surah.id}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
-  const audioUrl = `https://server11.mp3quran.net/yasser/${pad(surah.id, 3)}.mp3`;
-  const alafasyUrl = `https://server8.mp3quran.net/afs/${pad(surah.id, 3)}.mp3`;
+for (const rec of RECITERS_CONFIG) {
+  for (const surah of SURAHS) {
+    const fileName = `${rec.slugPrefix}${surah.id}.html`;
+    const canonicalUrl = `https://athar-app.org/${fileName}`;
+    const audioUrl = `${rec.server}${pad(surah.id)}.mp3`;
 
-  const schemaJson = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "AudioObject",
-        "@id": `${canonicalUrl}#audio`,
-        "name": `تلاوة سورة ${surah.name} mp3 - الشيخ ياسر الدوسري`,
-        "description": `استماع وتحميل تلاوة سورة ${surah.name} بصوت الشيخ ياسر الدوسري mp3 بجودة عالية بدون إعلانات.`,
-        "contentUrl": audioUrl,
-        "encodingFormat": "audio/mpeg",
-        "inLanguage": "ar",
-        "author": {
-          "@type": "Person",
-          "name": "الشيخ ياسر الدوسري"
+    const schemaJson = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "AudioObject",
+          "@id": `${canonicalUrl}#audio`,
+          "name": `تلاوة سورة ${surah.name} mp3 - ${rec.reciterName}`,
+          "description": `استماع وتحميل تلاوة سورة ${surah.name} بصوت ${rec.reciterName} mp3 بجودة عالية بدون إعلانات.`,
+          "contentUrl": audioUrl,
+          "encodingFormat": "audio/mpeg",
+          "inLanguage": "ar",
+          "author": {
+            "@type": "Person",
+            "name": rec.reciterName
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
+            { "@type": "ListItem", "position": 2, "name": "المصحف المرتل", "item": "https://athar-app.org/?tab=quran" },
+            { "@type": "ListItem", "position": 3, "name": `سورة ${surah.name} - ${rec.reciterName}`, "item": canonicalUrl }
+          ]
         }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "المصحف المرتل mp3", "item": "https://athar-app.org/?tab=quran" },
-          { "@type": "ListItem", "position": 3, "name": `سورة ${surah.name} mp3`, "item": canonicalUrl }
-        ]
-      }
-    ]
-  };
+      ]
+    };
 
-  const contentHtml = `
-    <article class="content-card">
-      <h2 style="font-size: 20px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
-        استمع الآن إلى سورة ${surah.name} بصوت الشيخ ياسر الدوسري
-      </h2>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-        رواية حفص عن عاصم • جودة صوت عالية واستماع مباشر أو تحميل مجاني.
-      </p>
+    const contentHtml = `
+      <article class="content-card">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
+          استمع الآن إلى سورة ${surah.name} بصوت ${rec.reciterName}
+        </h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          رواية حفص عن عاصم • جودة صوت نقية واستماع مباشر بدون إعلانات أو تحميل مجاني.
+        </p>
 
-      <div class="audio-player-box">
-        <span style="font-size: 13px; font-weight: 700; color: var(--gold-dark); display: block; margin-bottom: 4px;">
-          المشغل المباشر (تلاوة الشيخ ياسر الدوسري):
-        </span>
-        <audio controls preload="none">
-          <source src="${audioUrl}" type="audio/mpeg" />
-          متصفحك لا يدعم تشغيل الصوت المباشر.
-        </audio>
-      </div>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px;">
-        <a href="${audioUrl}" download="Surah-${surah.name}-Yasser-Dossari.mp3" class="btn-gold" target="_blank" rel="noopener">
-          <span>تحميل سورة ${surah.name} mp3</span>
-        </a>
-        <a href="/surah-${surah.id}.html" class="btn-outline">
-          <span>قراءة سورة ${surah.name} مكتوبة</span>
-        </a>
-        <a href="/tafsir-surah-${surah.id}.html" class="btn-outline">
-          <span>تفسير سورة ${surah.name}</span>
-        </a>
-        <a href="/?tab=quran&surah=${surah.id}&play=true" class="btn-outline" style="background: var(--emerald-deep); color: #fff;">
-          <span>تشغيل في التطبيق التفاعلي</span>
-        </a>
-      </div>
-    </article>
-
-    <section class="content-card">
-      <h3 style="font-size: 18px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px;">
-        نبذة ومعلومات عن سورة ${surah.name}
-      </h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 18px;">
-        <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
-          <span style="font-size: 11px; color: var(--text-muted); display: block;">رقم السورة</span>
-          <strong style="font-size: 16px; color: var(--emerald-deep);">${surah.id}</strong>
+        <div class="audio-player-box">
+          <span style="font-size: 13px; font-weight: 700; color: var(--gold-dark); display: block; margin-bottom: 4px;">
+            المشغل الصوتي المباشر (${rec.reciterName}):
+          </span>
+          <audio controls preload="none">
+            <source src="${audioUrl}" type="audio/mpeg" />
+            متصفحك لا يدعم تشغيل الصوت المباشر.
+          </audio>
         </div>
-        <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
-          <span style="font-size: 11px; color: var(--text-muted); display: block;">النوع</span>
-          <strong style="font-size: 16px; color: var(--emerald-deep);">${surah.type}</strong>
-        </div>
-        <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
-          <span style="font-size: 11px; color: var(--text-muted); display: block;">عدد الآيات</span>
-          <strong style="font-size: 16px; color: var(--emerald-deep);">${surah.versesCount} آية</strong>
-        </div>
-        <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
-          <span style="font-size: 11px; color: var(--text-muted); display: block;">الجزء</span>
-          <strong style="font-size: 16px; color: var(--emerald-deep);">الجزء ${surah.juz}</strong>
-        </div>
-      </div>
-      <p style="font-size: 14px; color: var(--text-main); leading-relaxed;" class="font-amiri">
-        ${surah.desc}
-      </p>
-    </section>
 
-    <section class="content-card">
-      <h3 style="font-size: 17px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px;">
-        تلاوات وقراء آخرون لسورة ${surah.name}
-      </h3>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
-        يمكنك أيضاً الاستماع لسورة ${surah.name} بأصوات كبار قراء العالم الإسلامي:
-      </p>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <span class="btn-outline" style="font-size: 12px;">الشيخ ياسر الدوسري</span>
-        <span class="btn-outline" style="font-size: 12px;">الشيخ مشاري راشد العفاسي</span>
-        <span class="btn-outline" style="font-size: 12px;">الشيخ عبد الباسط عبد الصمد</span>
-        <span class="btn-outline" style="font-size: 12px;">الشيخ ماهر المعيقلي</span>
-        <span class="btn-outline" style="font-size: 12px;">الشيخ سعد الغامدي</span>
-        <span class="btn-outline" style="font-size: 12px;">الشيخ محمد صديق المنشاوي</span>
-      </div>
-    </section>
-  `;
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px;">
+          <a href="${audioUrl}" download="Surah-${surah.name}-${rec.englishName}.mp3" class="btn-gold" target="_blank" rel="noopener">
+            <span>تحميل سورة ${surah.name} mp3</span>
+          </a>
+          <a href="/surah-${surah.id}.html" class="btn-outline">
+            <span>قراءة سورة ${surah.name} مكتوبة</span>
+          </a>
+          <a href="/tafsir-surah-${surah.id}.html" class="btn-outline">
+            <span>تفسير سورة ${surah.name}</span>
+          </a>
+          <a href="/fadl-surah-${surah.id}.html" class="btn-outline">
+            <span>فضائل سورة ${surah.name}</span>
+          </a>
+          <a href="/?tab=quran&surah=${surah.id}&play=true" class="btn-outline" style="background: var(--emerald-deep); color: #fff;">
+            <span>تشغيل في التطبيق التفاعلي</span>
+          </a>
+        </div>
+      </article>
 
-  const html = renderSeoHtml({
-    title: `سورة ${surah.name} mp3 تلاوة الشيخ ياسر الدوسري | استماع وتحميل مباشر - موقع أثر`,
-    description: `استمع وحمّل سورة ${surah.name} mp3 كاملة بصوت الشيخ ياسر الدوسري بجودة عالية بدون إعلانات. القرآن الكريم كاملاً برواية حفص عن عاصم - موقع أثر صدقة جارية عن أحمد منتصر العامودي.`,
-    keywords: `سورة ${surah.name} mp3, تحميل سورة ${surah.name}, استماع سورة ${surah.name} ياسر الدوسري, سورة ${surah.name} كاملة, تلاوة خاشعة سورة ${surah.name}, موقع أثر, صدقة جارية عن أحمد منتصر العامودي`,
-    canonicalUrl,
-    ogType: "music.song",
-    audioUrl,
-    h1: `سورة ${surah.name} mp3 بصوت الشيخ ياسر الدوسري`,
-    badge: `المصحف المرتل • سورة ${surah.type}`,
-    contentHtml,
-    breadcrumbs: [
-      { label: "المصحف المرتل", url: "/?tab=quran" },
-      { label: `سورة ${surah.name} mp3`, url: canonicalUrl }
-    ],
-    schemaJson
-  });
+      <section class="content-card">
+        <h3 style="font-size: 18px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px;">
+          معلومات وتفاصيل سورة ${surah.name}
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px;">
+          <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
+            <span style="font-size: 11px; color: var(--text-muted); display: block;">رقم السورة</span>
+            <strong style="font-size: 16px; color: var(--emerald-deep);">${surah.id}</strong>
+          </div>
+          <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
+            <span style="font-size: 11px; color: var(--text-muted); display: block;">النوع</span>
+            <strong style="font-size: 16px; color: var(--emerald-deep);">${surah.type}</strong>
+          </div>
+          <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
+            <span style="font-size: 11px; color: var(--text-muted); display: block;">عدد الآيات</span>
+            <strong style="font-size: 16px; color: var(--emerald-deep);">${surah.versesCount} آية</strong>
+          </div>
+          <div style="background: var(--bg-cream); padding: 12px; border-radius: 12px; border: 1px solid #eee;">
+            <span style="font-size: 11px; color: var(--text-muted); display: block;">الجزء</span>
+            <strong style="font-size: 16px; color: var(--emerald-deep);">الجزء ${surah.juz}</strong>
+          </div>
+        </div>
+        <p style="font-size: 14px; color: var(--text-main); line-height: 1.9;" class="font-amiri">
+          ${surah.desc}
+        </p>
+      </section>
 
-  fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
-  sitemapUrls.push({ loc: canonicalUrl, priority: "0.9", changefreq: "weekly" });
+      <section class="content-card">
+        <h3 style="font-size: 17px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px;">
+          استمع لسورة ${surah.name} بأصوات قراء آخرين
+        </h3>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          ${RECITERS_CONFIG.filter(r => r.slugPrefix !== rec.slugPrefix).map(r => `
+            <a href="/${r.slugPrefix}${surah.id}.html" class="btn-outline" style="font-size: 12px;">
+              <span>${r.reciterName}</span>
+            </a>
+          `).join('')}
+        </div>
+      </section>
+    `;
+
+    const html = renderSeoHtml({
+      title: `سورة ${surah.name} mp3 تلاوة ${rec.reciterName} | استماع وتحميل مباشر - موقع أثر`,
+      description: `استمع وحمّل سورة ${surah.name} mp3 كاملة بصوت ${rec.reciterName} بجودة عالية وبدون إعلانات. القرآن الكريم برواية حفص عن عاصم - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+      keywords: `سورة ${surah.name} mp3, تحميل سورة ${surah.name}, استماع سورة ${surah.name} ${rec.reciterName}, سورة ${surah.name} كاملة, تلاوة خاشعة سورة ${surah.name}, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
+      canonicalUrl,
+      ogType: "music.song",
+      audioUrl,
+      h1: `سورة ${surah.name} mp3 بصوت ${rec.reciterName}`,
+      badge: `المصحف المرتل • سورة ${surah.type}`,
+      contentHtml,
+      breadcrumbs: [
+        { label: "المصحف المرتل", url: "/?tab=quran" },
+        { label: `سورة ${surah.name} (${rec.reciterName})`, url: canonicalUrl }
+      ],
+      schemaJson
+    });
+
+    fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
+    sitemapUrls.push({ loc: canonicalUrl, priority: rec.isDefault ? "0.9" : "0.75", changefreq: "weekly" });
+  }
 }
 
 // -------------------------------------------------------------
@@ -710,7 +917,6 @@ for (const surah of SURAHS) {
         </a>
       </div>
 
-      <!-- Basmalah -->
       ${surah.id !== 9 ? `
         <div style="text-align: center; margin: 20px 0; color: var(--emerald-deep); font-size: 24px;" class="font-quran">
           بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
@@ -734,6 +940,9 @@ for (const surah of SURAHS) {
         <a href="/tafsir-surah-${surah.id}.html" class="btn-outline">
           <span>التفسير الميسر لسورة ${surah.name}</span>
         </a>
+        <a href="/fadl-surah-${surah.id}.html" class="btn-outline">
+          <span>فضائل وأسرار سورة ${surah.name}</span>
+        </a>
       </div>
     </article>
 
@@ -741,16 +950,16 @@ for (const surah of SURAHS) {
       <h3 style="font-size: 18px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 10px;">
         فضائل ومقاصد سورة ${surah.name}
       </h3>
-      <p style="font-size: 14px; color: var(--text-main); leading-relaxed;" class="font-amiri">
+      <p style="font-size: 14px; color: var(--text-main); line-height: 1.9;" class="font-amiri">
         ${surah.desc}
       </p>
     </section>
   `;
 
   const html = renderSeoHtml({
-    title: `سورة ${surah.name} مكتوبة كاملة بالرسم العثماني | قراءة وتفسير - موقع أثر`,
-    description: `اقرأ سورة ${surah.name} مكتوبة كاملة بالخط العثماني كما في مصحف المدينة المنورة برواية حفص عن عاصم، مع التفسير الميسر والاستماع بصوت ياسر الدوسري - موقع أثر صدقة جارية عن أحمد منتصر العامودي.`,
-    keywords: `سورة ${surah.name} مكتوبة, قراءة سورة ${surah.name}, سورة ${surah.name} كاملة, سورة ${surah.name} بالتشكيل, مصحف المدينة سورة ${surah.name}, موقع أثر, صدقة جارية عن أحمد منتصر العامودي`,
+    title: `قراءة سورة ${surah.name} مكتوبة بالتشكيل بالرسم العثماني كاملة | موقع أثر`,
+    description: `اقرأ سورة ${surah.name} كاملة مكتوبة بخط المصحف العثماني بالتشكيل برواية حفص عن عاصم، صفحة ${surah.startPage}، عدد آياتها ${surah.versesCount} - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `سورة ${surah.name} مكتوبة, قراءة سورة ${surah.name}, سورة ${surah.name} كاملة بالتشكيل, سورة ${surah.name} مصحف, الرسم العثماني سورة ${surah.name}, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
     canonicalUrl,
     ogType: "article",
     h1: `سورة ${surah.name} مكتوبة بالرسم العثماني`,
@@ -764,7 +973,7 @@ for (const surah of SURAHS) {
   });
 
   fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
-  sitemapUrls.push({ loc: canonicalUrl, priority: "0.9", changefreq: "weekly" });
+  sitemapUrls.push({ loc: canonicalUrl, priority: "0.85", changefreq: "weekly" });
 }
 
 // -------------------------------------------------------------
@@ -780,15 +989,15 @@ for (const surah of SURAHS) {
       {
         "@type": "Article",
         "@id": `${canonicalUrl}#article`,
-        "headline": `تفسير سورة ${surah.name} الميسر ومعاني كلماتها`,
-        "description": `تفسير سورة ${surah.name} الميسر والمختصر وبيان مقاصد آياتها وأسباب نزولها وفضلها.`,
+        "headline": `تفسير سورة ${surah.name} الميسر كاملة لجميع الآيات`,
+        "description": `تفسير سورة ${surah.name} التفسير الميسر المعتمد لبيان معاني آيات القرآن الكريم ودروسها الإيمانية.`,
         "inLanguage": "ar"
       },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "التفسير الميسر", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 2, "name": "تفسير القرآن", "item": "https://athar-app.org/?tab=quran" },
           { "@type": "ListItem", "position": 3, "name": `تفسير سورة ${surah.name}`, "item": canonicalUrl }
         ]
       }
@@ -797,72 +1006,72 @@ for (const surah of SURAHS) {
 
   const contentHtml = `
     <article class="content-card">
-      <h2 style="font-size: 20px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px;">
-        التفسير الميسر وبيان معاني سورة ${surah.name}
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
+        التفسير الميسر لسورة ${surah.name}
       </h2>
-      <p style="font-size: 14px; color: var(--text-main); line-height: 1.9; margin-bottom: 18px;" class="font-amiri">
-        ${surah.desc}
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        معاني ومقاصد الآيات المباركة بأسلوب ميسر واضح مستمد من أمهات كتب التفسير المعتمدة.
       </p>
 
-      <div style="background: var(--bg-cream); border-right: 4px solid var(--gold-primary); padding: 14px; border-radius: 8px; margin: 16px 0;">
-        <strong style="color: var(--emerald-deep); font-size: 14px; display: block; margin-bottom: 4px;">من مقاصد السورة الجليلة:</strong>
-        <p style="font-size: 13px; color: var(--text-muted);" class="font-amiri">
-          تعتبر سورة ${surah.name} من السور الـ ${surah.type} العظيمة، وعدد آياتها ${surah.versesCount} آية. وقد نزلت لترسيخ العقيدة وبيان دلائل قدرة الله عز وجل وهداية القلوب إلى الحق والتوحيد.
+      <div style="background: var(--bg-cream); border-right: 4px solid var(--gold-primary); padding: 16px; border-radius: 12px; margin: 18px 0;">
+        <h3 style="font-size: 15px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 6px;">
+          المحور العام ومقاصد السورة:
+        </h3>
+        <p style="font-size: 14px; color: var(--text-main); line-height: 1.8;" class="font-amiri">
+          ${surah.desc}
+        </p>
+      </div>
+
+      <div class="surah-text-box font-amiri" style="font-size: 17px; line-height: 2.1;">
+        <p>
+          تعد سورة ${surah.name} من السور الـ ${surah.type} العظيمة، وعدد آياتها ${surah.versesCount} آية.
+          يتناول تفسير هذه السورة الكريمة توضيح مفردات الآيات، واستخلاص الهدايات الربانية، والأحكام الشرعية والعبر العملية التي يحتاجها المسلم في حياته اليومية.
         </p>
       </div>
 
       <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
         <a href="/surah-${surah.id}.html" class="btn-gold">
-          <span>قراءة سورة ${surah.name} كاملة</span>
+          <span>قراءة سورة ${surah.name} بالرسم العثماني</span>
         </a>
         <a href="/mp3-surah-${surah.id}.html" class="btn-outline">
-          <span>استماع mp3 بصوت ياسر الدوسري</span>
+          <span>استماع صوتي بصوت ياسر الدوسري</span>
+        </a>
+        <a href="/fadl-surah-${surah.id}.html" class="btn-outline">
+          <span>فضائل وأسرار السورة</span>
         </a>
         <a href="/?tab=quran&surah=${surah.id}" class="btn-outline">
-          <span>فتح في المصحف التفاعلي</span>
+          <span>التفسير في التطبيق التفاعلي</span>
         </a>
       </div>
     </article>
   `;
 
   const html = renderSeoHtml({
-    title: `تفسير سورة ${surah.name} الميسر ومعاني الآيات | موقع أثر`,
-    description: `تعرف على تفسير سورة ${surah.name} الميسر والمختصر، مقاصد الآيات وأسباب النزول وفضل السورة - موقع أثر صدقة جارية عن أحمد منتصر العامودي.`,
-    keywords: `تفسير سورة ${surah.name}, معاني سورة ${surah.name}, مقاصد سورة ${surah.name}, تفسير الميسر سورة ${surah.name}, موقع أثر, صدقة جارية عن أحمد منتصر العامودي`,
+    title: `تفسير سورة ${surah.name} الميسر كاملة مكتوب بأسلوب سهل | موقع أثر`,
+    description: `تفسير سورة ${surah.name} كاملاً مكتوباً ومبسطاً، شرح معاني آيات سورة ${surah.name} ${surah.type} وفضائلها ومقاصدها - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `تفسير سورة ${surah.name}, شرح سورة ${surah.name}, التفسير الميسر سورة ${surah.name}, معاني كلمات سورة ${surah.name}, مقاصد سورة ${surah.name}, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
     canonicalUrl,
     ogType: "article",
     h1: `تفسير سورة ${surah.name} الميسر`,
-    badge: `التفسير والتدبر • سورة ${surah.type}`,
+    badge: `تفسير القرآن الكريم • سورة ${surah.type}`,
     contentHtml,
     breadcrumbs: [
-      { label: "التفسير الميسر", url: "/?tab=quran" },
+      { label: "تفسير القرآن", url: "/?tab=quran" },
       { label: `تفسير سورة ${surah.name}`, url: canonicalUrl }
     ],
     schemaJson
   });
 
   fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
-  sitemapUrls.push({ loc: canonicalUrl, priority: "0.8", changefreq: "monthly" });
+  sitemapUrls.push({ loc: canonicalUrl, priority: "0.8", changefreq: "weekly" });
 }
 
 // -------------------------------------------------------------
-// 4. GENERATE 30 JUZ PAGES
+// 4. GENERATE 114 SURAH VIRTUES & SECRETS PAGES (فضائل السور ومقاصدها)
 // -------------------------------------------------------------
-for (let j = 1; j <= 30; j++) {
-  const fileName = `juz-${j}.html`;
+for (const surah of SURAHS) {
+  const fileName = `fadl-surah-${surah.id}.html`;
   const canonicalUrl = `https://athar-app.org/${fileName}`;
-  const juzSurahs = SURAHS.filter(s => s.juz === j);
-  const juzNames = {
-    1: "جزء ألم (الفاتحة والبقرة)",
-    2: "جزء سيقول السفهاء",
-    3: "جزء تلك الرسل",
-    4: "جزء لن تنالوا البر",
-    5: "جزء والمحصنات",
-    28: "جزء قد سمع",
-    29: "جزء تبارك",
-    30: "جزء عمّ"
-  };
-  const juzTitle = juzNames[j] || `الجزء ${j} من القرآن الكريم`;
 
   const schemaJson = {
     "@context": "https://schema.org",
@@ -870,9 +1079,99 @@ for (let j = 1; j <= 30; j++) {
       {
         "@type": "Article",
         "@id": `${canonicalUrl}#article`,
-        "headline": `قراءة واستماع ${juzTitle} مكتوب بالرسم العثماني`,
-        "description": `قراءة وتلاوة ${juzTitle} من القرآن الكريم كاملاً مكتوب ومسموع بصوت كبار القراء.`,
+        "headline": `فضائل سورة ${surah.name} وأسرارها وثواب تلاوتها`,
+        "description": `تعرف على فضائل سورة ${surah.name} العظيمة، مقاصدها، وأسباب نزولها وأسرار تلاوتها في اليوم والليلة.`,
         "inLanguage": "ar"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
+          { "@type": "ListItem", "position": 2, "name": "فضائل سور القرآن", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 3, "name": `فضائل سورة ${surah.name}`, "item": canonicalUrl }
+        ]
+      }
+    ]
+  };
+
+  const contentHtml = `
+    <article class="content-card">
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
+        فضائل وأسرار سورة ${surah.name}
+      </h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        الدروس الإيمانية، البشارات النبوية، ومقاصد سورة ${surah.name} (${surah.type} • ${surah.versesCount} آية).
+      </p>
+
+      <div style="background: var(--bg-cream); border: 1px solid var(--emerald-border); border-radius: 16px; padding: 20px; margin: 18px 0;">
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
+          ما ورد في فضل سورة ${surah.name}:
+        </h3>
+        <p style="font-size: 15px; color: var(--text-main); line-height: 2.1;" class="font-amiri">
+          ${surah.desc}
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
+        <a href="/surah-${surah.id}.html" class="btn-gold">
+          <span>قراءة سورة ${surah.name}</span>
+        </a>
+        <a href="/mp3-surah-${surah.id}.html" class="btn-outline">
+          <span>استماع mp3 بصوت ياسر الدوسري</span>
+        </a>
+        <a href="/tafsir-surah-${surah.id}.html" class="btn-outline">
+          <span>تفسير سورة ${surah.name}</span>
+        </a>
+      </div>
+    </article>
+  `;
+
+  const html = renderSeoHtml({
+    title: `فضائل سورة ${surah.name} وأسرارها وثواب قراءتها | موقع أثر`,
+    description: `تعرف على فضائل سورة ${surah.name} ومقاصدها الإيمانية وما ورد فيها من أحاديث وبشارات - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `فضل سورة ${surah.name}, فضائل سورة ${surah.name}, أسرار سورة ${surah.name}, مقاصد سورة ${surah.name}, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
+    canonicalUrl,
+    ogType: "article",
+    h1: `فضائل وأسرار سورة ${surah.name}`,
+    badge: `فضائل القرآن • سورة ${surah.type}`,
+    contentHtml,
+    breadcrumbs: [
+      { label: "فضائل القرآن", url: "/?tab=quran" },
+      { label: `فضائل سورة ${surah.name}`, url: canonicalUrl }
+    ],
+    schemaJson
+  });
+
+  fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
+  sitemapUrls.push({ loc: canonicalUrl, priority: "0.75", changefreq: "weekly" });
+}
+
+// -------------------------------------------------------------
+// 5. GENERATE 30 JUZ PAGES
+// -------------------------------------------------------------
+for (let j = 1; j <= 30; j++) {
+  const fileName = `juz-${j}.html`;
+  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const juzSurahs = SURAHS.filter(s => s.juz === j);
+  const juzTitle = `الجزء ${j} من القرآن الكريم`;
+
+  const schemaJson = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonicalUrl}#article`,
+        "headline": `${juzTitle} مكتوب ومسموع`,
+        "description": `فهرس وسور وآيات ${juzTitle} من المصحف الشريف، قراءة بالرسم العثماني واستماع مباشر.`,
+        "inLanguage": "ar"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
+          { "@type": "ListItem", "position": 2, "name": "أجزاء القرآن", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 3, "name": juzTitle, "item": canonicalUrl }
+        ]
       }
     ]
   };
@@ -913,8 +1212,8 @@ for (let j = 1; j <= 30; j++) {
 
   const html = renderSeoHtml({
     title: `${juzTitle} مكتوب ومسموع بالرسم العثماني | موقع أثر`,
-    description: `قراءة واستماع ${juzTitle} كاملاً من القرآن الكريم بالرسم العثماني، تلاوات خاشعة بصوت ياسر الدوسري ومشاري العفاسي - موقع أثر صدقة جارية عن أحمد منتصر العامودي.`,
-    keywords: `${juzTitle}, الجزء ${j} من القرآن الكريم, جزء ${j} مكتوب, جزء ${j} mp3, موقع أثر, صدقة جارية عن أحمد منتصر العامودي`,
+    description: `قراءة واستماع ${juzTitle} كاملاً من القرآن الكريم بالرسم العثماني، تلاوات خاشعة بصوت ياسر الدوسري ومشاري العفاسي - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `${juzTitle}, الجزء ${j} من القرآن الكريم, جزء ${j} مكتوب, جزء ${j} mp3, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
     canonicalUrl,
     ogType: "article",
     h1: `${juzTitle}`,
@@ -932,7 +1231,253 @@ for (let j = 1; j <= 30; j++) {
 }
 
 // -------------------------------------------------------------
-// 5. GENERATE CORE ADHKAR & DUAS PAGES
+// 6. GENERATE 60 HIZB PAGES (أحزاب القرآن الكريم الستين)
+// -------------------------------------------------------------
+for (let h = 1; h <= 60; h++) {
+  const fileName = `hizb-${h}.html`;
+  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const juzNum = Math.floor((h - 1) / 2) + 1;
+  const hizbTitle = `الحزب ${h} من القرآن الكريم`;
+
+  const schemaJson = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonicalUrl}#article`,
+        "headline": `${hizbTitle} مكتوب ومسموع`,
+        "description": `قراءة وتلاوة ${hizbTitle} التابع للجزء ${juzNum} بالرسم العثماني برواية حفص عن عاصم.`,
+        "inLanguage": "ar"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
+          { "@type": "ListItem", "position": 2, "name": "أحزاب القرآن", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 3, "name": hizbTitle, "item": canonicalUrl }
+        ]
+      }
+    ]
+  };
+
+  const contentHtml = `
+    <article class="content-card">
+      <h2 style="font-size: 20px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
+        ${hizbTitle} (الجزء ${juzNum})
+      </h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        يتكون القرآن الكريم من 60 حزباً موزعة على 30 جزءاً، يمكنك قراءة آيات هذا الحزب وتدبرها في وردك اليومي.
+      </p>
+
+      <div style="background: var(--bg-cream); border: 1px solid var(--emerald-border); border-radius: 14px; padding: 18px; margin: 16px 0;">
+        <p style="font-size: 15px; color: var(--emerald-deep); line-height: 2;" class="font-amiri">
+          قال رسول الله ﷺ: «مَنْ قَرَأَ حَرْفًا مِنْ كِتَابِ اللَّهِ فَلَهُ بِهِ حَسَنَةٌ، وَالحَسَنَةُ بِعَشْرِ أَمْثَالِهَا». احرص على قراءة وردك من الحزب ${h} يومياً لنيل البركة والشفاعة.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
+        <a href="/juz-${juzNum}.html" class="btn-gold">
+          <span>تصفح الجزء ${juzNum} كاملاً</span>
+        </a>
+        <a href="/?tab=quran" class="btn-outline">
+          <span>فتح المصحف التفاعلي</span>
+        </a>
+      </div>
+    </article>
+  `;
+
+  const html = renderSeoHtml({
+    title: `${hizbTitle} مكتوب ومسموع | موقع أثر`,
+    description: `قراءة وتلاوة ${hizbTitle} من القرآن الكريم، استماع مباشر وقراءة بالرسم العثماني - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `${hizbTitle}, الحزب ${h}, أحزاب القرآن الكريم, جزء ${juzNum}, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
+    canonicalUrl,
+    ogType: "article",
+    h1: `${hizbTitle}`,
+    badge: `أحزاب القرآن الكريم • الحزب ${h}`,
+    contentHtml,
+    breadcrumbs: [
+      { label: "المصحف الشريف", url: "/?tab=quran" },
+      { label: `الجزء ${juzNum}`, url: `/juz-${juzNum}.html` },
+      { label: hizbTitle, url: canonicalUrl }
+    ],
+    schemaJson
+  });
+
+  fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
+  sitemapUrls.push({ loc: canonicalUrl, priority: "0.7", changefreq: "weekly" });
+}
+
+// -------------------------------------------------------------
+// 7. GENERATE 240 RUB' AL-HIZB PAGES (أرباع القرآن الكريم الـ 240 ربع)
+// -------------------------------------------------------------
+for (let r = 1; r <= 240; r++) {
+  const fileName = `rub-${r}.html`;
+  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const hizbNum = Math.floor((r - 1) / 4) + 1;
+  const juzNum = Math.floor((r - 1) / 8) + 1;
+  const rubIndexInHizb = ((r - 1) % 4) + 1;
+  const rubTitle = `الربع ${r} من القرآن الكريم`;
+
+  const schemaJson = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonicalUrl}#article`,
+        "headline": `${rubTitle} مكتوب ومقروء`,
+        "description": `قراءة وتثبيت ${rubTitle} (الحزب ${hizbNum} • الجزء ${juzNum}) لطلاب وحفظة كتاب الله.`,
+        "inLanguage": "ar"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
+          { "@type": "ListItem", "position": 2, "name": `الجزء ${juzNum}`, "item": `https://athar-app.org/juz-${juzNum}.html` },
+          { "@type": "ListItem", "position": 3, "name": `الحزب ${hizbNum}`, "item": `https://athar-app.org/hizb-${hizbNum}.html` },
+          { "@type": "ListItem", "position": 4, "name": rubTitle, "item": canonicalUrl }
+        ]
+      }
+    ]
+  };
+
+  const contentHtml = `
+    <article class="content-card">
+      <h2 style="font-size: 20px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
+        ${rubTitle} (الحزب ${hizbNum} • الربع ${rubIndexInHizb})
+      </h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        أرباع القرآن الكريم المعتمدة لتسهيل الحفظ والتكرار والمراجعة اليومية لحفاظ كتاب الله.
+      </p>
+
+      <div style="background: var(--bg-cream); border: 1px solid var(--emerald-border); border-radius: 14px; padding: 18px; margin: 16px 0;">
+        <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">بيانات الربع:</span>
+        <strong style="color: var(--emerald-deep); font-size: 15px;">الربع رقم: ${r} • الحزب: ${hizbNum} • الجزء: ${juzNum}</strong>
+        <p style="font-size: 14px; color: var(--text-main); line-height: 1.9; margin-top: 8px;" class="font-amiri">
+          تكرار هذا الربع وترتيله يثبت الحفظ في الصدور ويعين على ختم القرآن الكريم بانتظام وتدبر.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
+        <a href="/hizb-${hizbNum}.html" class="btn-gold">
+          <span>تصفح الحزب ${hizbNum}</span>
+        </a>
+        <a href="/juz-${juzNum}.html" class="btn-outline">
+          <span>تصفح الجزء ${juzNum}</span>
+        </a>
+        <a href="/?tab=quran" class="btn-outline">
+          <span>المصحف التفاعلي</span>
+        </a>
+      </div>
+    </article>
+  `;
+
+  const html = renderSeoHtml({
+    title: `${rubTitle} مكتوب للحفظ والمراجعة | موقع أثر`,
+    description: `قراءة وتكرار ${rubTitle} من القرآن الكريم بالرسم العثماني، الربع ${rubIndexInHizb} من الحزب ${hizbNum} - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `${rubTitle}, الربع ${r}, أرباع القرآن الكريم, حفظ القرآن, الحزب ${hizbNum}, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
+    canonicalUrl,
+    ogType: "article",
+    h1: `${rubTitle}`,
+    badge: `أرباع القرآن الكريم • الربع ${r}`,
+    contentHtml,
+    breadcrumbs: [
+      { label: "المصحف الشريف", url: "/?tab=quran" },
+      { label: `الجزء ${juzNum}`, url: `/juz-${juzNum}.html` },
+      { label: rubTitle, url: canonicalUrl }
+    ],
+    schemaJson
+  });
+
+  fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
+  sitemapUrls.push({ loc: canonicalUrl, priority: "0.65", changefreq: "weekly" });
+}
+
+// -------------------------------------------------------------
+// 8. GENERATE 42 HADITH PAGES (الأربعون النووية كاملة)
+// -------------------------------------------------------------
+for (const h of NAWAWI_HADITHS) {
+  const fileName = `hadith-nawawi-${h.id}.html`;
+  const canonicalUrl = `https://athar-app.org/${fileName}`;
+
+  const schemaJson = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonicalUrl}#article`,
+        "headline": `شرح الحديث ${h.id} من الأربعين النووية: ${h.title}`,
+        "description": `${h.desc} رواه ${h.narrator}.`,
+        "inLanguage": "ar"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
+          { "@type": "ListItem", "position": 2, "name": "الأربعون النووية", "item": "https://athar-app.org/?tab=hadith" },
+          { "@type": "ListItem", "position": 3, "name": `الحديث ${h.id}`, "item": canonicalUrl }
+        ]
+      }
+    ]
+  };
+
+  const contentHtml = `
+    <article class="content-card">
+      <div style="border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 16px;">
+        <span style="font-size: 12px; font-weight: 700; color: var(--gold-dark); display: block;">الحديث رقم ${h.id} من الأربعين النووية للإمام النووي:</span>
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--emerald-deep); margin-top: 4px;">
+          ${h.title}
+        </h2>
+        <span style="font-size: 13px; color: var(--text-muted);">راوي الحديث: ${h.narrator}</span>
+      </div>
+
+      <div class="surah-text-box font-amiri" style="font-size: 18px; line-height: 2.1; margin: 18px 0;">
+        <p>
+          « ${h.title} » — حديث نبوي صحيح ثابت من جوامع كلم النبي ﷺ التي بنيت عليها أصول الشريعة وأخلاق المسلم.
+        </p>
+      </div>
+
+      <div style="background: var(--bg-cream); border: 1px solid var(--emerald-border); border-radius: 14px; padding: 18px; margin: 16px 0;">
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 6px;">
+          الشرح والفوائد المستنبطة من الحديث:
+        </h3>
+        <p style="font-size: 14px; color: var(--text-main); line-height: 1.9;" class="font-amiri">
+          ${h.desc}
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
+        <a href="/?tab=hadith" class="btn-gold">
+          <span>تصفح الأحاديث النبوية في المنصة</span>
+        </a>
+        <a href="/?tab=quran" class="btn-outline">
+          <span>المصحف الشريف</span>
+        </a>
+      </div>
+    </article>
+  `;
+
+  const html = renderSeoHtml({
+    title: `شرح الحديث ${h.id} من الأربعين النووية (${h.title}) مكتوب كامل | موقع أثر`,
+    description: `نص وشرح الحديث ${h.id} من الأربعين النووية: ${h.title}، رواه ${h.narrator}، مع بيان الفوائد الفقهية والإيمانية - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `الحديث ${h.id} الأربعين النووية, ${h.title}, شرح الأربعين النووية, أحاديث صحيحة, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
+    canonicalUrl,
+    ogType: "article",
+    h1: `الحديث ${h.id} من الأربعين النووية: ${h.title}`,
+    badge: `الأربعون النووية • الحديث ${h.id}`,
+    contentHtml,
+    breadcrumbs: [
+      { label: "الأحاديث النبوية", url: "/?tab=hadith" },
+      { label: `الحديث ${h.id}`, url: canonicalUrl }
+    ],
+    schemaJson
+  });
+
+  fs.writeFileSync(path.join(publicDir, fileName), html, 'utf-8');
+  sitemapUrls.push({ loc: canonicalUrl, priority: "0.8", changefreq: "weekly" });
+}
+
+// -------------------------------------------------------------
+// 9. GENERATE 110 ADHKAR & DUAS PAGES
 // -------------------------------------------------------------
 for (const item of ADHKAR_DUAS) {
   const fileName = `${item.slug}.html`;
@@ -979,10 +1524,10 @@ for (const item of ADHKAR_DUAS) {
           <span>قراءة الأذكار كاملة في المنصة التفاعلية</span>
         </a>
         <a href="/?tab=tasbeeh" class="btn-outline">
-          <span>فتح المسبحة الذكية</span>
+          <span>المسبحة الذكية</span>
         </a>
         <a href="/?tab=duas" class="btn-outline">
-          <span>تصفح الأدعية المأثورة</span>
+          <span>الأدعية المأثورة</span>
         </a>
       </div>
     </article>
@@ -990,8 +1535,8 @@ for (const item of ADHKAR_DUAS) {
 
   const html = renderSeoHtml({
     title: `${item.title} | موقع أثر`,
-    description: `${item.desc} - موقع أثر الإسلامي صدقة جارية عن روح أحمد منتصر العامودي.`,
-    keywords: `${item.title}, ${item.category}, حصن المسلم, أذكار وأدعية, موقع أثر, صدقة جارية عن أحمد منتصر العامودي`,
+    description: `${item.desc} - موقع أثر الإسلامي صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `${item.title}, ${item.category}, حصن المسلم, أذكار وأدعية, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
     canonicalUrl,
     ogType: "article",
     h1: item.title,
@@ -1009,7 +1554,7 @@ for (const item of ADHKAR_DUAS) {
 }
 
 // -------------------------------------------------------------
-// 6. GENERATE 30 CITIES PRAYER TIMES PAGES
+// 10. GENERATE 104 CITIES PRAYER TIMES PAGES
 // -------------------------------------------------------------
 for (const city of CITIES) {
   const fileName = `prayer-${city.slug}.html`;
@@ -1019,53 +1564,83 @@ for (const city of CITIES) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebPage",
-        "@id": `${canonicalUrl}#webpage`,
-        "name": `مواقيت الصلاة في ${city.name} اليوم واتجاه القبلة`,
-        "description": `جدول مواقيت الصلاة اليوم في ${city.name} (${city.country}) مع حساب الفجر، الظهر، العصر، المغرب، العشاء واتجاه القبلة نحو الكعبة المشرفة.`
+        "@type": "Article",
+        "@id": `${canonicalUrl}#prayer`,
+        "headline": `مواقيت الصلاة اليوم في ${city.name} (${city.country})`,
+        "description": `جدول مواقيت الصلاة الدقيقة اليوم في ${city.name}: الفجر، الشروق، الظهر، العصر، المغرب، العشاء واتجاه القبلة.`,
+        "inLanguage": "ar"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
+          { "@type": "ListItem", "position": 2, "name": "مواقيت الصلاة", "item": "https://athar-app.org/?tab=prayer" },
+          { "@type": "ListItem", "position": 3, "name": `صلاة ${city.name}`, "item": canonicalUrl }
+        ]
       }
     ]
   };
 
   const contentHtml = `
     <article class="content-card">
-      <h2 style="font-size: 20px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px;">
-        مواقيت الصلاة الرسمية في مدينة ${city.name} (${city.country})
+      <h2 style="font-size: 20px; font-weight: 800; color: var(--emerald-deep); margin-bottom: 8px;">
+        مواقيت الصلاة اليوم في ${city.name} — ${city.country}
       </h2>
-      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px;">
-        حساب فلكي دقيق وفق طريقة رابطة العالم الإسلامي وأم القرى لمواقيت الصلوات الخمس في ${city.name}.
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        مواقيت دقيقة محسوبة فلكياً وفق طريقة أم القرى والهيئات الإسلامية المعتمدة لمدينة ${city.name}.
       </p>
 
-      <div style="background: var(--bg-cream); border: 1px solid var(--gold-border); border-radius: 16px; padding: 18px; margin: 18px 0; text-align: center;">
-        <span style="font-size: 12px; color: var(--gold-dark); font-weight: 700; display: block; margin-bottom: 6px;">قال الله تعالى:</span>
-        <p style="font-size: 18px; color: var(--emerald-deep); font-weight: 700;" class="font-quran">
-          «إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا»
-        </p>
+      <div style="background: var(--bg-cream); border: 1px solid var(--emerald-border); border-radius: 16px; padding: 20px; margin: 18px 0; text-align: center;">
+        <span style="font-size: 13px; color: var(--gold-dark); font-weight: 700; display: block; margin-bottom: 8px;">
+          الصلوات الخمس في ${city.name}:
+        </span>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px;">
+          <div style="background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #ddd;">
+            <strong style="color: var(--emerald-deep); font-size: 14px; display: block;">الفجر</strong>
+            <span style="font-size: 12px; color: var(--text-muted);">أول وقت الفجر</span>
+          </div>
+          <div style="background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #ddd;">
+            <strong style="color: var(--emerald-deep); font-size: 14px; display: block;">الظهر</strong>
+            <span style="font-size: 12px; color: var(--text-muted);">وقت الزوال</span>
+          </div>
+          <div style="background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #ddd;">
+            <strong style="color: var(--emerald-deep); font-size: 14px; display: block;">العصر</strong>
+            <span style="font-size: 12px; color: var(--text-muted);">ظل الشيء مثله</span>
+          </div>
+          <div style="background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #ddd;">
+            <strong style="color: var(--emerald-deep); font-size: 14px; display: block;">المغرب</strong>
+            <span style="font-size: 12px; color: var(--text-muted);">غروب الشمس</span>
+          </div>
+          <div style="background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #ddd;">
+            <strong style="color: var(--emerald-deep); font-size: 14px; display: block;">العشاء</strong>
+            <span style="font-size: 12px; color: var(--text-muted);">غيبوبة الشفق</span>
+          </div>
+        </div>
       </div>
 
       <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
         <a href="/?tab=prayer" class="btn-gold">
-          <span>عرض المواقيت اللحظية والعد التنازلي والبوصلة</span>
+          <span>مواقيت الصلاة اللحظية وبوصلة القبلة</span>
         </a>
-        <a href="/" class="btn-outline">
-          <span>العودة للرئيسية</span>
+        <a href="/?tab=adhkar" class="btn-outline">
+          <span>أذكار بعد الصلاة</span>
         </a>
       </div>
     </article>
   `;
 
   const html = renderSeoHtml({
-    title: `مواقيت الصلاة في ${city.name} اليوم واتجاه القبلة | موقع أثر`,
-    description: `مواقيت الصلاة اليوم في ${city.name} (${city.country}): الفجر، الشروق، الظهر، العصر، المغرب، العشاء، مع بوصلة القبلة نحو مكة المكرمة - موقع أثر صدقة جارية عن أحمد منتصر العامودي.`,
-    keywords: `مواقيت الصلاة في ${city.name}, أذان الفجر في ${city.name}, وقت صلاة الظهر ${city.name}, صلاة العصر ${city.name}, صلاة المغرب ${city.name}, صلاة العشاء ${city.name}, اتجاه القبلة في ${city.name}`,
+    title: `مواقيت الصلاة اليوم في ${city.name} (${city.country}) | موعد أذان الفجر والمغرب - موقع أثر`,
+    description: `مواقيت الصلاة الدقيقة اليوم في ${city.name} (${city.country}): موعد أذان الفجر، الشروق، الظهر، العصر، المغرب، العشاء، واتجاه القبلة نحو الكعبة - موقع أثر صدقة جارية أسسها أحمد منتصر العامودي.`,
+    keywords: `مواقيت الصلاة في ${city.name}, موعد أذان الفجر في ${city.name}, موعد صلاة المغرب ${city.name}, اتجاه القبلة في ${city.name}, أوقات الصلاة ${city.name}, موقع أثر, صدقة جارية أسسها أحمد منتصر العامودي`,
     canonicalUrl,
-    ogType: "website",
-    h1: `مواقيت الصلاة في ${city.name} واتجاه القبلة`,
+    ogType: "article",
+    h1: `مواقيت الصلاة في ${city.name}`,
     badge: `مواقيت الصلاة • ${city.country}`,
     contentHtml,
     breadcrumbs: [
       { label: "مواقيت الصلاة", url: "/?tab=prayer" },
-      { label: city.name, url: canonicalUrl }
+      { label: `صلاة ${city.name}`, url: canonicalUrl }
     ],
     schemaJson
   });
@@ -1075,7 +1650,7 @@ for (const city of CITIES) {
 }
 
 // -------------------------------------------------------------
-// 7. GENERATE SITEMAP.XML & ROBOTS.TXT
+// 11. GENERATE SITEMAP.XML WITH ALL 1,700+ URLS
 // -------------------------------------------------------------
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -1089,8 +1664,12 @@ ${sitemapUrls.map(u => `  <url>
 
 fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf-8');
 
+// -------------------------------------------------------------
+// 12. GENERATE ROBOTS.TXT
+// -------------------------------------------------------------
 const robotsTxt = `User-agent: *
 Allow: /
+
 Sitemap: https://athar-app.org/sitemap.xml
 `;
 

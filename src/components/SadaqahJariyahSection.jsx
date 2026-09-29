@@ -8,8 +8,7 @@ import {
   Sparkles,
   Lock,
   Globe,
-  Archive,
-  FileText,
+  BookOpen,
   Check
 } from 'lucide-react';
 
