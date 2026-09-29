@@ -33,17 +33,8 @@ const MainContent = () => {
       <Navbar />
 
       {/* Main Body Routing */}
-      <main className="flex-1">
-        {activeTab === 'home' && (
-          <div className="space-y-6">
-            <HeroSection />
-            <QuranSection />
-            <TasbeehSection />
-            <AdhkarSection />
-            <PrayerTimesSection />
-            <SadaqahJariyahSection />
-          </div>
-        )}
+      <main className="flex-1 pb-24 xl:pb-12">
+        {activeTab === 'home' && <HeroSection />}
 
         {activeTab === 'quran' && <QuranSection />}
         {activeTab === 'adhkar' && <AdhkarSection />}

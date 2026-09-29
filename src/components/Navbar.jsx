@@ -17,7 +17,9 @@ import {
   X,
   Home,
   Layers,
-  ChevronDown
+  ShieldCheck,
+  Compass,
+  Grid
 } from 'lucide-react';
 
 export const Navbar = () => {
@@ -32,7 +34,7 @@ export const Navbar = () => {
     triggerHaptic
   } = useApp();
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [moreSheetOpen, setMoreSheetOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
 
   const prayerTimes = calculatePrayerTimes(DEFAULT_CITIES[0].lat, DEFAULT_CITIES[0].lng, new Date());
@@ -41,20 +43,29 @@ export const Navbar = () => {
   const navItems = [
     { id: 'home', label: 'الرئيسية', icon: Home },
     { id: 'quran', label: 'المصحف الشريف', icon: BookOpen },
-    { id: 'adhkar', label: 'الأذكار', icon: Sparkles },
     { id: 'tasbeeh', label: 'المسبحة', icon: Sparkles },
-    { id: 'istighfar', label: 'الاستغفار', icon: Heart },
-    { id: 'hadith', label: 'الأحاديث', icon: BookOpen },
-    { id: 'duas', label: 'الأدعية', icon: Heart },
+    { id: 'adhkar', label: 'الأذكار', icon: Sparkles },
     { id: 'prayer', label: 'مواقيت الصلاة', icon: Clock },
-    { id: 'wird', label: 'وردي اليومي', icon: CheckCircle2 },
+    { id: 'istighfar', label: 'الاستغفار', icon: Heart },
+    { id: 'hadith', label: 'الأحاديث', icon: ShieldCheck },
+    { id: 'duas', label: 'الأدعية', icon: Heart },
     { id: 'khatmah', label: 'الختمة والحفظ', icon: Layers }
+  ];
+
+  const moreItems = [
+    { id: 'prayer', label: 'مواقيت الصلاة والقبلة', icon: Clock, desc: 'حساب فلكي وبوصلة نحو الكعبة' },
+    { id: 'istighfar', label: 'محراب الاستغفار', icon: Heart, desc: 'حلقات أهداف التوبة وسيد الاستغفار' },
+    { id: 'hadith', label: 'الأحاديث النبوية', icon: ShieldCheck, desc: 'أحاديث صحيحة محققة بالشرح' },
+    { id: 'duas', label: 'الأدعية الجامعة', icon: Heart, desc: 'أدعية قرآنية ونبوية مأثورة' },
+    { id: 'wird', label: 'وردي اليومي', icon: CheckCircle2, desc: 'جدول المحاسبة وميزان الطاعات' },
+    { id: 'khatmah', label: 'خطة الختمة ومُعين الحفظ', icon: Layers, desc: 'جدول الختم واختبار التسميع' },
+    { id: 'sadaqah', label: 'الصدقة الجارية ونية الوقف', icon: Share2, desc: 'دعاء الوقفية وميثاق الاستمرارية' }
   ];
 
   const handleNavClick = (id) => {
     triggerHaptic(15);
     setActiveTab(id);
-    setMobileMenuOpen(false);
+    setMoreSheetOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -67,28 +78,29 @@ export const Navbar = () => {
 
   return (
     <>
+      {/* 1. Desktop & Mobile Top Header Bar */}
       <header className="sticky top-0 z-40 w-full athar-glass border-b border-[var(--border-subtle)] shadow-xs transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="flex items-center justify-between h-16 sm:h-18">
             
-            {/* Logo & Brand Identity */}
+            {/* Logo Brand Identity */}
             <div
-              className="flex items-center gap-3 cursor-pointer select-none group"
+              className="flex items-center gap-2.5 cursor-pointer select-none group"
               onClick={() => handleNavClick('home')}
             >
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[var(--emerald-deep)] border border-[var(--gold-primary)] flex items-center justify-center text-[var(--gold-primary)] shadow-sm group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-2xl bg-[var(--emerald-deep)] border border-[var(--gold-primary)]/40 flex items-center justify-center text-[var(--gold-primary)] shadow-sm group-hover:scale-105 transition-transform">
                 <span className="font-quran text-2xl font-bold">أثر</span>
               </div>
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <span className="text-xl sm:text-2xl font-bold font-quran text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] tracking-wide">
                     أَثَـر
                   </span>
-                  <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold border border-[var(--gold-border)]">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-extrabold border border-[var(--gold-border)]">
                     صدقة جارية
                   </span>
                 </div>
-                <p className="text-[11px] text-[var(--text-secondary)] font-amiri hidden sm:block">
+                <p className="text-[10px] text-[var(--text-muted)] font-amiri hidden sm:block">
                   أثرٌ يبقى .. وأجرٌ يرقى
                 </p>
               </div>
@@ -103,9 +115,9 @@ export const Navbar = () => {
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
-                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                       isActive
-                        ? 'bg-[var(--emerald-deep)] text-[var(--gold-primary)] shadow-xs border border-[var(--gold-border)]'
+                        ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                         : 'text-[var(--text-secondary)] hover:bg-[var(--emerald-soft)] hover:text-[var(--emerald-deep)] dark:hover:text-[var(--emerald-accent)]'
                     }`}
                   >
@@ -116,17 +128,17 @@ export const Navbar = () => {
               })}
             </nav>
 
-            {/* Right Tools: Prayer Bar, Search, Theme, Language */}
-            <div className="flex items-center gap-2">
+            {/* Right Tools: Prayer pill, Search, Theme, Language, Sadaqah */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
               
-              {/* Quick Prayer Time Chip */}
+              {/* Prayer Pill (Desktop) */}
               <button
                 onClick={() => handleNavClick('prayer')}
-                className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs hover:border-[var(--gold-primary)] transition-colors"
+                className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs hover:border-[var(--emerald-medium)] transition-colors cursor-pointer"
               >
                 <Clock className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
                 <span className="font-semibold text-[var(--text-primary)]">
-                  {nextPrayer.nextPrayerName}: <strong className="text-[var(--emerald-medium)] dark:text-[var(--emerald-accent)]">{nextPrayer.nextPrayerTime}</strong>
+                  {nextPrayer.nextPrayerName}: <strong className="text-[var(--emerald-medium)] font-cairo">{nextPrayer.nextPrayerTime}</strong>
                 </span>
                 <span className="text-[10px] text-[var(--text-muted)]">({nextPrayer.remainingMinutes}د)</span>
               </button>
@@ -137,18 +149,18 @@ export const Navbar = () => {
                   triggerHaptic(15);
                   setIsSearchOpen(true);
                 }}
-                className="p-2 sm:px-3 sm:py-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] text-[var(--text-secondary)] transition-colors flex items-center gap-1.5 text-xs font-semibold"
+                className="p-2 sm:px-3 sm:py-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] text-[var(--text-secondary)] transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
                 title="البحث الشامل (Ctrl+K)"
               >
                 <Search className="w-4 h-4 text-[var(--gold-primary)]" />
                 <span className="hidden sm:inline">بحث</span>
-                <kbd className="hidden lg:inline-block text-[10px] px-1 py-0.5 rounded bg-[var(--bg-surface-sunken)] text-[var(--text-muted)]">⌘K</kbd>
+                <kbd className="hidden lg:inline-block text-[10px] px-1 py-0.5 rounded bg-[var(--bg-surface-sunken)] text-[var(--text-muted)] font-mono">⌘K</kbd>
               </button>
 
-              {/* Theme Toggle */}
+              {/* Theme Toggle (Light / Dark / Sepia) */}
               <button
                 onClick={cycleTheme}
-                className="p-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] transition-colors text-[var(--text-secondary)]"
+                className="p-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] transition-colors text-[var(--text-secondary)] cursor-pointer"
                 title={`تبديل المظهر (${theme})`}
               >
                 {theme === 'dark' ? (
@@ -164,7 +176,8 @@ export const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setLangMenuOpen(!langMenuOpen)}
-                  className="p-2 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs flex items-center gap-1"
+                  className="p-2 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs flex items-center gap-1 cursor-pointer"
+                  title="تغيير اللغة"
                 >
                   <span>{LANGUAGES.find(l => l.code === language)?.flag || '🇸🇦'}</span>
                 </button>
@@ -178,7 +191,7 @@ export const Navbar = () => {
                           setLanguage(lang.code);
                           setLangMenuOpen(false);
                         }}
-                        className="w-full px-3 py-1.5 text-xs text-right flex items-center justify-between hover:bg-[var(--emerald-soft)] text-[var(--text-primary)]"
+                        className="w-full px-3 py-1.5 text-xs text-right flex items-center justify-between hover:bg-[var(--emerald-soft)] text-[var(--text-primary)] cursor-pointer"
                       >
                         <span>{lang.name}</span>
                         <span>{lang.flag}</span>
@@ -188,92 +201,161 @@ export const Navbar = () => {
                 )}
               </div>
 
-              {/* Sadaqah Jariyah Button */}
+              {/* Sadaqah Jariyah Button (Desktop) */}
               <button
                 onClick={() => handleNavClick('sadaqah')}
-                className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-bold text-xs shadow-xs transition-all hover:scale-102 border border-[var(--gold-border)]"
+                className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-bold text-xs shadow-xs transition-all hover:scale-102 border border-[var(--gold-border)] cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5 text-[#0B3D2E]" />
                 <span>الصدقة الجارية</span>
-              </button>
-
-              {/* Mobile Drawer Trigger */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="xl:hidden p-2 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)]"
-              >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
 
             </div>
 
           </div>
         </div>
+      </header>
 
-        {/* Mobile Slide-down Drawer */}
-        {mobileMenuOpen && (
-          <div className="xl:hidden bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] p-4 space-y-3 animate-in slide-in-from-top duration-200">
-            <div className="grid grid-cols-2 gap-2">
-              {navItems.map(item => {
+      {/* 2. Native Mobile Bottom Tab Bar (App-Store Grade UX) */}
+      <nav className="xl:hidden fixed bottom-0 inset-x-0 z-40 bg-[var(--bg-surface)]/95 backdrop-blur-xl border-t border-[var(--border-subtle)] px-2 py-1 shadow-2xl safe-area-pb">
+        <div className="flex items-center justify-around max-w-lg mx-auto">
+          
+          {/* Tab 1: Home */}
+          <button
+            onClick={() => handleNavClick('home')}
+            className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
+              activeTab === 'home'
+                ? 'text-[var(--emerald-medium)] dark:text-[var(--emerald-accent)] font-extrabold'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <div className={`p-1 rounded-xl transition-colors ${activeTab === 'home' ? 'bg-[var(--emerald-soft)]' : ''}`}>
+              <Home className="w-5 h-5" />
+            </div>
+            <span className="text-[10px]">الرئيسية</span>
+          </button>
+
+          {/* Tab 2: Quran */}
+          <button
+            onClick={() => handleNavClick('quran')}
+            className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
+              activeTab === 'quran'
+                ? 'text-[var(--emerald-medium)] dark:text-[var(--emerald-accent)] font-extrabold'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <div className={`p-1 rounded-xl transition-colors ${activeTab === 'quran' ? 'bg-[var(--emerald-soft)]' : ''}`}>
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <span className="text-[10px]">المصحف</span>
+          </button>
+
+          {/* Tab 3: Tasbeeh */}
+          <button
+            onClick={() => handleNavClick('tasbeeh')}
+            className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
+              activeTab === 'tasbeeh'
+                ? 'text-[var(--gold-primary)] font-extrabold'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <div className={`p-1 rounded-xl transition-colors ${activeTab === 'tasbeeh' ? 'bg-[var(--gold-soft)]' : ''}`}>
+              <Sparkles className="w-5 h-5 text-[var(--gold-primary)]" />
+            </div>
+            <span className="text-[10px]">المسبحة</span>
+          </button>
+
+          {/* Tab 4: Adhkar */}
+          <button
+            onClick={() => handleNavClick('adhkar')}
+            className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
+              activeTab === 'adhkar'
+                ? 'text-[var(--emerald-medium)] dark:text-[var(--emerald-accent)] font-extrabold'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <div className={`p-1 rounded-xl transition-colors ${activeTab === 'adhkar' ? 'bg-[var(--emerald-soft)]' : ''}`}>
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <span className="text-[10px]">الأذكار</span>
+          </button>
+
+          {/* Tab 5: More Drawer Trigger */}
+          <button
+            onClick={() => {
+              triggerHaptic(15);
+              setMoreSheetOpen(true);
+            }}
+            className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
+              moreSheetOpen || ['prayer', 'istighfar', 'hadith', 'duas', 'wird', 'khatmah', 'sadaqah'].includes(activeTab)
+                ? 'text-[var(--emerald-medium)] font-extrabold'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <div className="p-1 rounded-xl">
+              <Grid className="w-5 h-5" />
+            </div>
+            <span className="text-[10px]">المزيد</span>
+          </button>
+
+        </div>
+      </nav>
+
+      {/* 3. Mobile "More" Bottom Sheet Modal */}
+      {moreSheetOpen && (
+        <div className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end animate-in fade-in duration-200">
+          <div className="w-full bg-[var(--bg-surface)] rounded-t-3xl p-5 border-t border-[var(--border-subtle)] shadow-2xl max-h-[80vh] overflow-y-auto space-y-4">
+            
+            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
+              <div className="flex items-center gap-2">
+                <Grid className="w-5 h-5 text-[var(--gold-primary)]" />
+                <h3 className="font-extrabold text-base text-[var(--text-primary)]">
+                  كافة أقسام المنصة
+                </h3>
+              </div>
+              <button
+                onClick={() => setMoreSheetOpen(false)}
+                className="p-1.5 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2.5">
+              {moreItems.map(item => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
-                    className={`p-3 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${
+                    className={`p-3.5 rounded-2xl border text-right flex items-center justify-between gap-3 transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-[var(--emerald-deep)] text-[var(--gold-primary)] border border-[var(--gold-border)]'
-                        : 'bg-[var(--bg-surface-elevated)] text-[var(--text-primary)] hover:bg-[var(--emerald-soft)]'
+                        ? 'bg-[var(--emerald-deep)] text-white border-transparent shadow-sm'
+                        : 'bg-[var(--bg-surface-elevated)] text-[var(--text-primary)] border-[var(--border-subtle)] hover:bg-[var(--emerald-soft)]'
                     }`}
                   >
-                    <Icon className="w-4 h-4 text-[var(--gold-primary)]" />
-                    <span>{item.label}</span>
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2.5 rounded-xl ${isActive ? 'bg-white/20 text-white' : 'bg-[var(--bg-surface)] text-[var(--gold-primary)] border border-[var(--border-subtle)]'}`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="font-bold text-xs sm:text-sm block">
+                          {item.label}
+                        </span>
+                        <span className={`text-[11px] block ${isActive ? 'text-white/80' : 'text-[var(--text-muted)]'}`}>
+                          {item.desc}
+                        </span>
+                      </div>
+                    </div>
                   </button>
                 );
               })}
             </div>
 
-            <button
-              onClick={() => handleNavClick('sadaqah')}
-              className="w-full py-2.5 rounded-xl bg-[var(--gold-primary)] text-[#0B3D2E] font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs border border-[var(--gold-border)]"
-            >
-              <Share2 className="w-4 h-4 text-[#0B3D2E]" />
-              <span>عن الصدقة الجارية واستمراريتها</span>
-            </button>
           </div>
-        )}
-      </header>
-
-      {/* Mobile Bottom Floating App Bar */}
-      <div className="xl:hidden fixed bottom-20 left-4 right-4 z-40">
-        <div className="bg-[var(--bg-surface)]/95 backdrop-blur-xl border border-[var(--gold-border)] shadow-xl rounded-2xl p-2 flex items-center justify-around">
-          {[
-            { id: 'home', label: 'الرئيسية', icon: Home },
-            { id: 'quran', label: 'المصحف', icon: BookOpen },
-            { id: 'tasbeeh', label: 'المسبحة', icon: Sparkles },
-            { id: 'adhkar', label: 'الأذكار', icon: Sparkles },
-            { id: 'prayer', label: 'الصلاة', icon: Clock }
-          ].map(tab => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleNavClick(tab.id)}
-                className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
-                  isActive
-                    ? 'text-[var(--gold-primary)] font-bold scale-105'
-                    : 'text-[var(--text-muted)]'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span className="text-[10px]">{tab.label}</span>
-              </button>
-            );
-          })}
         </div>
-      </div>
+      )}
     </>
   );
 };

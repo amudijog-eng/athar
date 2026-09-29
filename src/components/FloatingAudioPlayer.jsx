@@ -47,7 +47,7 @@ export const FloatingAudioPlayer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-auto">
+    <div className="fixed bottom-16 xl:bottom-0 left-0 right-0 z-50 pointer-events-auto">
       
       {isMinimized ? (
         <div className="max-w-md mx-auto mb-3 px-4">
