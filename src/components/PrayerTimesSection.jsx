@@ -7,7 +7,12 @@ import {
   MapPin,
   Calendar,
   Navigation,
-  Sparkles
+  Sparkles,
+  Sunrise,
+  Sun,
+  CloudSun,
+  Sunset,
+  Moon
 } from 'lucide-react';
 
 export const PrayerTimesSection = () => {
@@ -62,12 +67,12 @@ export const PrayerTimesSection = () => {
   const qibla = calculateQibla(selectedCity.lat, selectedCity.lng);
 
   const prayersList = [
-    { key: 'fajr', label: 'الفجر', time: prayerTimes.fajr.formatted, icon: '🌅' },
-    { key: 'sunrise', label: 'الشروق', time: prayerTimes.sunrise.formatted, icon: '☀️' },
-    { key: 'dhuhr', label: 'الظهر', time: prayerTimes.dhuhr.formatted, icon: '☀️' },
-    { key: 'asr', label: 'العصر', time: prayerTimes.asr.formatted, icon: '🌤️' },
-    { key: 'maghrib', label: 'المغرب', time: prayerTimes.maghrib.formatted, icon: '🌇' },
-    { key: 'isha', label: 'العشاء', time: prayerTimes.isha.formatted, icon: '🌙' }
+    { key: 'fajr', label: 'الفجر', time: prayerTimes.fajr.formatted, icon: Sunrise },
+    { key: 'sunrise', label: 'الشروق', time: prayerTimes.sunrise.formatted, icon: Sun },
+    { key: 'dhuhr', label: 'الظهر', time: prayerTimes.dhuhr.formatted, icon: Sun },
+    { key: 'asr', label: 'العصر', time: prayerTimes.asr.formatted, icon: CloudSun },
+    { key: 'maghrib', label: 'المغرب', time: prayerTimes.maghrib.formatted, icon: Sunset },
+    { key: 'isha', label: 'العشاء', time: prayerTimes.isha.formatted, icon: Moon }
   ];
 
   return (
@@ -160,6 +165,7 @@ export const PrayerTimesSection = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-10">
         {prayersList.map(item => {
           const isNext = nextPrayer.key === item.key;
+          const IconComp = item.icon;
           return (
             <div
               key={item.key}
@@ -169,7 +175,9 @@ export const PrayerTimesSection = () => {
                   : 'bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-subtle)] shadow-xs hover:border-[var(--emerald-border)]'
               }`}
             >
-              <div className="text-2xl">{item.icon}</div>
+              <div className="flex justify-center">
+                <IconComp className={`w-6 h-6 ${isNext ? 'text-[var(--gold-light)]' : 'text-[var(--gold-primary)]'}`} />
+              </div>
               <div className={`text-xs ${isNext ? 'text-[var(--gold-light)] font-extrabold' : 'text-[var(--text-muted)]'}`}>
                 {item.label}
               </div>
@@ -235,9 +243,13 @@ export const PrayerTimesSection = () => {
                 style={{ transform: `rotate(${qibla.bearing - deviceHeading}deg)` }}
               >
                 <div className="h-32 w-1.5 bg-gradient-to-t from-transparent via-[var(--gold-primary)] to-[var(--gold-dark)] rounded-full flex flex-col items-center justify-start -translate-y-8">
-                  {/* Kaaba Badge */}
-                  <div className="w-8 h-8 rounded-xl bg-[var(--emerald-deep)] border-2 border-[var(--gold-primary)] shadow-xl flex items-center justify-center text-xs -translate-y-4 font-bold text-[var(--gold-primary)]">
-                    🕋
+                  {/* Kaaba Vector Badge */}
+                  <div className="w-8 h-8 rounded-xl bg-black border-2 border-[var(--gold-primary)] shadow-xl flex items-center justify-center -translate-y-4 text-[var(--gold-primary)]">
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" stroke="none">
+                      <rect x="5" y="6" width="14" height="13" rx="1.5" />
+                      <line x1="5" y1="10" x2="19" y2="10" stroke="var(--gold-light)" strokeWidth="1.5" />
+                      <rect x="10" y="14" width="4" height="5" fill="var(--gold-light)" />
+                    </svg>
                   </div>
                 </div>
               </div>

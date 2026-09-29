@@ -1,11 +1,11 @@
 // Multi-language UI dictionaries for global reach (Sadaqah Jariyah)
 export const LANGUAGES = [
-  { code: 'ar', name: 'العربية', dir: 'rtl', flag: '🇸🇦' },
-  { code: 'en', name: 'English', dir: 'ltr', flag: '🇬🇧' },
-  { code: 'ur', name: 'اردو', dir: 'rtl', flag: '🇵🇰' },
-  { code: 'tr', name: 'Türkçe', dir: 'ltr', flag: '🇹🇷' },
-  { code: 'fr', name: 'Français', dir: 'ltr', flag: '🇫🇷' },
-  { code: 'id', name: 'Indonesia', dir: 'ltr', flag: '🇮🇩' }
+  { code: 'ar', name: 'العربية', dir: 'rtl', label: 'عربي' },
+  { code: 'en', name: 'English', dir: 'ltr', label: 'EN' },
+  { code: 'ur', name: 'اردو', dir: 'rtl', label: 'UR' },
+  { code: 'tr', name: 'Türkçe', dir: 'ltr', label: 'TR' },
+  { code: 'fr', name: 'Français', dir: 'ltr', label: 'FR' },
+  { code: 'id', name: 'Indonesia', dir: 'ltr', label: 'ID' }
 ];
 
 export const TRANSLATIONS = {

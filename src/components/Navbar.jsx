@@ -88,20 +88,22 @@ export const Navbar = () => {
               className="flex items-center gap-2.5 cursor-pointer select-none group"
               onClick={() => handleNavClick('home')}
             >
-              <div className="w-10 h-10 rounded-2xl bg-[var(--emerald-deep)] border border-[var(--gold-primary)]/40 flex items-center justify-center text-[var(--gold-primary)] shadow-sm group-hover:scale-105 transition-transform">
-                <span className="font-quran text-2xl font-bold">أثر</span>
-              </div>
+              <img
+                src="/athar-logo.jpg"
+                alt="شعار منصة أثر - صدقة جارية عن أحمد منتصر العامودي"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-contain shadow-xs border border-[var(--gold-border)] bg-[#F8F6F0] p-0.5 group-hover:scale-105 transition-transform"
+              />
               <div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-xl sm:text-2xl font-bold font-quran text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] tracking-wide">
                     أَثَـر
                   </span>
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-extrabold border border-[var(--gold-border)]">
-                    صدقة جارية
+                    صدقة جارية عن أحمد منتصر العامودي
                   </span>
                 </div>
                 <p className="text-[10px] text-[var(--text-muted)] font-amiri hidden sm:block">
-                  أثرٌ يبقى .. وأجرٌ يرقى
+                  منصة إسلامية ... لأثـرٍ أعمق
                 </p>
               </div>
             </div>
@@ -115,7 +117,7 @@ export const Navbar = () => {
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
-                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                       isActive
                         ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                         : 'text-[var(--text-secondary)] hover:bg-[var(--emerald-soft)] hover:text-[var(--emerald-deep)] dark:hover:text-[var(--emerald-accent)]'
@@ -140,7 +142,7 @@ export const Navbar = () => {
                 <span className="font-semibold text-[var(--text-primary)]">
                   {nextPrayer.nextPrayerName}: <strong className="text-[var(--emerald-medium)] font-cairo">{nextPrayer.nextPrayerTime}</strong>
                 </span>
-                <span className="text-[10px] text-[var(--text-muted)]">({nextPrayer.remainingMinutes}د)</span>
+                <span className="text-[10px] text-[var(--text-muted)] font-mono">({nextPrayer.remainingMinutes}د)</span>
               </button>
 
               {/* Global Search Button */}
@@ -149,10 +151,10 @@ export const Navbar = () => {
                   triggerHaptic(15);
                   setIsSearchOpen(true);
                 }}
-                className="p-2 sm:px-3 sm:py-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] text-[var(--text-secondary)] transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+                className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] text-[var(--text-secondary)] transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
                 title="البحث الشامل (Ctrl+K)"
               >
-                <Search className="w-4 h-4 text-[var(--gold-primary)]" />
+                <Search className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
                 <span className="hidden sm:inline">بحث</span>
                 <kbd className="hidden lg:inline-block text-[10px] px-1 py-0.5 rounded bg-[var(--bg-surface-sunken)] text-[var(--text-muted)] font-mono">⌘K</kbd>
               </button>
@@ -176,10 +178,10 @@ export const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setLangMenuOpen(!langMenuOpen)}
-                  className="p-2 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-bold flex items-center gap-1 cursor-pointer text-[var(--text-primary)]"
                   title="تغيير اللغة"
                 >
-                  <span>{LANGUAGES.find(l => l.code === language)?.flag || '🇸🇦'}</span>
+                  <span className="text-[11px] font-mono">{LANGUAGES.find(l => l.code === language)?.label || 'AR'}</span>
                 </button>
 
                 {langMenuOpen && (
@@ -194,7 +196,7 @@ export const Navbar = () => {
                         className="w-full px-3 py-1.5 text-xs text-right flex items-center justify-between hover:bg-[var(--emerald-soft)] text-[var(--text-primary)] cursor-pointer"
                       >
                         <span>{lang.name}</span>
-                        <span>{lang.flag}</span>
+                        <span className="text-[10px] text-[var(--text-muted)] font-mono font-bold">{lang.label}</span>
                       </button>
                     ))}
                   </div>
@@ -204,7 +206,7 @@ export const Navbar = () => {
               {/* Sadaqah Jariyah Button (Desktop) */}
               <button
                 onClick={() => handleNavClick('sadaqah')}
-                className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-bold text-xs shadow-xs transition-all hover:scale-102 border border-[var(--gold-border)] cursor-pointer"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-bold text-xs shadow-xs transition-all hover:scale-102 border border-[var(--gold-border)] cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5 text-[#0B3D2E]" />
                 <span>الصدقة الجارية</span>

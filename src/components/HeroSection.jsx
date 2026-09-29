@@ -20,7 +20,13 @@ import {
   Compass,
   Bookmark,
   Check,
-  ArrowRight
+  ArrowRight,
+  Sun,
+  Sunrise,
+  Sunset,
+  CloudSun,
+  Moon,
+  ScrollText
 } from 'lucide-react';
 
 export const HeroSection = () => {
@@ -54,12 +60,12 @@ export const HeroSection = () => {
   const wirdPercent = Math.round((completedWird / dailyWird.length) * 100);
 
   const prayersTimeline = [
-    { key: 'fajr', name: 'الفجر', time: prayerTimes.fajr.formatted, icon: '🌅' },
-    { key: 'sunrise', name: 'الشروق', time: prayerTimes.sunrise.formatted, icon: '☀️' },
-    { key: 'dhuhr', name: 'الظهر', time: prayerTimes.dhuhr.formatted, icon: '☀️' },
-    { key: 'asr', name: 'العصر', time: prayerTimes.asr.formatted, icon: '🌤️' },
-    { key: 'maghrib', name: 'المغرب', time: prayerTimes.maghrib.formatted, icon: '🌇' },
-    { key: 'isha', name: 'العشاء', time: prayerTimes.isha.formatted, icon: '🌙' }
+    { key: 'fajr', name: 'الفجر', time: prayerTimes.fajr.formatted, icon: Sunrise },
+    { key: 'sunrise', name: 'الشروق', time: prayerTimes.sunrise.formatted, icon: Sun },
+    { key: 'dhuhr', name: 'الظهر', time: prayerTimes.dhuhr.formatted, icon: Sun },
+    { key: 'asr', name: 'العصر', time: prayerTimes.asr.formatted, icon: CloudSun },
+    { key: 'maghrib', name: 'المغرب', time: prayerTimes.maghrib.formatted, icon: Sunset },
+    { key: 'isha', name: 'العشاء', time: prayerTimes.isha.formatted, icon: Moon }
   ];
 
   // 8 Main App Portals (Designed like premium mobile app launchers)
@@ -200,6 +206,7 @@ export const HeroSection = () => {
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
             {prayersTimeline.map(p => {
               const isNext = nextPrayer.key === p.key;
+              const IconComp = p.icon;
               return (
                 <div
                   key={p.key}
@@ -209,7 +216,9 @@ export const HeroSection = () => {
                       : 'bg-white/5 hover:bg-white/10 text-white/90 border border-white/5'
                   }`}
                 >
-                  <span className="text-lg block">{p.icon}</span>
+                  <div className="flex justify-center py-0.5">
+                    <IconComp className={`w-4 h-4 sm:w-5 sm:h-5 ${isNext ? 'text-[#0B3D2E]' : 'text-[var(--gold-light)]'}`} />
+                  </div>
                   <span className={`text-[11px] block font-semibold ${isNext ? 'text-[#0B3D2E]' : 'text-white/70'}`}>
                     {p.name}
                   </span>
@@ -305,33 +314,36 @@ export const HeroSection = () => {
           <div className="flex items-center gap-1.5 bg-[var(--bg-surface-elevated)] p-1 rounded-xl border border-[var(--border-subtle)] self-start sm:self-auto text-xs font-bold">
             <button
               onClick={() => setActiveInspirationTab('ayah')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeInspirationTab === 'ayah'
                   ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              📖 آية اليوم
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>آية اليوم</span>
             </button>
             <button
               onClick={() => setActiveInspirationTab('hadith')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeInspirationTab === 'hadith'
                   ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              📜 حديث اليوم
+              <ScrollText className="w-3.5 h-3.5" />
+              <span>حديث اليوم</span>
             </button>
             <button
               onClick={() => setActiveInspirationTab('dua')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeInspirationTab === 'dua'
                   ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              🤲 دعاء اليوم
+              <Heart className="w-3.5 h-3.5" />
+              <span>دعاء اليوم</span>
             </button>
           </div>
         </div>
@@ -525,33 +537,61 @@ export const HeroSection = () => {
         </div>
       </section>
 
-      {/* 6. Perpetual Charity Sincere Dedication (Sadaqah Jariyah) */}
-      <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[var(--emerald-deep)] to-[#0B3D2E] text-white shadow-lg border border-[var(--gold-border)] relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-2 text-center md:text-right max-w-xl relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[var(--gold-light)] text-xs font-bold border border-white/10">
-            <span>✨ صدقة جارية لوجه الله تعالى</span>
+      {/* 6. Perpetual Charity Sincere Dedication (Sadaqah Jariyah for Ahmed Montaser Al-Amoudi) */}
+      <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[var(--emerald-deep)] via-[#073024] to-[#041A14] text-white shadow-xl border border-[var(--gold-border)] relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6">
+        
+        {/* Logo and Dedication Info */}
+        <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-right relative z-10">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-[var(--gold-primary)] shadow-lg bg-black/40 shrink-0">
+            <img
+              src="/athar-logo.jpg"
+              alt="شعار موقع أثر"
+              className="w-full h-full object-cover"
+            />
           </div>
-          <h3 className="text-xl sm:text-2xl font-extrabold font-quran text-white">
-            «أَثَـرٌ يَبْقَى .. وَأَجْـرٌ يَرْقَى»
-          </h3>
-          <p className="text-xs sm:text-sm text-white/85 font-amiri leading-relaxed">
-            «اللَّهُمَّ اجْعَلْ هَذَا العَمَلَ صَدَقَةً جَارِيَةً عَنِّي وَعَنْ وَالِدَيَّ، وَعَنْ كُلِّ مَنْ سَاهَمَ فِي نَشْرِهِ أَوْ ذَكَرَ اللَّهَ فِيهِ إِلَى يَوْمِ الدِّينِ». المنصة خالية 100% من أي إعلانات تجارية.
-          </p>
+
+          <div className="space-y-2 max-w-xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[var(--gold-light)] text-xs font-bold border border-white/10">
+              <ShieldCheck className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
+              <span>صدقة جارية لوجه الله تعالى</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-extrabold font-quran text-white">
+              صدقة جارية عن روح الفقيد: <span className="text-[var(--gold-light)]">أحمد منتصر العامودي</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-white/85 font-amiri leading-relaxed">
+              «اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ، وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرِمْ نُزُلَهُ، وَوَسِّعْ مُدْخَلَهُ، وَاجْعَلْ قَبْرَهُ رَوْضَةً مِنْ رِيَاضِ الجَنَّةِ، وَاجْعَلْ ثَوَابَ هَذِهِ المَنَصَّةِ وَكُلِّ حَرْفٍ يُتْلَى فِيهَا فِي مِيزَانِ حَسَنَاتِهِ وَحَسَنَاتِ وَالِدَيْهِ إِلَى يَوْمِ الدِّينِ».
+            </p>
+          </div>
         </div>
 
-        <button
-          onClick={() => {
-            setShareModalItem({
-              title: 'موقع أثر - صدقة جارية لوجه الله',
-              text: 'منصة إسلامية متكاملة للقرآن الكريم، الأذكار، المسبحة، ومواقيت الصلاة خالية تماماً من الإعلانات.',
-              source: 'https://athar-app.org'
-            });
-          }}
-          className="w-full md:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-105 shrink-0 border border-[var(--gold-border)] cursor-pointer"
-        >
-          <Share2 className="w-4 h-4 text-[#0B3D2E]" />
-          <span>انشر المنصة واكسب مثل أجورهم</span>
-        </button>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 relative z-10 w-full lg:w-auto">
+          <button
+            onClick={() => {
+              triggerHaptic(20);
+              setActiveTab('sadaqah');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/20 transition-all cursor-pointer"
+          >
+            <Heart className="w-4 h-4 text-rose-400" />
+            <span>دعاء للمتوفى</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setShareModalItem({
+                title: 'موقع أثر | صدقة جارية عن أحمد منتصر العامودي',
+                text: 'منصة إسلامية متكاملة للقرآن الكريم والأذكار والمسبحة ومواقيت الصلاة خالية تماماً من الإعلانات صدقة جارية عن روح أحمد منتصر العامودي.',
+                source: 'https://athar-app.org'
+              });
+            }}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all shrink-0 border border-[var(--gold-border)] cursor-pointer"
+          >
+            <Share2 className="w-4 h-4 text-[#0B3D2E]" />
+            <span>انشر واكسب الأجر</span>
+          </button>
+        </div>
       </section>
 
     </div>

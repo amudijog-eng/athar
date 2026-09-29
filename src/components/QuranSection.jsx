@@ -288,7 +288,7 @@ export const QuranSection = () => {
             {/* Gilded Surah Title Box */}
             <div className="surah-header-box p-5 sm:p-7 text-center text-white my-4 relative">
               <span className="text-xs text-[var(--gold-light)] font-bold block mb-1">
-                {activeSurah.type === 'مكية' ? '🕋 مكية نزلت بمكة المكرمة' : '🕌 مدنية نزلت بالمدينة المنورة'}
+                {activeSurah.type === 'مكية' ? 'سورة مكية نزلت بمكة المكرمة' : 'سورة مدنية نزلت بالمدينة المنورة'}
               </span>
               <h1 className="text-3xl sm:text-5xl font-extrabold font-quran text-[var(--gold-light)]">
                 سُورَةُ {activeSurah.name}
@@ -594,8 +594,8 @@ export const QuranSection = () => {
               <div className="flex items-center gap-1.5">
                 {[
                   { id: 'all', label: 'الكل' },
-                  { id: 'مكية', label: 'مكية 🕋' },
-                  { id: 'مدنية', label: 'مدنية 🕌' }
+                  { id: 'مكية', label: 'مكية' },
+                  { id: 'مدنية', label: 'مدنية' }
                 ].map(t => (
                   <button
                     key={t.id}

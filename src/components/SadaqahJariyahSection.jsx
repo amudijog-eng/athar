@@ -9,7 +9,8 @@ import {
   Lock,
   Globe,
   Archive,
-  FileText
+  FileText,
+  Check
 } from 'lucide-react';
 
 export const SadaqahJariyahSection = () => {
@@ -80,24 +81,34 @@ export const SadaqahJariyahSection = () => {
       {activeSubTab === 'dedication' && (
         <div className="space-y-6 animate-in fade-in duration-300">
           
-          <div className="p-8 sm:p-12 rounded-3xl bg-[var(--emerald-deep)] text-white shadow-xl border border-[var(--gold-border)] text-center space-y-6">
-            <div className="w-16 h-16 rounded-full bg-white/10 text-[var(--gold-light)] border border-[var(--gold-primary)]/40 flex items-center justify-center mx-auto">
-              <Sparkles className="w-8 h-8" />
+          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[var(--emerald-deep)] via-[#073024] to-[#041A14] text-white shadow-xl border border-[var(--gold-border)] text-center space-y-6">
+            
+            {/* Logo in Gilded Frame */}
+            <div className="w-24 h-24 rounded-3xl overflow-hidden border-2 border-[var(--gold-primary)] shadow-xl mx-auto bg-black/40">
+              <img
+                src="/athar-logo.jpg"
+                alt="شعار موقع أثر"
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            <div className="space-y-3 max-w-2xl mx-auto">
-              <h3 className="text-2xl sm:text-3xl font-extrabold font-quran text-[var(--gold-light)]">
-                نية هذا العمل المبارك
+            <div className="space-y-3 max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[var(--gold-light)] text-xs font-bold border border-white/10">
+                <Sparkles className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
+                <span>صدقة جارية لوجه الله تعالى</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-extrabold font-quran text-[var(--gold-light)]">
+                صدقة جارية عن روح الفقيد: أحمد منتصر العامودي
               </h3>
-              <p className="font-amiri text-lg sm:text-2xl leading-relaxed text-white">
-                «اللَّهُمَّ اجْعَلْ أَجْرَ هَذَا العَمَلِ وَمَا يُنْتَفَعُ بِهِ مِنْهُ صَدَقَةً جَارِيَةً عَنِّي وَعَنْ وَالِدَيَّ، وَعَنْ أَهْلِي وَذُرِّيَّتِي، وَعَنْ كُلِّ مَنْ سَاهَمَ فِي نَشْرِهِ أَوْ قَرَأَ فِيهِ حَرْفًا أَوْ ذَكَرَ اللَّهَ فِيهِ إِلَى يَوْمِ الدِّينِ.»
+              <p className="font-amiri text-base sm:text-xl leading-relaxed text-white/95">
+                «اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ، وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرِمْ نُزُلَهُ، وَوَسِّعْ مُدْخَلَهُ، وَاغْسِلْهُ بِالمَاءِ وَالثَّلْجِ وَالبَرَدِ، وَنَقِّهِ مِنَ الذُّنُوبِ وَالخَطَايَا كَمَا يُنَقَّى الثَّوْبُ الأَبْيَضُ مِنَ الدَّنَسِ، وَاجْعَلْ قَبْرَهُ رَوْضَةً مِنْ رِيَاضِ الجَنَّةِ، وَاجْعَلْ ثَوَابَ هَذِهِ المَنَصَّةِ وَمَا يُقْرَأُ فِيهَا صَدَقَةً جَارِيَةً عَنْهُ وَعَنْ وَالِدَيْهِ إِلَى يَوْمِ القِيَامَةِ.»
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-3">
               <button
                 onClick={shareProject}
-                className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-105 border border-[var(--gold-border)]"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all border border-[var(--gold-border)] cursor-pointer"
               >
                 <Share2 className="w-4 h-4 text-[#0B3D2E]" />
                 <span>انشر رابط المنصة واكسب الأجر</span>
@@ -108,7 +119,7 @@ export const SadaqahJariyahSection = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-5 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-center space-y-2">
               <div className="w-10 h-10 rounded-2xl bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] flex items-center justify-center mx-auto font-bold border border-[var(--emerald-border)]">
-                ✓
+                <Check className="w-5 h-5" />
               </div>
               <h4 className="font-bold text-sm text-[var(--text-primary)]">بدون إعلانات تماماً</h4>
               <p className="text-xs text-[var(--text-secondary)]">
@@ -118,7 +129,7 @@ export const SadaqahJariyahSection = () => {
 
             <div className="p-5 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-center space-y-2">
               <div className="w-10 h-10 rounded-2xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] flex items-center justify-center mx-auto font-bold border border-[var(--gold-border)]">
-                ✓
+                <Check className="w-5 h-5 text-[var(--gold-dark)] dark:text-[var(--gold-light)]" />
               </div>
               <h4 className="font-bold text-sm text-[var(--text-primary)]">استخدام مجاني ومفتوح</h4>
               <p className="text-xs text-[var(--text-secondary)]">
@@ -128,7 +139,7 @@ export const SadaqahJariyahSection = () => {
 
             <div className="p-5 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-center space-y-2">
               <div className="w-10 h-10 rounded-2xl bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] flex items-center justify-center mx-auto font-bold border border-[var(--emerald-border)]">
-                ✓
+                <Check className="w-5 h-5" />
               </div>
               <h4 className="font-bold text-sm text-[var(--text-primary)]">محتوى موثق ومعتمد</h4>
               <p className="text-xs text-[var(--text-secondary)]">
@@ -155,6 +166,16 @@ export const SadaqahJariyahSection = () => {
               </p>
             </div>
 
+            {/* Special Dedication to Ahmed Montaser Al-Amoudi */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-[var(--emerald-soft)] border border-[var(--emerald-border)] text-center space-y-2">
+              <span className="text-xs font-bold text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] block">
+                دعاء خاص لفقيدنا: أحمد منتصر العامودي (رحمه الله)
+              </span>
+              <p className="font-amiri text-base sm:text-xl text-[var(--text-primary)] leading-relaxed font-semibold">
+                «اللَّهُمَّ اخْتَصَّ عَبْدَكَ أَحْمَدَ مُنْتَصِرَ العَامُودِيَّ بِفَيْضِ رَحْمَتِكَ وَمَغْفِرَتِكَ، وَارْفَعْ دَرَجَتَهُ فِي عِلِّيِّينَ، وَاجْعَلْ قَبْرَهُ رَوْضَةً مِنْ رِيَاضِ الجَنَّةِ، وَاجْعَلْ هَذَا العَمَلَ نُورًا وَأُنْسًا لَهُ فِي بَرْزَخِهِ يَا رَبَّ العَالَمِينَ.»
+              </p>
+            </div>
+
             <div className="mushaf-frame p-6 sm:p-8 text-center space-y-3">
               <p className="font-amiri text-lg sm:text-2xl leading-relaxed text-[var(--text-primary)] font-medium">
                 « اللَّهُمَّ اغْفِرْ لِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ، وَالْمُسْلِمِينَ وَالْمُسْلِمَاتِ، الأَحْيَاءِ مِنْهُمْ وَالأَمْوَاتِ، اللَّهُمَّ نَوِّرْ مَرَاقِدَهُمْ، وَعَطِّرْ مَشَاهِدَهُمْ، وَارْحَمْ غُرْبَتَهُمْ، وَاجْعَلْ قُبُورَهُمْ رِيَاضًا مِنْ رِيَاضِ الجَنَّةِ. »
@@ -164,7 +185,7 @@ export const SadaqahJariyahSection = () => {
             <div className="text-center space-y-3">
               <button
                 onClick={incrementDeceasedDua}
-                className="px-6 py-3.5 rounded-2xl bg-[var(--emerald-deep)] hover:bg-[var(--emerald-medium)] active:scale-95 text-[var(--gold-primary)] font-bold text-sm shadow-md transition-all inline-flex items-center gap-2 border border-[var(--gold-border)]"
+                className="px-5 py-2.5 rounded-xl bg-[var(--emerald-deep)] hover:bg-[var(--emerald-medium)] active:scale-95 text-[var(--gold-primary)] font-bold text-xs sm:text-sm shadow-md transition-all inline-flex items-center gap-2 border border-[var(--gold-border)] cursor-pointer"
               >
                 <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />
                 <span>دعوتُ لهم بالرحمة والمغفرة ({duaCount})</span>

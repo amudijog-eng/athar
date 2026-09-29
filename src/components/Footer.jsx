@@ -24,27 +24,31 @@ export const Footer = () => {
           {/* Logo & Philosophy */}
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[var(--emerald-deep)] border border-[var(--gold-primary)] flex items-center justify-center font-quran text-2xl font-bold text-[var(--gold-primary)]">
-                أثر
+              <div className="w-12 h-12 rounded-2xl overflow-hidden border border-[var(--gold-primary)] shadow-sm bg-black/40 shrink-0">
+                <img
+                  src="/athar-logo.jpg"
+                  alt="شعار موقع أثر"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <span className="text-xl font-bold font-quran text-[var(--text-primary)] block">موقع أَثَـر</span>
-                <span className="text-xs text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-medium">صدقة جارية مباركة</span>
+                <span className="text-xs text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold">صدقة جارية عن أحمد منتصر العامودي</span>
               </div>
             </div>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-amiri text-sm">
-              «أثرٌ يبقى .. وأجرٌ يرقى» — منصة إسلامية شاملة لقراءة القرآن، الذكر، والسنّة النبوية، خالية تماماً من الإعلانات إلى ما شاء الله.
+              «أثرٌ يبقى .. وأجرٌ يرقى» — منصة إسلامية شاملة لقراءة وتلاوة القرآن الكريم، الأذكار، والسنّة النبوية، خالية 100% من الإعلانات.
             </p>
           </div>
 
           {/* Sincere Sadaqah Prayer */}
           <div className="p-5 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2 text-center md:text-right shadow-xs">
             <span className="text-xs font-bold text-[var(--gold-dark)] dark:text-[var(--gold-light)] flex items-center justify-center md:justify-start gap-1.5">
-              <Heart className="w-3.5 h-3.5 fill-[var(--gold-primary)] text-[var(--gold-primary)]" />
-              <span>دعاء من القلب</span>
+              <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
+              <span>دعاء مبارك للفقيد</span>
             </span>
             <p className="text-xs sm:text-sm text-[var(--text-primary)] font-amiri leading-relaxed">
-              «اللَّهُمَّ اجْعَلْ هَذَا العَمَلَ خَالِصًا لِوَجْهِكَ الكَرِيمِ، وَصَدَقَةً جَارِيَةً عَنِّي وَعَنْ وَالِدَيَّ وَعَنْ كُلِّ مَنْ زَارَ هَذَا المَوْقِعَ وَانْتَفَعَ بِهِ إِلَى يَوْمِ القِيَامَةِ.»
+              «اللَّهُمَّ اجْعَلْ هَذَا العَمَلَ خَالِصًا لِوَجْهِكَ الكَرِيمِ، وَصَدَقَةً جَارِيَةً عَنْ عَبْدِكَ أَحْمَد مُنْتَصِر العَامُودِي وَعَنْ وَالِدَيْهِ، وَعَنْ كُلِّ مَنْ زَارَ هَذِهِ المَنَصَّةَ وَذَكَرَ اللَّهَ فِيهَا إِلَى يَوْمِ القِيَامَةِ.»
             </p>
           </div>
 
@@ -117,11 +121,11 @@ export const Footer = () => {
         {/* Bottom Credits & Waiver */}
         <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[var(--text-muted)]">
           <div>
-            جميع الحقوق غير محفوظة • هذا المشروع وقف إسلامي متاح مجاناً لوجه الله تعالى.
+            جميع الحقوق وقف لله تعالى • صدقة جارية عن روح الفقيد: <strong className="text-[var(--text-primary)]">أحمد منتصر العامودي</strong> (رحمه الله وغفر له).
           </div>
-          <div className="flex items-center gap-4">
-            <span>منصة أثر © {new Date().getFullYear()}</span>
-            <span>صدقة جارية</span>
+          <div className="flex items-center gap-3">
+            <span>منصة أثر المباركة © {new Date().getFullYear()}</span>
+            <span className="text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold">صدقة جارية</span>
           </div>
         </div>
 

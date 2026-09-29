@@ -70,7 +70,7 @@ export const DailyWirdSection = () => {
             أنجزت {completedItems} من {totalItems} مهام
           </h3>
           <p className="text-xs text-white/85">
-            {percent === 100 ? '🎉 تقبل الله طاعاتك وأثابك خيراً!' : 'واصل طاعاتك وأكمل ما تبقى من وردك اليومي.'}
+            {percent === 100 ? 'تقبل الله طاعاتكم وأثابكم خيراً ونوراً وسعادة.' : 'واصل طاعاتك وأكمل ما تبقى من وردك اليومي.'}
           </p>
         </div>
 
