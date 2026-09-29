@@ -53,8 +53,10 @@ export const calculateQibla = (lat, lng) => {
   };
 };
 
+const fixAngle = (a) => ((a % 360) + 360) % 360;
+
 // Calculate Sun position and Prayer Times based on astronomical formulae
-export const calculatePrayerTimes = (lat, lng, date = new Date()) => {
+export const calculatePrayerTimes = (lat, lng, date = new Date(), customTimezone = null) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -66,24 +68,29 @@ export const calculatePrayerTimes = (lat, lng, date = new Date()) => {
   const jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
   const d = jd - 2451545.0;
 
-  // Mean anomaly and solar coordinates
-  const g = 357.529 + 0.98560028 * d;
-  const q = 280.459 + 0.98564736 * d;
-  const L = q + 1.915 * Math.sin(toRad(g)) + 0.020 * Math.sin(toRad(2 * g));
+  // Mean anomaly and solar coordinates normalized to 0-360 degrees
+  const g = fixAngle(357.529 + 0.98560028 * d);
+  const q = fixAngle(280.459 + 0.98564736 * d);
+  const L = fixAngle(q + 1.915 * Math.sin(toRad(g)) + 0.020 * Math.sin(toRad(2 * g)));
   const e = 23.439 - 0.00000036 * d;
-  const RA = toDeg(Math.atan2(Math.cos(toRad(e)) * Math.sin(toRad(L)), Math.cos(toRad(L)))) / 15;
+
+  let RA = toDeg(Math.atan2(Math.cos(toRad(e)) * Math.sin(toRad(L)), Math.cos(toRad(L)))) / 15;
+  RA = ((RA % 24) + 24) % 24;
+
   const dec = toDeg(Math.asin(Math.sin(toRad(e)) * Math.sin(toRad(L))));
 
-  // Equation of time in hours
-  const EqT = q / 15 - (RA < 0 ? RA + 24 : RA);
+  let EqT = q / 15 - RA;
+  if (EqT > 12) EqT -= 24;
+  if (EqT < -12) EqT += 24;
 
-  // Timezone offset in hours
-  const timezoneOffset = -date.getTimezoneOffset() / 60;
+  const timezoneOffset = customTimezone !== null && customTimezone !== undefined
+    ? customTimezone
+    : (-date.getTimezoneOffset() / 60);
 
   // Solar Noon (Dhuhr)
   const dhuhrTime = 12 + timezoneOffset - lng / 15 - EqT;
 
-  // Sun hour angle helper
+  // Sun hour angle helper for depressions below horizon (Fajr, Sunrise, Isha)
   const hourAngle = (angle) => {
     const cosHA = (Math.sin(toRad(-angle)) - Math.sin(toRad(lat)) * Math.sin(toRad(dec))) /
                   (Math.cos(toRad(lat)) * Math.cos(toRad(dec)));
@@ -92,10 +99,11 @@ export const calculatePrayerTimes = (lat, lng, date = new Date()) => {
     return toDeg(Math.acos(cosHA)) / 15;
   };
 
-  // Asr shadow angle (Standard Shafi/Hanbali: shadow = object length + noon shadow)
-  const noonSunAltitude = 90 - Math.abs(lat - dec);
-  const asrAltitude = toDeg(Math.atan(1 + Math.tan(toRad(Math.abs(lat - dec)))));
-  const asrHA = hourAngle(90 - asrAltitude);
+  // Asr hour angle: cot(a) = 1 + tan(|lat - dec|) => tan(a) = 1 / (1 + tan(|lat - dec|))
+  const asrAltitude = toDeg(Math.atan(1 / (1 + Math.tan(toRad(Math.abs(lat - dec))))));
+  const cosAsrHA = (Math.sin(toRad(asrAltitude)) - Math.sin(toRad(lat)) * Math.sin(toRad(dec))) /
+                   (Math.cos(toRad(lat)) * Math.cos(toRad(dec)));
+  const asrHA = (cosAsrHA >= -1 && cosAsrHA <= 1) ? toDeg(Math.acos(cosAsrHA)) / 15 : 3.5;
 
   const fajrAngle = 18.0; // Muslim World League standard
   const ishaAngle = 17.0;
@@ -112,7 +120,7 @@ export const calculatePrayerTimes = (lat, lng, date = new Date()) => {
 
   const formatTime = (hoursFraction) => {
     let totalMinutes = Math.round(hoursFraction * 60);
-    totalMinutes = (totalMinutes + 1440) % 1440;
+    totalMinutes = ((totalMinutes % 1440) + 1440) % 1440;
     const h = Math.floor(totalMinutes / 60);
     const m = totalMinutes % 60;
     const period = h >= 12 ? 'م' : 'ص';
@@ -148,6 +156,14 @@ export const getNextPrayer = (prayerTimes, now = new Date()) => {
     { name: 'العشاء', key: 'isha', time: prayerTimes.isha }
   ];
 
+  const formatRemaining = (h, m) => {
+    const hText = h === 1 ? 'ساعة واحدة' : h === 2 ? 'ساعتان' : (h >= 3 && h <= 10) ? `${h} ساعات` : `${h} ساعة`;
+    const mText = m === 1 ? 'دقيقة واحدة' : m === 2 ? 'دقيقتان' : (m >= 3 && m <= 10) ? `${m} دقائق` : `${m} دقيقة`;
+    if (h > 0 && m > 0) return `${hText} و ${mText}`;
+    if (h > 0) return hText;
+    return mText;
+  };
+
   for (const p of prayers) {
     if (p.time.totalMinutes > currentTotalMin) {
       const diff = p.time.totalMinutes - currentTotalMin;
@@ -159,7 +175,7 @@ export const getNextPrayer = (prayerTimes, now = new Date()) => {
         key: p.key,
         remainingHours: hours,
         remainingMinutes: mins,
-        remainingText: hours > 0 ? `${hours} ساعة و ${mins} دقيقة` : `${mins} دقيقة`
+        remainingText: formatRemaining(hours, mins)
       };
     }
   }
@@ -174,7 +190,7 @@ export const getNextPrayer = (prayerTimes, now = new Date()) => {
     key: 'fajr',
     remainingHours: hours,
     remainingMinutes: mins,
-    remainingText: `${hours} ساعة و ${mins} دقيقة`
+    remainingText: formatRemaining(hours, mins)
   };
 };
 

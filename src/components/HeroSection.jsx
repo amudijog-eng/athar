@@ -52,7 +52,7 @@ export const HeroSection = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const prayerTimes = calculatePrayerTimes(selectedCity.lat, selectedCity.lng, now);
+  const prayerTimes = calculatePrayerTimes(selectedCity.lat, selectedCity.lng, now, selectedCity.timezone);
   const nextPrayer = getNextPrayer(prayerTimes, now);
   const hijri = getHijriDate(now);
 

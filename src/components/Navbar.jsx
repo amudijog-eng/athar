@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { LANGUAGES } from '../data/languages';
-import { calculatePrayerTimes, getNextPrayer, DEFAULT_CITIES } from '../data/prayerCalculation';
 import {
   BookOpen,
   Sparkles,
@@ -19,7 +18,8 @@ import {
   Layers,
   ShieldCheck,
   Compass,
-  Grid
+  Grid,
+  ChevronDown
 } from 'lucide-react';
 
 export const Navbar = () => {
@@ -34,22 +34,25 @@ export const Navbar = () => {
     triggerHaptic
   } = useApp();
 
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [moreSheetOpen, setMoreSheetOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
 
-  const prayerTimes = calculatePrayerTimes(DEFAULT_CITIES[0].lat, DEFAULT_CITIES[0].lng, new Date());
-  const nextPrayer = getNextPrayer(prayerTimes, new Date());
-
-  const navItems = [
+  const primaryNavItems = [
     { id: 'home', label: 'الرئيسية', icon: Home },
     { id: 'quran', label: 'المصحف الشريف', icon: BookOpen },
-    { id: 'tasbeeh', label: 'المسبحة', icon: Sparkles },
     { id: 'adhkar', label: 'الأذكار', icon: Sparkles },
-    { id: 'prayer', label: 'مواقيت الصلاة', icon: Clock },
-    { id: 'istighfar', label: 'الاستغفار', icon: Heart },
-    { id: 'hadith', label: 'الأحاديث', icon: ShieldCheck },
-    { id: 'duas', label: 'الأدعية', icon: Heart },
-    { id: 'khatmah', label: 'الختمة والحفظ', icon: Layers }
+    { id: 'tasbeeh', label: 'المسبحة', icon: Sparkles },
+    { id: 'prayer', label: 'مواقيت الصلاة', icon: Clock }
+  ];
+
+  const moreNavItems = [
+    { id: 'istighfar', label: 'محراب الاستغفار', icon: Heart, desc: 'حلقات الاستغفار وسيد الاستغفار' },
+    { id: 'hadith', label: 'الأحاديث النبوية', icon: ShieldCheck, desc: 'صحيحة ومحققة بالشرح والفوائد' },
+    { id: 'duas', label: 'الأدعية المأثورة', icon: Heart, desc: 'أدعية قرآنية ونبوية جامعة' },
+    { id: 'khatmah', label: 'خطة الختمة ومُعين الحفظ', icon: Layers, desc: 'جدول الختم واختبار التسميع' },
+    { id: 'wird', label: 'وردي اليومي', icon: CheckCircle2, desc: 'جدول المحاسبة وميزان الطاعات' },
+    { id: 'sadaqah', label: 'الصدقة الجارية', icon: Heart, desc: 'وقفية عن أحمد منتصر العامودي' }
   ];
 
   const moreItems = [
@@ -66,6 +69,7 @@ export const Navbar = () => {
     triggerHaptic(15);
     setActiveTab(id);
     setMoreSheetOpen(false);
+    setDesktopMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -81,43 +85,42 @@ export const Navbar = () => {
       {/* 1. Desktop & Mobile Top Header Bar */}
       <header className="sticky top-0 z-40 w-full athar-glass border-b border-[var(--border-subtle)] shadow-xs transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-18">
+          <div className="flex items-center justify-between h-16 sm:h-18 gap-3 sm:gap-4">
             
-            {/* Logo Brand Identity */}
+            {/* Logo Brand Identity (Never Overlaps) */}
             <div
-              className="flex items-center gap-2.5 cursor-pointer select-none group"
+              className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none group shrink-0"
               onClick={() => handleNavClick('home')}
             >
-              <img
-                src="/athar-logo.jpg"
-                alt="شعار منصة أثر - صدقة جارية عن أحمد منتصر العامودي"
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-contain shadow-xs border border-[var(--gold-border)] bg-[#F8F6F0] p-0.5 group-hover:scale-105 transition-transform"
-              />
-              <div>
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-xl sm:text-2xl font-bold font-quran text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] tracking-wide">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl overflow-hidden border border-[var(--gold-border)] shadow-xs bg-[#F8F6F0] shrink-0 p-0.5 group-hover:scale-105 transition-transform flex items-center justify-center">
+                <img
+                  src="/athar-logo.jpg"
+                  alt="شعار منصة أثر - صدقة جارية عن أحمد منتصر العامودي"
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              </div>
+              <div className="flex flex-col justify-center">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl sm:text-2xl font-bold font-quran text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] tracking-wide leading-none">
                     أَثَـر
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-extrabold border border-[var(--gold-border)]">
+                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold border border-[var(--gold-border)] whitespace-nowrap">
                     صدقة جارية عن أحمد منتصر العامودي
                   </span>
                 </div>
-                <p className="text-[10px] text-[var(--text-muted)] font-amiri hidden sm:block">
-                  منصة إسلامية ... لأثـرٍ أعمق
-                </p>
               </div>
             </div>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden xl:flex items-center gap-1">
-              {navItems.map(item => {
+            {/* Desktop Navigation Links (Clean, Compact & Balanced) */}
+            <nav className="hidden lg:flex items-center gap-1">
+              {primaryNavItems.map(item => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`h-9 px-3 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                       isActive
                         ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                         : 'text-[var(--text-secondary)] hover:bg-[var(--emerald-soft)] hover:text-[var(--emerald-deep)] dark:hover:text-[var(--emerald-accent)]'
@@ -128,41 +131,85 @@ export const Navbar = () => {
                   </button>
                 );
               })}
+
+              {/* Luxury Services Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setDesktopMenuOpen(!desktopMenuOpen)}
+                  className={`h-9 px-3 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    moreNavItems.some(i => i.id === activeTab) || desktopMenuOpen
+                      ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--emerald-soft)] hover:text-[var(--emerald-deep)] dark:hover:text-[var(--emerald-accent)]'
+                  }`}
+                >
+                  <Grid className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
+                  <span>الأقسام</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${desktopMenuOpen ? 'rotate-180 text-[var(--gold-light)]' : 'text-[var(--gold-primary)]'}`} />
+                </button>
+
+                {desktopMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setDesktopMenuOpen(false)} />
+                    <div className="absolute left-0 sm:right-0 mt-2 w-72 rounded-2xl bg-[var(--bg-surface)] shadow-2xl border border-[var(--border-subtle)] p-2 z-50 animate-in fade-in duration-150">
+                      <div className="px-3 py-2 border-b border-[var(--border-subtle)] mb-1 flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-[var(--text-muted)]">كافة أقسام المنصة</span>
+                        <span className="text-[10px] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold">صدقة جارية</span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-1">
+                        {moreNavItems.map(item => {
+                          const Icon = item.icon;
+                          const isActive = activeTab === item.id;
+                          return (
+                            <button
+                              key={item.id}
+                              onClick={() => {
+                                handleNavClick(item.id);
+                                setDesktopMenuOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 rounded-xl text-right flex items-center gap-3 transition-colors cursor-pointer ${
+                                isActive
+                                  ? 'bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] font-bold'
+                                  : 'text-[var(--text-primary)] hover:bg-[var(--emerald-soft)]/60'
+                              }`}
+                            >
+                              <div className={`p-1.5 rounded-lg shrink-0 ${isActive ? 'bg-[var(--emerald-medium)] text-white' : 'bg-[var(--bg-surface-elevated)] text-[var(--gold-primary)]'}`}>
+                                <Icon className="w-4 h-4" />
+                              </div>
+                              <div className="overflow-hidden">
+                                <span className="text-xs font-bold block truncate">{item.label}</span>
+                                <span className="text-[10px] text-[var(--text-muted)] block truncate">{item.desc}</span>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </nav>
 
-            {/* Right Tools: Prayer pill, Search, Theme, Language, Sadaqah */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Left Actions: Search, Theme, Language, Sadaqah Shortcut */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               
-              {/* Prayer Pill (Desktop) */}
-              <button
-                onClick={() => handleNavClick('prayer')}
-                className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs hover:border-[var(--emerald-medium)] transition-colors cursor-pointer"
-              >
-                <Clock className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
-                <span className="font-semibold text-[var(--text-primary)]">
-                  {nextPrayer.nextPrayerName}: <strong className="text-[var(--emerald-medium)] font-cairo">{nextPrayer.nextPrayerTime}</strong>
-                </span>
-                <span className="text-[10px] text-[var(--text-muted)] font-mono">({nextPrayer.remainingMinutes}د)</span>
-              </button>
-
               {/* Global Search Button */}
               <button
                 onClick={() => {
                   triggerHaptic(15);
                   setIsSearchOpen(true);
                 }}
-                className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] text-[var(--text-secondary)] transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+                className="h-9 px-3 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] text-[var(--text-secondary)] transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
                 title="البحث الشامل (Ctrl+K)"
               >
                 <Search className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
-                <span className="hidden sm:inline">بحث</span>
+                <span className="hidden md:inline">بحث</span>
                 <kbd className="hidden lg:inline-block text-[10px] px-1 py-0.5 rounded bg-[var(--bg-surface-sunken)] text-[var(--text-muted)] font-mono">⌘K</kbd>
               </button>
 
               {/* Theme Toggle (Light / Dark / Sepia) */}
               <button
                 onClick={cycleTheme}
-                className="p-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] transition-colors text-[var(--text-secondary)] cursor-pointer"
+                className="w-9 h-9 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--emerald-soft)] border border-[var(--border-subtle)] transition-colors text-[var(--text-secondary)] flex items-center justify-center cursor-pointer shrink-0"
                 title={`تبديل المظهر (${theme})`}
               >
                 {theme === 'dark' ? (
@@ -178,7 +225,7 @@ export const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setLangMenuOpen(!langMenuOpen)}
-                  className="px-2.5 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-bold flex items-center gap-1 cursor-pointer text-[var(--text-primary)]"
+                  className="h-9 px-2.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-bold flex items-center gap-1 cursor-pointer text-[var(--text-primary)]"
                   title="تغيير اللغة"
                 >
                   <span className="text-[11px] font-mono">{LANGUAGES.find(l => l.code === language)?.label || 'AR'}</span>
@@ -206,9 +253,9 @@ export const Navbar = () => {
               {/* Sadaqah Jariyah Button (Desktop) */}
               <button
                 onClick={() => handleNavClick('sadaqah')}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-bold text-xs shadow-xs transition-all hover:scale-102 border border-[var(--gold-border)] cursor-pointer"
+                className="hidden sm:flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-dark)] text-[#0B3D2E] font-bold text-xs shadow-xs transition-all hover:scale-102 border border-[var(--gold-border)] cursor-pointer shrink-0"
               >
-                <Share2 className="w-3.5 h-3.5 text-[#0B3D2E]" />
+                <Heart className="w-3.5 h-3.5 fill-[#0B3D2E]" />
                 <span>الصدقة الجارية</span>
               </button>
 
@@ -219,7 +266,7 @@ export const Navbar = () => {
       </header>
 
       {/* 2. Native Mobile Bottom Tab Bar (App-Store Grade UX) */}
-      <nav className="xl:hidden fixed bottom-0 inset-x-0 z-40 bg-[var(--bg-surface)]/95 backdrop-blur-xl border-t border-[var(--border-subtle)] px-2 py-1 shadow-2xl safe-area-pb">
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[var(--bg-surface)]/95 backdrop-blur-xl border-t border-[var(--border-subtle)] px-2 py-1 shadow-2xl safe-area-pb">
         <div className="flex items-center justify-around max-w-lg mx-auto">
           
           {/* Tab 1: Home */}
@@ -305,7 +352,7 @@ export const Navbar = () => {
 
       {/* 3. Mobile "More" Bottom Sheet Modal */}
       {moreSheetOpen && (
-        <div className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end animate-in fade-in duration-200">
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end animate-in fade-in duration-200">
           <div className="w-full bg-[var(--bg-surface)] rounded-t-3xl p-5 border-t border-[var(--border-subtle)] shadow-2xl max-h-[80vh] overflow-y-auto space-y-4">
             
             <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">

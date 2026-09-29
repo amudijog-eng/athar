@@ -61,7 +61,7 @@ export const PrayerTimesSection = () => {
     }
   };
 
-  const prayerTimes = calculatePrayerTimes(selectedCity.lat, selectedCity.lng, currentDate);
+  const prayerTimes = calculatePrayerTimes(selectedCity.lat, selectedCity.lng, currentDate, selectedCity.timezone);
   const nextPrayer = getNextPrayer(prayerTimes, currentDate);
   const hijri = getHijriDate(currentDate);
   const qibla = calculateQibla(selectedCity.lat, selectedCity.lng);
