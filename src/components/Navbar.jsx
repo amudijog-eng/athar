@@ -105,8 +105,11 @@ export const Navbar = () => {
                   <span className="text-xl sm:text-2xl font-bold font-quran text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] tracking-wide leading-none">
                     أَثَـر
                   </span>
-                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold border border-[var(--gold-border)] whitespace-nowrap">
+                  <span className="hidden sm:inline-block text-[10px] px-2.5 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold border border-[var(--gold-border)] whitespace-nowrap">
                     صدقة جارية عن أحمد منتصر العامودي
+                  </span>
+                  <span className="sm:hidden text-[9px] px-2 py-0.5 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold border border-[var(--gold-border)] whitespace-nowrap">
+                    صدقة جارية
                   </span>
                 </div>
               </div>

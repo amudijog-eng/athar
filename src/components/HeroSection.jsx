@@ -20,13 +20,13 @@ import {
   Compass,
   Bookmark,
   Check,
-  ArrowRight,
   Sun,
   Sunrise,
   Sunset,
   CloudSun,
   Moon,
-  ScrollText
+  ScrollText,
+  CircleDot
 } from 'lucide-react';
 import atharLogo from '../assets/athar-logo.jpg';
 
@@ -34,8 +34,6 @@ export const HeroSection = () => {
   const {
     setActiveTab,
     lastRead,
-    istighfarCount,
-    istighfarGoal,
     dailyWird,
     toggleWirdItem,
     setShareModalItem,
@@ -92,7 +90,7 @@ export const HeroSection = () => {
       id: 'tasbeeh',
       title: 'المسبحة الذكية',
       subtitle: 'تسبيح باللمس والصوت',
-      icon: Sparkles,
+      icon: CircleDot,
       color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
     },
     {
@@ -127,7 +125,7 @@ export const HeroSection = () => {
       id: 'duas',
       title: 'الأدعية المأثورة',
       subtitle: 'أدعية قرآنية ونبوية',
-      icon: Heart,
+      icon: Compass,
       color: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20'
     },
     {
@@ -249,35 +247,35 @@ export const HeroSection = () => {
       </section>
 
       {/* 2. Mobile App Launcher (8 Iconic Portals) */}
-      <section className="space-y-3">
+      <section className="space-y-3.5 pt-1">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[var(--emerald-medium)]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--emerald-medium)] ring-4 ring-[var(--emerald-soft)]" />
             <h2 className="text-sm sm:text-base font-extrabold text-[var(--text-primary)]">
               بوابة الطاعات والأقسام
             </h2>
           </div>
-          <span className="text-xs text-[var(--text-muted)] font-medium">اختر القسم للبدء</span>
+          <span className="text-xs text-[var(--text-muted)] font-medium">اختر القسم للانتقال المباشر</span>
         </div>
 
-        {/* 4 columns on mobile, 8 on desktop - true mobile app experience */}
-        <div className="grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3">
+        {/* Responsive Grid: 2 columns on mobile, 4 on tablet, 8 on desktop - spacious, full text, never truncated */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3.5">
           {appModules.map(mod => {
             const Icon = mod.icon;
             return (
               <button
                 key={mod.id}
                 onClick={() => handleOpenModule(mod.id)}
-                className="group p-3 sm:p-4 rounded-2xl app-card text-center flex flex-col items-center justify-center gap-2 cursor-pointer select-none active:scale-95 transition-all"
+                className="group p-3.5 sm:p-4 rounded-2xl app-card text-center flex flex-col items-center justify-between min-h-[110px] sm:min-h-[125px] cursor-pointer select-none active:scale-95 transition-all hover:border-[var(--emerald-medium)] shadow-xs relative overflow-hidden"
               >
-                <div className={`w-11 h-11 sm:w-13 sm:h-13 rounded-2xl border flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform ${mod.color}`}>
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                <div className={`w-12 h-12 sm:w-13 sm:h-13 rounded-2xl border flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform ${mod.color}`}>
+                  <Icon className="w-6 h-6" />
                 </div>
-                <div className="space-y-0.5">
-                  <span className="text-xs font-bold text-[var(--text-primary)] block leading-tight truncate max-w-[70px] sm:max-w-none">
+                <div className="space-y-1 w-full text-center">
+                  <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)] block leading-snug">
                     {mod.title}
                   </span>
-                  <span className="text-[10px] text-[var(--text-muted)] hidden sm:block truncate">
+                  <span className="text-[10px] sm:text-[11px] text-[var(--text-muted)] block leading-tight">
                     {mod.subtitle}
                   </span>
                 </div>
@@ -289,16 +287,16 @@ export const HeroSection = () => {
 
       {/* 3. Resume Last Read Quran Bookmark (Quick Jump) */}
       {lastRead && (
-        <section className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[var(--emerald-soft)] to-[var(--bg-surface)] border border-[var(--emerald-border)] shadow-xs flex items-center justify-between gap-4">
+        <section className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[var(--emerald-soft)] to-[var(--bg-surface)] border border-[var(--emerald-border)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[var(--emerald-medium)] text-white flex items-center justify-center shrink-0 shadow-xs">
+            <div className="w-11 h-11 rounded-xl bg-[var(--emerald-medium)] text-white flex items-center justify-center shrink-0 shadow-xs">
               <Bookmark className="w-5 h-5" />
             </div>
             <div>
               <span className="text-[11px] text-[var(--text-muted)] block font-semibold">
                 تابِع قراءتك من حيث توقفت:
               </span>
-              <span className="text-sm font-bold text-[var(--text-primary)] font-quran block">
+              <span className="text-sm sm:text-base font-bold text-[var(--text-primary)] font-quran block">
                 سورة {lastRead.surahName} — آية ({lastRead.ayahNumber})
               </span>
             </div>
@@ -313,7 +311,7 @@ export const HeroSection = () => {
                 handleOpenModule('quran');
               }
             }}
-            className="px-4 py-2 rounded-xl bg-[var(--emerald-deep)] hover:bg-[var(--emerald-medium)] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors shrink-0 cursor-pointer"
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--emerald-deep)] hover:bg-[var(--emerald-medium)] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors shrink-0 cursor-pointer"
           >
             <span>استكمال القراءة</span>
             <ChevronLeft className="w-4 h-4" />
@@ -322,7 +320,7 @@ export const HeroSection = () => {
       )}
 
       {/* 4. Daily Inspiration Card (Ayah / Hadith / Dua Tabs) */}
-      <section className="app-card p-5 sm:p-7 space-y-5">
+      <section className="app-card p-4 sm:p-6 space-y-4 sm:space-y-5">
         
         {/* Header with Switcher Tabs */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
@@ -333,38 +331,38 @@ export const HeroSection = () => {
             </h3>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-[var(--bg-surface-elevated)] p-1 rounded-xl border border-[var(--border-subtle)] self-start sm:self-auto text-xs font-bold">
+          <div className="grid grid-cols-3 sm:flex items-center gap-1 sm:gap-1.5 bg-[var(--bg-surface-elevated)] p-1 rounded-xl border border-[var(--border-subtle)] w-full sm:w-auto text-xs font-bold">
             <button
               onClick={() => setActiveInspirationTab('ayah')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-2 sm:px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeInspirationTab === 'ayah'
                   ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5" />
+              <BookOpen className="w-3.5 h-3.5 shrink-0" />
               <span>آية اليوم</span>
             </button>
             <button
               onClick={() => setActiveInspirationTab('hadith')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-2 sm:px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeInspirationTab === 'hadith'
                   ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              <ScrollText className="w-3.5 h-3.5" />
+              <ScrollText className="w-3.5 h-3.5 shrink-0" />
               <span>حديث اليوم</span>
             </button>
             <button
               onClick={() => setActiveInspirationTab('dua')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-2 sm:px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeInspirationTab === 'dua'
                   ? 'bg-[var(--emerald-deep)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              <Heart className="w-3.5 h-3.5" />
+              <Heart className="w-3.5 h-3.5 shrink-0" />
               <span>دعاء اليوم</span>
             </button>
           </div>
@@ -386,13 +384,13 @@ export const HeroSection = () => {
               <strong className="text-[var(--emerald-medium)]">فضيلتها:</strong> {AYAT_AL_KURSI.virtue}
             </div>
 
-            <div className="pt-2 flex items-center justify-end gap-2 text-xs">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-end gap-2 text-xs">
               <button
                 onClick={() => {
                   const s = SURAHS_LIST.find(i => i.id === AYAT_AL_KURSI.surahNumber);
                   if (s) playSurah(s);
                 }}
-                className="px-3.5 py-2 rounded-xl bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] font-bold flex items-center gap-1.5 border border-[var(--emerald-border)] hover:bg-[var(--emerald-medium)] hover:text-white transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] font-bold flex items-center justify-center gap-1.5 border border-[var(--emerald-border)] hover:bg-[var(--emerald-medium)] hover:text-white transition-colors cursor-pointer"
               >
                 <Volume2 className="w-3.5 h-3.5" />
                 <span>استماع للتلاوة</span>
@@ -406,7 +404,7 @@ export const HeroSection = () => {
                     source: AYAT_AL_KURSI.virtue
                   });
                 }}
-                className="px-3.5 py-2 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold flex items-center gap-1.5 border border-[var(--gold-border)] hover:opacity-90 transition-opacity cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold flex items-center justify-center gap-1.5 border border-[var(--gold-border)] hover:opacity-90 transition-opacity cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
                 <span>مشاركة كبطاقة</span>
@@ -433,10 +431,10 @@ export const HeroSection = () => {
               {featuredHadith.explanation}
             </p>
 
-            <div className="pt-2 flex items-center justify-end gap-2 text-xs">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-end gap-2 text-xs">
               <button
                 onClick={() => handleOpenModule('hadith')}
-                className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] font-bold flex items-center gap-1 border border-[var(--border-subtle)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] font-bold flex items-center justify-center gap-1 border border-[var(--border-subtle)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
               >
                 <span>تصفح كافة الأحاديث</span>
                 <ChevronLeft className="w-3.5 h-3.5" />
@@ -450,7 +448,7 @@ export const HeroSection = () => {
                     source: `${featuredHadith.narrator} — ${featuredHadith.source}`
                   });
                 }}
-                className="px-3.5 py-2 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold flex items-center gap-1.5 border border-[var(--gold-border)] hover:opacity-90 transition-opacity cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold flex items-center justify-center gap-1.5 border border-[var(--gold-border)] hover:opacity-90 transition-opacity cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
                 <span>مشاركة الحديث</span>
@@ -471,10 +469,10 @@ export const HeroSection = () => {
               « {featuredDua.arabic} »
             </p>
 
-            <div className="pt-2 flex items-center justify-end gap-2 text-xs">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-end gap-2 text-xs">
               <button
                 onClick={() => handleOpenModule('duas')}
-                className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] font-bold flex items-center gap-1 border border-[var(--border-subtle)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] font-bold flex items-center justify-center gap-1 border border-[var(--border-subtle)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
               >
                 <span>تصفح كافة الأدعية</span>
                 <ChevronLeft className="w-3.5 h-3.5" />
@@ -488,7 +486,7 @@ export const HeroSection = () => {
                     source: featuredDua.source
                   });
                 }}
-                className="px-3.5 py-2 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold flex items-center gap-1.5 border border-[var(--gold-border)] hover:opacity-90 transition-opacity cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold flex items-center justify-center gap-1.5 border border-[var(--gold-border)] hover:opacity-90 transition-opacity cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
                 <span>مشاركة الدعاء</span>
@@ -560,11 +558,11 @@ export const HeroSection = () => {
       </section>
 
       {/* 6. Perpetual Charity Sincere Dedication (Sadaqah Jariyah for Ahmed Montaser Al-Amoudi) */}
-      <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[var(--emerald-deep)] via-[#073024] to-[#041A14] text-white shadow-xl border border-[var(--gold-border)] relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6">
+      <section className="p-5 sm:p-8 rounded-3xl bg-gradient-to-r from-[var(--emerald-deep)] via-[#073024] to-[#041A14] text-white shadow-xl border border-[var(--gold-border)] relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6">
         
         {/* Logo and Dedication Info */}
-        <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-right relative z-10">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-[var(--gold-primary)] shadow-lg bg-black/40 shrink-0">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-center sm:text-right relative z-10 w-full lg:w-auto">
+          <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-[var(--gold-primary)] shadow-lg bg-black/40 shrink-0">
             <img
               src={atharLogo}
               alt="شعار موقع أثر"
@@ -587,14 +585,14 @@ export const HeroSection = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 relative z-10 w-full lg:w-auto">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 relative z-10 w-full lg:w-auto">
           <button
             onClick={() => {
               triggerHaptic(20);
               setActiveTab('sadaqah');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/20 transition-all cursor-pointer"
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 border border-white/20 transition-all cursor-pointer"
           >
             <Heart className="w-4 h-4 text-rose-400" />
             <span>عن الصدقة الجارية</span>
