@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>موقع أثر | صدقة جارية - منصة القرآن الكريم والأذكار والمسبحة ومواقيت الصلاة</title>
+    <meta name="title" content="موقع أثر | صدقة جارية - منصة القرآن الكريم والأذكار والمسبحة ومواقيت الصلاة" />
+    <meta name="description" content="منصة إسلامية متكاملة وخالية تماماً من الإعلانات صدقة جارية: تلاوة وقراءة القرآن الكريم مع التفاسير، أذكار الصباح والمساء، المسبحة الإلكترونية الذكية، عداد الاستغفار، صحيح الأحاديث النبوية، الأدعية الشاملة، ومواقيت الصلاة والقبلة." />
+    <meta name="keywords" content="أثر, موقع أثر, صدقة جارية, القرآن الكريم, المصحف الإلكتروني, أذكار الصباح, أذكار المساء, حصن المسلم, مسبحة الكترونية, تسبيح, استغفار, مواقيت الصلاة, اتجاه القبلة, احاديث نبوية صحيحة, دعاء للميت, بر الوالدين, ختمة القرآن" />
+    <meta name="author" content="منصة أثر - صدقة جارية" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://athar-app.org/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://athar-app.org/" />
+    <meta property="og:title" content="موقع أثر | صدقة جارية - أثرٌ يبقى وأجرٌ يرقى" />
+    <meta property="og:description" content="منصة إسلامية متكاملة بدون إعلانات: القرآن الكريم كاملاً، أذكار حصن المسلم، المسبحة، الأحاديث، ومواقيت الصلاة. صدقة جارية لوجه الله تعالى." />
+    <meta property="og:image" content="https://athar-app.org/og-cover.png" />
+    <meta property="og:locale" content="ar_AR" />
+    <meta property="og:site_name" content="منصة أثر" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://athar-app.org/" />
+    <meta property="twitter:title" content="موقع أثر | صدقة جارية - أثرٌ يبقى وأجرٌ يرقى" />
+    <meta property="twitter:description" content="منصة إسلامية متكاملة بدون إعلانات: القرآن الكريم كاملاً، أذكار حصن المسلم، المسبحة، الأحاديث، ومواقيت الصلاة. صدقة جارية لوجه الله تعالى." />
+    <meta property="twitter:image" content="https://athar-app.org/og-cover.png" />
+
+    <!-- Theme & Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="theme-color" content="#0F382C" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Fonts: Amiri for Quran calligraphy, Cairo for modern readable Arabic UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- Structured Data (JSON-LD) for Google Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://athar-app.org/#website",
+          "url": "https://athar-app.org/",
+          "name": "موقع أثر - صدقة جارية",
+          "description": "منصة إسلامية متكاملة لقراءة وسماع القرآن الكريم والأذكار والمسبحة الإلكترونية ومواقيت الصلاة",
+          "inLanguage": "ar",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://athar-app.org/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://athar-app.org/#organization",
+          "name": "مشروع أثر للصدقة الجارية",
+          "url": "https://athar-app.org/",
+          "logo": "https://athar-app.org/favicon.svg"
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body class="bg-stone-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-cairo antialiased selection:bg-emerald-600 selection:text-white transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Register service worker if supported
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>

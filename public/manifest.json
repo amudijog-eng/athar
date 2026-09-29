@@ -1,0 +1,21 @@
+{
+  "short_name": "أثر",
+  "name": "أثر - صدقة جارية | منصة القرآن الكريم والأذكار والمسبحة ومواقيت الصلاة",
+  "description": "منصة إسلامية شاملة خالية من الإعلانات صدقة جارية: القرآن الكريم، أذكار الصباح والمساء، المسبحة الإلكترونية، الأحاديث النبوية، مواقيت الصلاة والقبلة",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#062C22",
+  "theme_color": "#0F382C",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar",
+  "categories": ["lifestyle", "books", "education"]
+}

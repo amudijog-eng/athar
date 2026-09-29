@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+:root {
+  /* Unified Royal Islamic Color Palette (Light Mode - Silk & Ivory Parchment) */
+  --bg-page: #F8F6F0;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #F2EFE7;
+  --bg-surface-sunken: #EBE6DA;
+  
+  --emerald-deep: #0B3D2E;
+  --emerald-medium: #115E47;
+  --emerald-accent: #178363;
+  --emerald-soft: #E8F3EE;
+  --emerald-border: #D1E5DC;
+  
+  --gold-primary: #C59B35;
+  --gold-light: #DFBA58;
+  --gold-dark: #9E7B22;
+  --gold-soft: #FAF4E5;
+  --gold-border: #E8D7B0;
+  
+  --text-primary: #14241E;
+  --text-secondary: #486157;
+  --text-muted: #7A938A;
+  --border-subtle: #E2DBD0;
+  
+  --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
+  --font-quran: 'Amiri Quran', 'Amiri', serif;
+  --font-amiri: 'Amiri', serif;
+}
+
+html.dark {
+  /* Unified Royal Islamic Color Palette (Dark Mode - Serene Obsidian Emerald) */
+  --bg-page: #061410;
+  --bg-surface: #0B201A;
+  --bg-surface-elevated: #112D25;
+  --bg-surface-sunken: #040E0B;
+  
+  --emerald-deep: #082119;
+  --emerald-medium: #157357;
+  --emerald-accent: #1CA87F;
+  --emerald-soft: #0C2820;
+  --emerald-border: #1B4538;
+  
+  --gold-primary: #D4AF37;
+  --gold-light: #E7C866;
+  --gold-dark: #AA8820;
+  --gold-soft: #1E1A0C;
+  --gold-border: #4A3C17;
+  
+  --text-primary: #EEF3F0;
+  --text-secondary: #A6C2B7;
+  --text-muted: #6B8E81;
+  --border-subtle: #15332A;
+}
+
+html.theme-sepia {
+  /* Eye Care / Warm Reading Sand Mode */
+  --bg-page: #F4EEDB;
+  --bg-surface: #FCF8EE;
+  --bg-surface-elevated: #ECE4CD;
+  --bg-surface-sunken: #E2D7BE;
+  
+  --emerald-deep: #1A3C31;
+  --emerald-medium: #235445;
+  --emerald-accent: #2C6C58;
+  --emerald-soft: #E8E0CB;
+  --emerald-border: #D6CAB0;
+  
+  --gold-primary: #B58B28;
+  --gold-light: #CAA344;
+  --gold-dark: #8C6A1A;
+  --gold-soft: #EFE6D0;
+  --gold-border: #D5C29A;
+  
+  --text-primary: #2C2418;
+  --text-secondary: #584A36;
+  --text-muted: #82725A;
+  --border-subtle: #D8CCA8;
+}
+
+/* Base Document Styling */
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-cairo);
+  direction: rtl;
+  text-align: right;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: hidden;
+}
+
+/* Typography Helpers */
+.font-quran {
+  font-family: var(--font-quran);
+  line-height: 2.25;
+  letter-spacing: 0.2px;
+}
+
+.font-amiri {
+  font-family: var(--font-amiri);
+  line-height: 1.85;
+}
+
+.font-cairo {
+  font-family: var(--font-cairo);
+}
+
+/* Authentic Gold Gradient Text */
+.gold-foil-text {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Islamic Geometric Micro-Pattern Background */
+.islamic-ambient-pattern {
+  background-image: 
+    radial-gradient(var(--gold-primary) 0.65px, transparent 0.65px),
+    radial-gradient(var(--emerald-medium) 0.65px, transparent 0.65px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+  opacity: 0.04;
+}
+
+/* Mushaf Page Frame (طبعة مجمع الملك فهد) */
+.mushaf-frame {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--gold-border);
+  box-shadow: 
+    0 4px 20px -2px rgba(11, 61, 46, 0.05),
+    0 0 0 6px var(--bg-surface-elevated),
+    0 0 0 8px var(--gold-primary);
+  border-radius: 14px;
+}
+
+/* Traditional Surah Header Frame (ترويسة السورة الذهبية) */
+.surah-header-box {
+  background: linear-gradient(135deg, var(--emerald-deep) 0%, #051A13 100%);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 18px;
+  position: relative;
+  box-shadow: inset 0 0 15px rgba(197, 155, 53, 0.15), 0 8px 24px -4px rgba(11, 61, 46, 0.25);
+}
+
+.surah-header-box::before {
+  content: "۞";
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  color: var(--gold-primary);
+  font-size: 22px;
+}
+
+.surah-header-box::after {
+  content: "۞";
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%);
+  color: var(--gold-primary);
+  font-size: 22px;
+}
+
+/* Tactile Glass Effect */
+.athar-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .athar-glass {
+  background: rgba(11, 32, 26, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 9999px;
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-dark);
+}
+
+/* Delicate Glow */
+.gold-glow {
+  box-shadow: 0 0 20px -3px rgba(197, 155, 53, 0.35);
+}
+
+.emerald-glow {
+  box-shadow: 0 0 25px -4px rgba(17, 94, 71, 0.3);
+}

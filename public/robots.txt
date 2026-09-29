@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://athar-app.org/sitemap.xml
