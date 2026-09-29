@@ -28,6 +28,7 @@ import {
   Moon,
   ScrollText
 } from 'lucide-react';
+import atharLogo from '../assets/athar-logo.jpg';
 
 export const HeroSection = () => {
   const {
@@ -552,7 +553,7 @@ export const HeroSection = () => {
         <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-right relative z-10">
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-[var(--gold-primary)] shadow-lg bg-black/40 shrink-0">
             <img
-              src="/athar-logo.jpg"
+              src={atharLogo}
               alt="شعار موقع أثر"
               className="w-full h-full object-cover"
             />

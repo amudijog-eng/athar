@@ -11,6 +11,7 @@ import {
   BookOpen,
   Check
 } from 'lucide-react';
+import atharLogo from '../assets/athar-logo.jpg';
 
 export const SadaqahJariyahSection = () => {
   const { setShareModalItem, triggerHaptic } = useApp();
@@ -85,7 +86,7 @@ export const SadaqahJariyahSection = () => {
             {/* Logo in Gilded Frame */}
             <div className="w-24 h-24 rounded-3xl overflow-hidden border-2 border-[var(--gold-primary)] shadow-xl mx-auto bg-black/40">
               <img
-                src="/athar-logo.jpg"
+                src={atharLogo}
                 alt="شعار موقع أثر"
                 className="w-full h-full object-cover"
               />

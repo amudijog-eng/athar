@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const publicDir = path.resolve(rootDir, 'public');
+const DOMAIN = process.env.SITE_URL || 'https://amudijog-eng.github.io/athar';
 
 if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true });
@@ -459,14 +460,14 @@ function renderSeoHtml({
   <meta property="og:url" content="${canonicalUrl}" />
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${description}" />
-  <meta property="og:image" content="https://athar-app.org/athar-logo.jpg" />
+  <meta property="og:image" content="${DOMAIN}/athar-logo.jpg" />
   <meta property="og:locale" content="ar_AR" />
   <meta property="og:site_name" content="موقع أثر" />
   ${audioUrl ? `<meta property="og:audio" content="${audioUrl}" />` : ''}
 
   <!-- Favicon & PWA -->
-  <link rel="icon" type="image/jpeg" href="/athar-logo.jpg" />
-  <link rel="apple-touch-icon" href="/athar-logo.jpg" />
+  <link rel="icon" type="image/jpeg" href="./athar-logo.jpg" />
+  <link rel="apple-touch-icon" href="./athar-logo.jpg" />
   <meta name="theme-color" content="#0B3D2E" />
 
   <!-- Google Fonts: Amiri for Quran calligraphy, Cairo for modern Arabic UI -->
@@ -659,8 +660,8 @@ function renderSeoHtml({
   <!-- Top Header Navigation -->
   <header class="header-bar">
     <div class="header-inner">
-      <a href="/" class="brand-link">
-        <img src="/athar-logo.jpg" alt="شعار منصة أثر - صدقة جارية أسسها أحمد منتصر العامودي" class="brand-img" />
+      <a href="./" class="brand-link">
+        <img src="./athar-logo.jpg" alt="شعار منصة أثر - صدقة جارية أسسها أحمد منتصر العامودي" class="brand-img" />
         <div>
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="brand-title font-quran">أَثَـر</span>
@@ -670,7 +671,7 @@ function renderSeoHtml({
       </a>
 
       <div style="display: flex; align-items: center; gap: 10px;">
-        <a href="/" class="nav-btn">
+        <a href="./" class="nav-btn">
           <span>دخول المنصة الشاملة</span>
         </a>
       </div>
@@ -726,7 +727,7 @@ function renderSeoHtml({
 
 // Store all generated page URLs for sitemap.xml
 const sitemapUrls = [
-  { loc: "https://athar-app.org/", priority: "1.0", changefreq: "daily" }
+  { loc: `${DOMAIN}/`, priority: "1.0", changefreq: "daily" }
 ];
 
 console.log("Generating 1,500+ SEO Pages for Athar Platform...");
@@ -737,7 +738,7 @@ console.log("Generating 1,500+ SEO Pages for Athar Platform...");
 for (const rec of RECITERS_CONFIG) {
   for (const surah of SURAHS) {
     const fileName = `${rec.slugPrefix}${surah.id}.html`;
-    const canonicalUrl = `https://athar-app.org/${fileName}`;
+    const canonicalUrl = `${DOMAIN}/${fileName}`;
     const audioUrl = `${rec.server}${pad(surah.id)}.mp3`;
 
     const schemaJson = {
@@ -759,8 +760,8 @@ for (const rec of RECITERS_CONFIG) {
         {
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-            { "@type": "ListItem", "position": 2, "name": "المصحف المرتل", "item": "https://athar-app.org/?tab=quran" },
+            { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+            { "@type": "ListItem", "position": 2, "name": "المصحف المرتل", "item": "${DOMAIN}/?tab=quran" },
             { "@type": "ListItem", "position": 3, "name": `سورة ${surah.name} - ${rec.reciterName}`, "item": canonicalUrl }
           ]
         }
@@ -873,7 +874,7 @@ for (const rec of RECITERS_CONFIG) {
 // -------------------------------------------------------------
 for (const surah of SURAHS) {
   const fileName = `surah-${surah.id}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
 
   const schemaJson = {
     "@context": "https://schema.org",
@@ -887,14 +888,14 @@ for (const surah of SURAHS) {
         "publisher": {
           "@type": "Organization",
           "name": "منصة أثر",
-          "logo": { "@type": "ImageObject", "url": "https://athar-app.org/athar-logo.jpg" }
+          "logo": { "@type": "ImageObject", "url": "${DOMAIN}/athar-logo.jpg" }
         }
       },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "المصحف الشريف", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": "المصحف الشريف", "item": "${DOMAIN}/?tab=quran" },
           { "@type": "ListItem", "position": 3, "name": `سورة ${surah.name}`, "item": canonicalUrl }
         ]
       }
@@ -981,7 +982,7 @@ for (const surah of SURAHS) {
 // -------------------------------------------------------------
 for (const surah of SURAHS) {
   const fileName = `tafsir-surah-${surah.id}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
 
   const schemaJson = {
     "@context": "https://schema.org",
@@ -996,8 +997,8 @@ for (const surah of SURAHS) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "تفسير القرآن", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": "تفسير القرآن", "item": "${DOMAIN}/?tab=quran" },
           { "@type": "ListItem", "position": 3, "name": `تفسير سورة ${surah.name}`, "item": canonicalUrl }
         ]
       }
@@ -1071,7 +1072,7 @@ for (const surah of SURAHS) {
 // -------------------------------------------------------------
 for (const surah of SURAHS) {
   const fileName = `fadl-surah-${surah.id}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
 
   const schemaJson = {
     "@context": "https://schema.org",
@@ -1086,8 +1087,8 @@ for (const surah of SURAHS) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "فضائل سور القرآن", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": "فضائل سور القرآن", "item": "${DOMAIN}/?tab=quran" },
           { "@type": "ListItem", "position": 3, "name": `فضائل سورة ${surah.name}`, "item": canonicalUrl }
         ]
       }
@@ -1151,7 +1152,7 @@ for (const surah of SURAHS) {
 // -------------------------------------------------------------
 for (let j = 1; j <= 30; j++) {
   const fileName = `juz-${j}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
   const juzSurahs = SURAHS.filter(s => s.juz === j);
   const juzTitle = `الجزء ${j} من القرآن الكريم`;
 
@@ -1168,8 +1169,8 @@ for (let j = 1; j <= 30; j++) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "أجزاء القرآن", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": "أجزاء القرآن", "item": "${DOMAIN}/?tab=quran" },
           { "@type": "ListItem", "position": 3, "name": juzTitle, "item": canonicalUrl }
         ]
       }
@@ -1235,7 +1236,7 @@ for (let j = 1; j <= 30; j++) {
 // -------------------------------------------------------------
 for (let h = 1; h <= 60; h++) {
   const fileName = `hizb-${h}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
   const juzNum = Math.floor((h - 1) / 2) + 1;
   const hizbTitle = `الحزب ${h} من القرآن الكريم`;
 
@@ -1252,8 +1253,8 @@ for (let h = 1; h <= 60; h++) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "أحزاب القرآن", "item": "https://athar-app.org/?tab=quran" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": "أحزاب القرآن", "item": "${DOMAIN}/?tab=quran" },
           { "@type": "ListItem", "position": 3, "name": hizbTitle, "item": canonicalUrl }
         ]
       }
@@ -1312,7 +1313,7 @@ for (let h = 1; h <= 60; h++) {
 // -------------------------------------------------------------
 for (let r = 1; r <= 240; r++) {
   const fileName = `rub-${r}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
   const hizbNum = Math.floor((r - 1) / 4) + 1;
   const juzNum = Math.floor((r - 1) / 8) + 1;
   const rubIndexInHizb = ((r - 1) % 4) + 1;
@@ -1331,9 +1332,9 @@ for (let r = 1; r <= 240; r++) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": `الجزء ${juzNum}`, "item": `https://athar-app.org/juz-${juzNum}.html` },
-          { "@type": "ListItem", "position": 3, "name": `الحزب ${hizbNum}`, "item": `https://athar-app.org/hizb-${hizbNum}.html` },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": `الجزء ${juzNum}`, "item": `${DOMAIN}/juz-${juzNum}.html` },
+          { "@type": "ListItem", "position": 3, "name": `الحزب ${hizbNum}`, "item": `${DOMAIN}/hizb-${hizbNum}.html` },
           { "@type": "ListItem", "position": 4, "name": rubTitle, "item": canonicalUrl }
         ]
       }
@@ -1397,7 +1398,7 @@ for (let r = 1; r <= 240; r++) {
 // -------------------------------------------------------------
 for (const h of NAWAWI_HADITHS) {
   const fileName = `hadith-nawawi-${h.id}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
 
   const schemaJson = {
     "@context": "https://schema.org",
@@ -1412,8 +1413,8 @@ for (const h of NAWAWI_HADITHS) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "الأربعون النووية", "item": "https://athar-app.org/?tab=hadith" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": "الأربعون النووية", "item": "${DOMAIN}/?tab=hadith" },
           { "@type": "ListItem", "position": 3, "name": `الحديث ${h.id}`, "item": canonicalUrl }
         ]
       }
@@ -1481,7 +1482,7 @@ for (const h of NAWAWI_HADITHS) {
 // -------------------------------------------------------------
 for (const item of ADHKAR_DUAS) {
   const fileName = `${item.slug}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
 
   const schemaJson = {
     "@context": "https://schema.org",
@@ -1496,8 +1497,8 @@ for (const item of ADHKAR_DUAS) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": item.category, "item": "https://athar-app.org/?tab=adhkar" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": item.category, "item": "${DOMAIN}/?tab=adhkar" },
           { "@type": "ListItem", "position": 3, "name": item.title, "item": canonicalUrl }
         ]
       }
@@ -1558,7 +1559,7 @@ for (const item of ADHKAR_DUAS) {
 // -------------------------------------------------------------
 for (const city of CITIES) {
   const fileName = `prayer-${city.slug}.html`;
-  const canonicalUrl = `https://athar-app.org/${fileName}`;
+  const canonicalUrl = `${DOMAIN}/${fileName}`;
 
   const schemaJson = {
     "@context": "https://schema.org",
@@ -1573,8 +1574,8 @@ for (const city of CITIES) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://athar-app.org/" },
-          { "@type": "ListItem", "position": 2, "name": "مواقيت الصلاة", "item": "https://athar-app.org/?tab=prayer" },
+          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "${DOMAIN}/" },
+          { "@type": "ListItem", "position": 2, "name": "مواقيت الصلاة", "item": "${DOMAIN}/?tab=prayer" },
           { "@type": "ListItem", "position": 3, "name": `صلاة ${city.name}`, "item": canonicalUrl }
         ]
       }
@@ -1670,7 +1671,7 @@ fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf-8');
 const robotsTxt = `User-agent: *
 Allow: /
 
-Sitemap: https://athar-app.org/sitemap.xml
+Sitemap: ${DOMAIN}/sitemap.xml
 `;
 
 fs.writeFileSync(path.join(publicDir, 'robots.txt'), robotsTxt, 'utf-8');

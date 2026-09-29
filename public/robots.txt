@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://athar-app.org/sitemap.xml
+Sitemap: https://amudijog-eng.github.io/athar/sitemap.xml

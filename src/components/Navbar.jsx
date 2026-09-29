@@ -21,6 +21,7 @@ import {
   Grid,
   ChevronDown
 } from 'lucide-react';
+import atharLogo from '../assets/athar-logo.jpg';
 
 export const Navbar = () => {
   const {
@@ -94,7 +95,7 @@ export const Navbar = () => {
             >
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl overflow-hidden border border-[var(--gold-border)] shadow-xs bg-[#F8F6F0] shrink-0 p-0.5 group-hover:scale-105 transition-transform flex items-center justify-center">
                 <img
-                  src="/athar-logo.jpg"
+                  src={atharLogo}
                   alt="شعار منصة أثر - صدقة جارية عن أحمد منتصر العامودي"
                   className="w-full h-full object-cover rounded-xl"
                 />

@@ -4,6 +4,7 @@ import {
   Heart,
   Share2
 } from 'lucide-react';
+import atharLogo from '../assets/athar-logo.jpg';
 
 export const Footer = () => {
   const { setActiveTab, setShareModalItem, triggerHaptic } = useApp();
@@ -26,7 +27,7 @@ export const Footer = () => {
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl overflow-hidden border border-[var(--gold-primary)] shadow-sm bg-black/40 shrink-0">
                 <img
-                  src="/athar-logo.jpg"
+                  src={atharLogo}
                   alt="شعار موقع أثر"
                   className="w-full h-full object-cover"
                 />
