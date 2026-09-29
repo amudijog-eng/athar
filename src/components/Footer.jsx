@@ -45,10 +45,10 @@ export const Footer = () => {
           <div className="p-5 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2 text-center md:text-right shadow-xs">
             <span className="text-xs font-bold text-[var(--gold-dark)] dark:text-[var(--gold-light)] flex items-center justify-center md:justify-start gap-1.5">
               <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
-              <span>دعاء مبارك للفقيد</span>
+              <span>دعاء بالبركة والقبول</span>
             </span>
             <p className="text-xs sm:text-sm text-[var(--text-primary)] font-amiri leading-relaxed">
-              «اللَّهُمَّ اجْعَلْ هَذَا العَمَلَ خَالِصًا لِوَجْهِكَ الكَرِيمِ، وَصَدَقَةً جَارِيَةً عَنْ عَبْدِكَ أَحْمَد مُنْتَصِر العَامُودِي وَعَنْ وَالِدَيْهِ، وَعَنْ كُلِّ مَنْ زَارَ هَذِهِ المَنَصَّةَ وَذَكَرَ اللَّهَ فِيهَا إِلَى يَوْمِ القِيَامَةِ.»
+              «اللَّهُمَّ بَارِكْ فِي عُمْرِ عَبْدِكَ أَحْمَد مُنْتَصِر العَامُودِي وَعَمَلِهِ، وَتَقَبَّلْ مِنْهُ هَذَا العَمَلَ خَالِصًا لِوَجْهِكَ الكَرِيمِ، وَاجْعَلْهُ صَدَقَةً جَارِيَةً وَأَثَرًا صَالِحًا لَهُ فِي حَيَاتِهِ وَبَعْدَ مَمَاتِهِ، وَعَنْ وَالِدَيْهِ، وَعَنْ كُلِّ مَنْ زَارَ هَذِهِ المَنَصَّةَ وَذَكَرَ اللَّهَ فِيهَا إِلَى يَوْمِ القِيَامَةِ.»
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export const Footer = () => {
         {/* Bottom Credits & Waiver */}
         <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[var(--text-muted)]">
           <div>
-            جميع الحقوق وقف لله تعالى • صدقة جارية عن روح الفقيد: <strong className="text-[var(--text-primary)]">أحمد منتصر العامودي</strong> (رحمه الله وغفر له).
+            جميع الحقوق وقف لله تعالى • صدقة جارية أسسها: <strong className="text-[var(--text-primary)]">أحمد منتصر العامودي</strong> (حفظه الله وبارك في عمره وعمله).
           </div>
           <div className="flex items-center gap-3">
             <span>منصة أثر المباركة © {new Date().getFullYear()}</span>
