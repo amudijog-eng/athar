@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { TRANSLATIONS } from '../data/languages';
+import { detectLocationViaIp } from '../services/locationService';
 import confetti from 'canvas-confetti';
 
 const AppContext = createContext();
@@ -212,6 +213,86 @@ export const AppProvider = ({ children }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // User Geo Location (Auto-detected via IP with fallback)
+  const [userLocation, setUserLocation] = useState(() => {
+    try {
+      const saved = localStorage.getItem('athar_user_location');
+      return saved ? JSON.parse(saved) : {
+        name: 'عمّان',
+        country: 'الأردن',
+        flag: '🇯🇴',
+        lat: 31.9539,
+        lng: 35.9106,
+        timezone: 3,
+        method: 'MWL',
+        isAutoDetected: false
+      };
+    } catch {
+      return {
+        name: 'عمّان',
+        country: 'الأردن',
+        flag: '🇯🇴',
+        lat: 31.9539,
+        lng: 35.9106,
+        timezone: 3,
+        method: 'MWL',
+        isAutoDetected: false
+      };
+    }
+  });
+
+  const [calculationMethod, setCalculationMethod] = useState(() => localStorage.getItem('athar_calc_method') || 'MWL');
+  const [asrSchool, setAsrSchool] = useState(() => localStorage.getItem('athar_asr_school') || 'standard');
+  const [isLocating, setIsLocating] = useState(false);
+
+  // Auto-detect IP location on startup
+  useEffect(() => {
+    let isMounted = true;
+    setIsLocating(true);
+    detectLocationViaIp().then(detected => {
+      if (isMounted && detected && detected.lat && detected.lng) {
+        const hasManualSetting = localStorage.getItem('athar_manual_location_override') === 'true';
+        if (!hasManualSetting) {
+          setUserLocation(detected);
+          localStorage.setItem('athar_user_location', JSON.stringify(detected));
+          if (detected.method) {
+            setCalculationMethod(detected.method);
+            localStorage.setItem('athar_calc_method', detected.method);
+          }
+        }
+        setIsLocating(false);
+      }
+    }).catch(() => {
+      if (isMounted) setIsLocating(false);
+    });
+    return () => { isMounted = false; };
+  }, []);
+
+  const updateLocation = (loc, isManual = true) => {
+    setUserLocation(loc);
+    localStorage.setItem('athar_user_location', JSON.stringify(loc));
+    if (isManual) {
+      localStorage.setItem('athar_manual_location_override', 'true');
+    }
+  };
+
+  const reDetectLocation = async () => {
+    setIsLocating(true);
+    localStorage.removeItem('athar_manual_location_override');
+    localStorage.removeItem('athar_auto_location');
+    const detected = await detectLocationViaIp();
+    if (detected) {
+      setUserLocation(detected);
+      localStorage.setItem('athar_user_location', JSON.stringify(detected));
+      if (detected.method) {
+        setCalculationMethod(detected.method);
+        localStorage.setItem('athar_calc_method', detected.method);
+      }
+    }
+    setIsLocating(false);
+    return detected;
+  };
+
   const t = TRANSLATIONS[language] || TRANSLATIONS.ar;
 
   return (
@@ -245,6 +326,14 @@ export const AppProvider = ({ children }) => {
       setKhatmah,
       triggerHaptic,
       playClickSound,
+      userLocation,
+      updateLocation,
+      reDetectLocation,
+      isLocating,
+      calculationMethod,
+      setCalculationMethod,
+      asrSchool,
+      setAsrSchool,
       t
     }}>
       {children}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useAudioPlayer } from '../context/AudioPlayerContext';
-import { calculatePrayerTimes, getNextPrayer, getHijriDate, DEFAULT_CITIES } from '../data/prayerCalculation';
+import { calculatePrayerTimes, getNextPrayer, getHijriDate } from '../data/prayerCalculation';
 import { HADITHS } from '../data/hadithData';
 import { DUAS } from '../data/duaData';
 import { AYAT_AL_KURSI, SURAHS_LIST } from '../data/quranData';
@@ -40,21 +40,30 @@ export const HeroSection = () => {
     toggleWirdItem,
     setShareModalItem,
     triggerHaptic,
-    openSurahById
+    openSurahById,
+    userLocation,
+    calculationMethod,
+    asrSchool
   } = useApp();
 
   const { playSurah } = useAudioPlayer();
 
-  const [selectedCity] = useState(DEFAULT_CITIES[0]); // Mecca
   const [now, setNow] = useState(new Date());
   const [activeInspirationTab, setActiveInspirationTab] = useState('ayah'); // 'ayah' | 'hadith' | 'dua'
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 30000);
+    const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const prayerTimes = calculatePrayerTimes(selectedCity.lat, selectedCity.lng, now, selectedCity.timezone);
+  const prayerTimes = calculatePrayerTimes(
+    userLocation.lat,
+    userLocation.lng,
+    now,
+    userLocation.timezone,
+    calculationMethod,
+    asrSchool
+  );
   const nextPrayer = getNextPrayer(prayerTimes, now);
   const hijri = getHijriDate(now);
 
@@ -169,10 +178,14 @@ export const HeroSection = () => {
               </span>
               <button
                 onClick={() => handleOpenModule('prayer')}
-                className="flex items-center gap-1.5 text-xs text-white/80 bg-white/10 px-3 py-1.5 rounded-full border border-white/10 hover:bg-white/15 transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-xs text-white/90 bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-full border border-white/20 transition-all cursor-pointer shadow-xs"
+                title="تغيير المدينة أو ضبط طريقة حساب المواقيت"
               >
-                <MapPin className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
-                <span>{selectedCity.name}</span>
+                <MapPin className="w-3.5 h-3.5 text-[var(--gold-primary)] shrink-0" />
+                <span className="font-bold">{userLocation.name}، {userLocation.country} {userLocation.flag}</span>
+                {userLocation.isAutoDetected && (
+                  <span className="text-[9px] bg-emerald-400/25 text-emerald-300 border border-emerald-400/30 px-1.5 py-0.2 rounded-md font-bold">تلقائي IP</span>
+                )}
               </button>
             </div>
           </div>

@@ -3,23 +3,35 @@ const KAABA_LAT = 21.422487;
 const KAABA_LNG = 39.826206;
 
 export const DEFAULT_CITIES = [
-  { name: 'مكة المكرمة', country: 'السعودية', lat: 21.4225, lng: 39.8262, timezone: 3 },
-  { name: 'المدينة المنورة', country: 'السعودية', lat: 24.4672, lng: 39.6024, timezone: 3 },
-  { name: 'القدس الشريف', country: 'فلسطين', lat: 31.7683, lng: 35.2137, timezone: 3 },
-  { name: 'القاهرة', country: 'مصر', lat: 30.0444, lng: 31.2357, timezone: 2 },
-  { name: 'عمّان', country: 'الأردن', lat: 31.9539, lng: 35.9106, timezone: 3 },
-  { name: 'الرياض', country: 'السعودية', lat: 24.7136, lng: 46.6753, timezone: 3 },
-  { name: 'دبي', country: 'الإمارات', lat: 25.2048, lng: 55.2708, timezone: 4 },
-  { name: 'دمشق', country: 'سوريا', lat: 33.5138, lng: 36.2765, timezone: 3 },
-  { name: 'بغداد', country: 'العراق', lat: 33.3152, lng: 44.3661, timezone: 3 },
-  { name: 'الكويت', country: 'الكويت', lat: 29.3759, lng: 47.9774, timezone: 3 },
-  { name: 'الدوحة', country: 'قطر', lat: 25.2854, lng: 51.5310, timezone: 3 },
-  { name: 'مسقط', country: 'عمان', lat: 23.5880, lng: 58.3829, timezone: 4 },
-  { name: 'الرباط', country: 'المغرب', lat: 34.0209, lng: -6.8416, timezone: 1 },
-  { name: 'تونس', country: 'تونس', lat: 36.8065, lng: 10.1815, timezone: 1 },
-  { name: 'الجزائر', country: 'الجزائر', lat: 36.7538, lng: 3.0588, timezone: 1 },
-  { name: 'إسطنبول', country: 'تركيا', lat: 41.0082, lng: 28.9784, timezone: 3 },
-  { name: 'لندن', country: 'المملكة المتحدة', lat: 51.5074, lng: -0.1278, timezone: 0 }
+  { name: 'عمّان', country: 'الأردن', flag: '🇯🇴', lat: 31.9539, lng: 35.9106, timezone: 3, method: 'MWL' },
+  { name: 'الزرقاء', country: 'الأردن', flag: '🇯🇴', lat: 32.0728, lng: 36.0880, timezone: 3, method: 'MWL' },
+  { name: 'إربد', country: 'الأردن', flag: '🇯🇴', lat: 32.5568, lng: 35.8469, timezone: 3, method: 'MWL' },
+  { name: 'مكة المكرمة', country: 'السعودية', flag: '🇸🇦', lat: 21.4225, lng: 39.8262, timezone: 3, method: 'UmmAlQura' },
+  { name: 'المدينة المنورة', country: 'السعودية', flag: '🇸🇦', lat: 24.4672, lng: 39.6024, timezone: 3, method: 'UmmAlQura' },
+  { name: 'الرياض', country: 'السعودية', flag: '🇸🇦', lat: 24.7136, lng: 46.6753, timezone: 3, method: 'UmmAlQura' },
+  { name: 'جدة', country: 'السعودية', flag: '🇸🇦', lat: 21.5433, lng: 39.1728, timezone: 3, method: 'UmmAlQura' },
+  { name: 'القدس الشريف', country: 'فلسطين', flag: '🇵🇸', lat: 31.7683, lng: 35.2137, timezone: 3, method: 'MWL' },
+  { name: 'غزة', country: 'فلسطين', flag: '🇵🇸', lat: 31.5017, lng: 34.4668, timezone: 3, method: 'MWL' },
+  { name: 'القاهرة', country: 'مصر', flag: '🇪🇬', lat: 30.0444, lng: 31.2357, timezone: 2, method: 'Egypt' },
+  { name: 'الإسكندرية', country: 'مصر', flag: '🇪🇬', lat: 31.2001, lng: 29.9187, timezone: 2, method: 'Egypt' },
+  { name: 'دبي', country: 'الإمارات', flag: '🇦🇪', lat: 25.2048, lng: 55.2708, timezone: 4, method: 'UmmAlQura' },
+  { name: 'أبوظبي', country: 'الإمارات', flag: '🇦🇪', lat: 24.4539, lng: 54.3773, timezone: 4, method: 'UmmAlQura' },
+  { name: 'دمشق', country: 'سوريا', flag: '🇸🇾', lat: 33.5138, lng: 36.2765, timezone: 3, method: 'MWL' },
+  { name: 'بيروت', country: 'لبنان', flag: '🇱🇧', lat: 33.8938, lng: 35.5018, timezone: 3, method: 'MWL' },
+  { name: 'بغداد', country: 'العراق', flag: '🇮🇶', lat: 33.3152, lng: 44.3661, timezone: 3, method: 'MWL' },
+  { name: 'الكويت', country: 'الكويت', flag: '🇰🇼', lat: 29.3759, lng: 47.9774, timezone: 3, method: 'UmmAlQura' },
+  { name: 'الدوحة', country: 'قطر', flag: '🇶🇦', lat: 25.2854, lng: 51.5310, timezone: 3, method: 'UmmAlQura' },
+  { name: 'مسقط', country: 'عمان', flag: '🇴🇲', lat: 23.5880, lng: 58.3829, timezone: 4, method: 'UmmAlQura' },
+  { name: 'المنامة', country: 'البحرين', flag: '🇧🇭', lat: 26.2285, lng: 50.5860, timezone: 3, method: 'UmmAlQura' },
+  { name: 'صنعاء', country: 'اليمن', flag: '🇾🇪', lat: 15.3694, lng: 44.1910, timezone: 3, method: 'UmmAlQura' },
+  { name: 'طرابلس', country: 'ليبيا', flag: '🇱🇾', lat: 32.8872, lng: 13.1913, timezone: 2, method: 'MWL' },
+  { name: 'تونس', country: 'تونس', flag: '🇹🇳', lat: 36.8065, lng: 10.1815, timezone: 1, method: 'MWL' },
+  { name: 'الجزائر', country: 'الجزائر', flag: '🇩🇿', lat: 36.7538, lng: 3.0588, timezone: 1, method: 'MWL' },
+  { name: 'الرباط', country: 'المغرب', flag: '🇲🇦', lat: 34.0209, lng: -6.8416, timezone: 1, method: 'MWL' },
+  { name: 'الخرطوم', country: 'السودان', flag: '🇸🇩', lat: 15.5007, lng: 32.5599, timezone: 2, method: 'Egypt' },
+  { name: 'إسطنبول', country: 'تركيا', flag: '🇹🇷', lat: 41.0082, lng: 28.9784, timezone: 3, method: 'Turkey' },
+  { name: 'لندن', country: 'المملكة المتحدة', flag: '🇬🇧', lat: 51.5074, lng: -0.1278, timezone: 0, method: 'MWL' },
+  { name: 'نيويورك', country: 'الولايات المتحدة', flag: '🇺🇸', lat: 40.7128, lng: -74.0060, timezone: -5, method: 'ISNA' }
 ];
 
 // Helper to convert degrees to radians and vice versa
@@ -56,7 +68,7 @@ export const calculateQibla = (lat, lng) => {
 const fixAngle = (a) => ((a % 360) + 360) % 360;
 
 // Calculate Sun position and Prayer Times based on astronomical formulae
-export const calculatePrayerTimes = (lat, lng, date = new Date(), customTimezone = null) => {
+export const calculatePrayerTimes = (lat, lng, date = new Date(), customTimezone = null, method = 'MWL', asrSchool = 'standard') => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -99,24 +111,43 @@ export const calculatePrayerTimes = (lat, lng, date = new Date(), customTimezone
     return toDeg(Math.acos(cosHA)) / 15;
   };
 
-  // Asr hour angle: cot(a) = 1 + tan(|lat - dec|) => tan(a) = 1 / (1 + tan(|lat - dec|))
-  const asrAltitude = toDeg(Math.atan(1 / (1 + Math.tan(toRad(Math.abs(lat - dec))))));
+  // Asr shadow factor: 1 for Shafi'i/Hanbali/Maliki, 2 for Hanafi
+  const shadowFactor = asrSchool === 'hanafi' ? 2 : 1;
+  const asrAltitude = toDeg(Math.atan(1 / (shadowFactor + Math.tan(toRad(Math.abs(lat - dec))))));
   const cosAsrHA = (Math.sin(toRad(asrAltitude)) - Math.sin(toRad(lat)) * Math.sin(toRad(dec))) /
                    (Math.cos(toRad(lat)) * Math.cos(toRad(dec)));
   const asrHA = (cosAsrHA >= -1 && cosAsrHA <= 1) ? toDeg(Math.acos(cosAsrHA)) / 15 : 3.5;
 
-  const fajrAngle = 18.0; // Muslim World League standard
-  const ishaAngle = 17.0;
+  let fajrAngle = 18.0;
+  let ishaAngle = 17.0;
+  let ishaInterval = null; // minutes after Maghrib
+
+  if (method === 'UmmAlQura') {
+    fajrAngle = 18.5;
+    ishaInterval = 90;
+  } else if (method === 'Egypt') {
+    fajrAngle = 19.5;
+    ishaAngle = 17.5;
+  } else if (method === 'ISNA') {
+    fajrAngle = 15.0;
+    ishaAngle = 15.0;
+  } else if (method === 'Karachi') {
+    fajrAngle = 18.0;
+    ishaAngle = 18.0;
+  } else if (method === 'Turkey') {
+    fajrAngle = 18.0;
+    ishaAngle = 17.0;
+  }
 
   const sunriseHA = hourAngle(0.833);
   const fajrHA = hourAngle(fajrAngle);
-  const ishaHA = hourAngle(ishaAngle);
+  const ishaHA = ishaInterval ? null : hourAngle(ishaAngle);
 
   const fajr = dhuhrTime - fajrHA;
   const sunrise = dhuhrTime - sunriseHA;
   const asr = dhuhrTime + asrHA;
   const maghrib = dhuhrTime + sunriseHA;
-  const isha = dhuhrTime + ishaHA;
+  const isha = ishaInterval ? maghrib + (ishaInterval / 60) : dhuhrTime + ishaHA;
 
   const formatTime = (hoursFraction) => {
     let totalMinutes = Math.round(hoursFraction * 60);
