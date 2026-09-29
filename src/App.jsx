@@ -21,6 +21,23 @@ import { Footer } from './components/Footer';
 const MainContent = () => {
   const { activeTab, setActiveTab } = useApp();
 
+  // Check URL search parameters on mount for deep linking from SEO pages
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      const validTabs = [
+        'home', 'quran', 'adhkar', 'tasbeeh', 'istighfar',
+        'hadith', 'duas', 'prayer', 'wird', 'khatmah', 'sadaqah'
+      ];
+      if (tabParam && validTabs.includes(tabParam)) {
+        setActiveTab(tabParam);
+      }
+    } catch (e) {
+      console.error('Error reading URL search params:', e);
+    }
+  }, [setActiveTab]);
+
   // Scroll to top when active tab changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

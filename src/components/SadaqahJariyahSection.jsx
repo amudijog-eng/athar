@@ -57,7 +57,7 @@ export const SadaqahJariyahSection = () => {
             { id: 'dedication', label: 'عن هذه الصدقة الجارية' },
             { id: 'passed', label: 'لمن سبقونا (الدعاء للأموات)' },
             { id: 'parents', label: 'بر الوالدين' },
-            { id: 'continuity', label: 'دليل استمرارية الوقف للأبد' }
+            { id: 'virtues', label: 'فضل الصدقة الجارية' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -243,21 +243,21 @@ export const SadaqahJariyahSection = () => {
         </div>
       )}
 
-      {/* Subtab 4: Perpetuity Guide */}
-      {activeSubTab === 'continuity' && (
+      {/* Subtab 4: Virtues of Ongoing Charity */}
+      {activeSubTab === 'virtues' && (
         <div className="space-y-6 animate-in fade-in duration-300">
           
           <div className="p-6 sm:p-10 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-xs space-y-6">
             <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[var(--emerald-soft)] text-[var(--emerald-deep)] dark:text-[var(--gold-primary)] text-xs font-semibold border border-[var(--emerald-border)]">
-                <Lock className="w-3.5 h-3.5" />
-                <span>ضمان بقاء الأثر والأجر للأبد</span>
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[var(--gold-soft)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] text-xs font-semibold border border-[var(--gold-border)]">
+                <Sparkles className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
+                <span>أجرٌ متصل لا ينقطع بالموت</span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-bold font-quran text-[var(--text-primary)]">
-                دليل استمرارية منصة «أثر» بعد وفاتك
+                فضل الصدقة الجارية ونشر العلم والقرآن
               </h3>
               <p className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-xl mx-auto">
-                خطة عملية ومحكمة تضمن ألا يتوقف الموقع بمجرد توقف بطاقتك أو حسابك، ليستمر نفعها للمسلمين لعقود قادمة.
+                بشارة نبوية كريمة بأن أجر تلاوة القرآن وذكر الله وسماع الآيات يفيض على صاحب الصدقة ومن أهديت له في قبره إلى يوم القيامة.
               </p>
             </div>
 
@@ -265,41 +265,41 @@ export const SadaqahJariyahSection = () => {
               
               <div className="p-5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] space-y-2">
                 <div className="flex items-center gap-2 text-[var(--emerald-medium)] dark:text-[var(--gold-primary)] font-bold text-sm">
-                  <Globe className="w-4 h-4" />
-                  <span>١. الاستضافة المجانية الدائمة (Serverless)</span>
+                  <BookOpen className="w-4 h-4" />
+                  <span>١. ميراث المصحف والعلم النافع</span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                  تم بناء كود المنصة كـ Static SPA بالكامل دون الحاجة لخادم شهري مدفوع. يمكن رفعها مجاناً للأبد على <strong className="text-[var(--emerald-medium)] dark:text-[var(--gold-light)]">GitHub Pages</strong> أو <strong className="text-[var(--emerald-medium)] dark:text-[var(--gold-light)]">Cloudflare Pages</strong> والتي لا تتطلب بطاقات ائتمان ولا تنتهي صلاحيتها أبداً.
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-amiri text-sm">
+                  قال رسول الله ﷺ: «إنَّ مِمَّا يَلْحَقُ الْمُؤْمِنَ مِنْ عَمَلِهِ وَحَسَنَاتِهِ بَعْدَ مَوْتِهِ: عِلْمًا عَلَّمَهُ وَنَشَرَهُ، أَوْ وَلَدًا صَالِحًا تَرَكَهُ، أَوْ مُصْحَفًا وَرَّثَهُ».
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] space-y-2">
                 <div className="flex items-center gap-2 text-[var(--emerald-medium)] dark:text-[var(--gold-primary)] font-bold text-sm">
-                  <Archive className="w-4 h-4" />
-                  <span>٢. الدومين وحجز أطول مدة ممكنة</span>
+                  <Share2 className="w-4 h-4" />
+                  <span>٢. الدال على الخير كفاعله</span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                  احجز اسم النطاق (الدومين) لمدة ٥ إلى ١٠ سنوات مقدماً، واضبط خيار التجديد التلقائي (Auto-Renew). كما سيعمل الموقع دائماً حتى بدون دومين مدفوع عبر الرابط المجاني الدائم.
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-amiri text-sm">
+                  قال رسول الله ﷺ: «مَنْ دَلَّ عَلَى خَيْرٍ فَلَهُ مِثْلُ أَجْرِ فَاعِلِهِ». كل من قرأ سورة أو استغفر أو سبح عبر هذه المنصة، كُتب لك مثل أجره كاملاً دون أن ينقص من أجورهم شيء.
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] space-y-2">
                 <div className="flex items-center gap-2 text-[var(--emerald-medium)] dark:text-[var(--gold-primary)] font-bold text-sm">
-                  <Users className="w-4 h-4" />
-                  <span>٣. أمناء الوقف (Collaborators)</span>
+                  <Heart className="w-4 h-4" />
+                  <span>٣. استغفار المسلمين للميت</span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                  أضف شخصاً أو شخصين من الثقات (أخ، ابن بار، صديق صالح) كمسؤولين (Admin Collaborator) على مستودع الكود والدومين، ليتولوا المتابعة عند اللزوم.
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-amiri text-sm">
+                  «مَنِ اسْتَغْفَرَ لِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ كَتَبَ اللَّهُ لَهُ بِكُلِّ مُؤْمِنٍ وَمُؤْمِنَةٍ حَسَنَةً»، ودعاء الزائرين للفقيد أحمد منتصر العامودي ينير قبره ويثقل موازينه.
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] space-y-2">
                 <div className="flex items-center gap-2 text-[var(--emerald-medium)] dark:text-[var(--gold-primary)] font-bold text-sm">
-                  <FileText className="w-4 h-4" />
-                  <span>٤. وثيقة الوقف والوصية</span>
+                  <Sparkles className="w-4 h-4" />
+                  <span>٤. أثرٌ يبقى في ميزان الحسنات</span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                  اكتب في وصيتك الشرعية أن هذا الموقع وقف إسلامي غير ربحي لوجه الله تعالى، ولا يجوز بيعه أو وضع إعلانات تجارية فيه، وتخصيص مبلغ رمزي من تركتك لتجديد الدومين مستقبلاً.
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-amiri text-sm">
+                  «إِنَّا نَحْنُ نُحْيِي الْمَوْتَىٰ وَنَكْتُبُ مَا قَدَّمُوا وَآثَارَهُمْ»، فما أجمل أن يترك الإنسان أثراً طيباً ومصحفاً متاحاً للمسلمين يتلون آياته آناء الليل وأطراف النهار.
                 </p>
               </div>
 

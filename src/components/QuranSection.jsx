@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useAudioPlayer } from '../context/AudioPlayerContext';
 import { SURAHS_LIST, RECITERS, BUNDLED_SURAHS } from '../data/quranData';
@@ -137,6 +137,30 @@ export const QuranSection = () => {
     const prev = SURAHS_LIST.find(s => s.id === prevId);
     if (prev) openSurah(prev);
   };
+
+  // Auto-open Surah and optionally play audio if navigated from an SEO page
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const surahParam = params.get('surah');
+      const shouldPlay = params.get('play') === 'true';
+
+      if (surahParam) {
+        const surahId = parseInt(surahParam, 10);
+        if (surahId >= 1 && surahId <= 114) {
+          const targetSurah = SURAHS_LIST.find(s => s.id === surahId);
+          if (targetSurah) {
+            openSurah(targetSurah);
+            if (shouldPlay) {
+              playSurah(targetSurah);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error handling Quran URL params:', e);
+    }
+  }, []);
 
   return (
     <section id="quran" className="py-6 sm:py-10 max-w-5xl mx-auto px-4 sm:px-6">

@@ -111,7 +111,7 @@ export const Footer = () => {
             <h4 className="font-bold text-[var(--text-primary)] text-sm">عن الصدقة الجارية</h4>
             <ul className="space-y-1.5 text-[var(--text-secondary)]">
               <li><button onClick={() => handleNav('sadaqah')} className="hover:text-[var(--gold-primary)]">عن هذه الصدقة الجارية</button></li>
-              <li><button onClick={() => handleNav('sadaqah')} className="hover:text-[var(--gold-primary)]">دليل استمرارية الوقف</button></li>
+              <li><button onClick={() => handleNav('sadaqah')} className="hover:text-[var(--gold-primary)]">فضل الصدقة الجارية</button></li>
               <li><button onClick={() => handleNav('prayer')} className="hover:text-[var(--gold-primary)]">مواقيت الصلاة والقبلة</button></li>
             </ul>
           </div>

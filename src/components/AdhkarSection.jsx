@@ -41,7 +41,16 @@ const ICON_MAP = {
 export const AdhkarSection = () => {
   const { triggerHaptic, setShareModalItem, toggleFavorite, favorites } = useApp();
   
-  const [activeCategory, setActiveCategory] = useState('morning');
+  const [activeCategory, setActiveCategory] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get('category');
+      if (cat && ADHKAR_CATEGORIES.some(c => c.id === cat)) {
+        return cat;
+      }
+    } catch {}
+    return 'morning';
+  });
   const [adhkarState, setAdhkarState] = useState(() => {
     const state = {};
     ALL_ADHKAR.forEach(d => {
