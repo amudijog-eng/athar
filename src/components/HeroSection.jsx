@@ -46,7 +46,7 @@ export const HeroSection = () => {
 
   const { playSurah } = useAudioPlayer();
 
-  const [now, setNow] = useState(new Date());
+  const [now, setNow] = useState(() => new Date());
   const [activeInspirationTab, setActiveInspirationTab] = useState('ayah'); // 'ayah' | 'hadith' | 'dua'
 
   useEffect(() => {

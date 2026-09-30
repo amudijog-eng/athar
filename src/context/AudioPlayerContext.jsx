@@ -23,7 +23,14 @@ export const AudioPlayerProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [audioError, setAudioError] = useState(null);
 
-  // Initialize Audio instance
+  const isLoopingRef = useRef(isLooping);
+  useEffect(() => {
+    isLoopingRef.current = isLooping;
+  }, [isLooping]);
+
+  const handleNextSurahRef = useRef();
+
+  // Initialize Audio instance once
   useEffect(() => {
     const audio = new Audio();
     audioRef.current = audio;
@@ -36,11 +43,11 @@ export const AudioPlayerProvider = ({ children }) => {
     const onWaiting = () => setIsLoading(true);
     const onCanPlay = () => setIsLoading(false);
     const onEnded = () => {
-      if (isLooping) {
+      if (isLoopingRef.current) {
         audio.currentTime = 0;
         audio.play().catch(() => {});
-      } else {
-        handleNextSurah();
+      } else if (handleNextSurahRef.current) {
+        handleNextSurahRef.current();
       }
     };
     const onError = () => {
@@ -65,7 +72,7 @@ export const AudioPlayerProvider = ({ children }) => {
       audio.removeEventListener('ended', onEnded);
       audio.removeEventListener('error', onError);
     };
-  }, [isLooping]);
+  }, []);
 
   const playSurah = (surah, reciter = activeReciter) => {
     if (!audioRef.current) return;
@@ -148,6 +155,10 @@ export const AudioPlayerProvider = ({ children }) => {
     const next = SURAHS_LIST[nextIndex];
     if (next) playSurah(next, activeReciter);
   };
+
+  useEffect(() => {
+    handleNextSurahRef.current = handleNextSurah;
+  });
 
   const handlePrevSurah = () => {
     const prevIndex = currentSurah.id === 1 ? 113 : currentSurah.id - 2;

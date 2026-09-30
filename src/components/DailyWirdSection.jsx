@@ -27,7 +27,14 @@ const ICON_MAP = {
 export const DailyWirdSection = () => {
   const { dailyWird, toggleWirdItem, triggerHaptic } = useApp();
 
-  const isFriday = new Date().getDay() === 5;
+  const [todayInfo] = useState(() => {
+    const d = new Date();
+    return {
+      isFriday: d.getDay() === 5,
+      dateString: d.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+    };
+  });
+
   const totalItems = dailyWird.length;
   const completedItems = dailyWird.filter(w => w.done).length;
   const percent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
@@ -64,7 +71,7 @@ export const DailyWirdSection = () => {
         <div className="space-y-2 text-center sm:text-right">
           <div className="flex items-center justify-center sm:justify-start gap-2 text-xs text-[var(--gold-light)] font-bold">
             <Calendar className="w-4 h-4 text-[var(--gold-primary)]" />
-            <span>ورد اليوم: {new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>ورد اليوم: {todayInfo.dateString}</span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-extrabold font-cairo">
             أنجزت {completedItems} من {totalItems} مهام
@@ -105,7 +112,7 @@ export const DailyWirdSection = () => {
       </div>
 
       {/* Friday Highlight Banner */}
-      {isFriday && (
+      {todayInfo.isFriday && (
         <div className="mb-6 p-4 rounded-2xl bg-[var(--gold-soft)] border border-[var(--gold-border)] text-[var(--gold-dark)] dark:text-[var(--gold-light)] flex items-center gap-3 text-xs sm:text-sm font-semibold">
           <Sparkles className="w-5 h-5 text-[var(--gold-primary)] shrink-0" />
           <span>اليوم الجمعة المباركة! تذكير بسنة قراءة سورة الكهف وكثرة الصلاة على النبي ﷺ.</span>

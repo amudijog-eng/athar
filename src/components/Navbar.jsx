@@ -12,12 +12,10 @@ import {
   Sun,
   Moon,
   Eye,
-  Menu,
   X,
   Home,
   Layers,
   ShieldCheck,
-  Compass,
   Grid,
   ChevronDown
 } from 'lucide-react';

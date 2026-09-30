@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
 import { useAudioPlayer } from '../context/AudioPlayerContext';
 import { SURAHS_LIST, RECITERS, BUNDLED_SURAHS } from '../data/quranData';
@@ -16,7 +16,6 @@ import {
   Info,
   X,
   List,
-  Sparkles,
   Headphones,
   UserCheck
 } from 'lucide-react';
@@ -26,7 +25,6 @@ export const QuranSection = () => {
     lastRead,
     saveLastRead,
     toggleFavorite,
-    favorites,
     setShareModalItem,
     triggerHaptic,
     targetSurahId,
@@ -65,7 +63,7 @@ export const QuranSection = () => {
     return matchesSearch && matchesType && matchesJuz;
   });
 
-  const openSurah = async (surah) => {
+  const openSurah = useCallback(async (surah) => {
     triggerHaptic(20);
     setActiveSurah(surah);
     saveLastRead(surah.id, surah.name, 1);
@@ -116,7 +114,7 @@ export const QuranSection = () => {
     } finally {
       setLoadingAyahs(false);
     }
-  };
+  }, [triggerHaptic, saveLastRead]);
 
   const copyAyah = (ayah) => {
     triggerHaptic(20);
@@ -162,7 +160,7 @@ export const QuranSection = () => {
     } catch (e) {
       console.error('Error handling Quran URL params:', e);
     }
-  }, []);
+  }, [openSurah, playSurah]);
 
   // Open specific surah when commanded globally (e.g. from Home bookmark or Search)
   useEffect(() => {
@@ -173,7 +171,7 @@ export const QuranSection = () => {
         setTargetSurahId(null);
       }
     }
-  }, [targetSurahId]);
+  }, [targetSurahId, openSurah, setTargetSurahId]);
 
   return (
     <section id="quran" className="py-6 sm:py-10 max-w-5xl mx-auto px-4 sm:px-6">

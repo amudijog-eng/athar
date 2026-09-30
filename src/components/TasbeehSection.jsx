@@ -7,7 +7,6 @@ import {
   VolumeX,
   Smartphone,
   Plus,
-  Check,
   Award,
   Sparkles,
   X

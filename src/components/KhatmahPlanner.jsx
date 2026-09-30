@@ -3,8 +3,6 @@ import { useApp } from '../context/AppContext';
 import { playSoftTap, playChimeSound } from '../utils/soundEffects';
 import {
   BookOpen,
-  Calendar,
-  CheckCircle,
   Eye,
   EyeOff,
   RotateCcw

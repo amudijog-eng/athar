@@ -243,12 +243,13 @@ export const AppProvider = ({ children }) => {
 
   const [calculationMethod, setCalculationMethod] = useState(() => localStorage.getItem('athar_calc_method') || 'MWL');
   const [asrSchool, setAsrSchool] = useState(() => localStorage.getItem('athar_asr_school') || 'standard');
-  const [isLocating, setIsLocating] = useState(false);
+  const [isLocating, setIsLocating] = useState(() => {
+    return localStorage.getItem('athar_manual_location_override') !== 'true';
+  });
 
   // Auto-detect IP location on startup
   useEffect(() => {
     let isMounted = true;
-    setIsLocating(true);
     detectLocationViaIp().then(detected => {
       if (isMounted && detected && detected.lat && detected.lng) {
         const hasManualSetting = localStorage.getItem('athar_manual_location_override') === 'true';

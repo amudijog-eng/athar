@@ -38,7 +38,7 @@ export const PrayerTimesSection = () => {
     setActiveTab
   } = useApp();
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(() => new Date());
   const [deviceHeading, setDeviceHeading] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState('today'); // 'today' | 'monthly' | 'settings'
   const [isAzanEnabled, setIsAzanEnabled] = useState(() => localStorage.getItem('athar_azan_sound') === 'true');

@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import atharLogo from '../assets/athar-logo.jpg';
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 export const Footer = () => {
   const { setActiveTab, setShareModalItem, triggerHaptic } = useApp();
 
@@ -125,7 +127,7 @@ export const Footer = () => {
             جميع الحقوق وقف لله تعالى • صدقة جارية أسسها: <strong className="text-[var(--text-primary)]">أحمد منتصر العامودي</strong> (حفظه الله وبارك في عمره وعمله).
           </div>
           <div className="flex items-center gap-3">
-            <span>منصة أثر المباركة © {new Date().getFullYear()}</span>
+            <span>منصة أثر المباركة © {CURRENT_YEAR}</span>
             <span className="text-[var(--gold-dark)] dark:text-[var(--gold-light)] font-bold">صدقة جارية</span>
           </div>
         </div>

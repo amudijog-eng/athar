@@ -4,10 +4,7 @@ import { playSoftTap } from '../utils/soundEffects';
 import {
   Heart,
   Share2,
-  Users,
   Sparkles,
-  Lock,
-  Globe,
   BookOpen,
   Check
 } from 'lucide-react';

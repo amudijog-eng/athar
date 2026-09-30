@@ -10,12 +10,11 @@ import {
   BookOpen,
   Sparkles,
   Heart,
-  ChevronLeft,
-  Filter
+  ChevronLeft
 } from 'lucide-react';
 
 export const GlobalSearchModal = () => {
-  const { isSearchOpen, setIsSearchOpen, setActiveTab, setShareModalItem, openSurahById } = useApp();
+  const { isSearchOpen, setIsSearchOpen, setActiveTab, openSurahById } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all'); // 'all' | 'quran' | 'hadith' | 'adhkar' | 'dua'
 
@@ -32,7 +31,7 @@ export const GlobalSearchModal = () => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSearchOpen]);
+  }, [isSearchOpen, setIsSearchOpen]);
 
   if (!isSearchOpen) return null;
 
